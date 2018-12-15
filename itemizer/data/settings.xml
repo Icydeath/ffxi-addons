@@ -1,0 +1,31 @@
+<?xml version="1.1" ?>
+<settings>
+    <global>
+        <AutoItems>true</AutoItems>
+        <AutoNinjaTools>true</AutoNinjaTools>
+        <Delay>0.5</Delay>
+        <UseUniversalTools>
+            <Aisha>false</Aisha>
+            <Dokumori>false</Dokumori>
+            <Doton>false</Doton>
+            <Gekka>false</Gekka>
+            <Hojo>false</Hojo>
+            <Huton>false</Huton>
+            <Hyoton>false</Hyoton>
+            <Jubaku>false</Jubaku>
+            <Kakka>false</Kakka>
+            <Katon>false</Katon>
+            <Kurayami>false</Kurayami>
+            <Migawari>false</Migawari>
+            <Monomi>false</Monomi>
+            <Myoshu>false</Myoshu>
+            <Raiton>false</Raiton>
+            <Suiton>false</Suiton>
+            <Tonko>false</Tonko>
+            <Utsusemi>false</Utsusemi>
+            <Yain>false</Yain>
+            <Yurin>false</Yurin>
+        </UseUniversalTools>
+        <version>3.0.1.1</version>
+    </global>
+</settings>

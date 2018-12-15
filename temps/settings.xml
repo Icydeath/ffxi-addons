@@ -1,0 +1,7 @@
+<?xml version="1.1" ?>
+<settings>
+    <global>
+        <blacklist>radialens,primeval brew,mollifier</blacklist>
+        <turbo>false</turbo>
+    </global>
+</settings>

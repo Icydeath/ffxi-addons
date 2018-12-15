@@ -1,0 +1,10 @@
+<?xml version="1.1" ?>
+<settings>
+    <global>
+        <blacklist />
+        <interval>0.1</interval>
+        <mode>blacklist</mode>
+        <timers>true</timers>
+        <whitelist />
+    </global>
+</settings>

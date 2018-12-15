@@ -1,0 +1,28 @@
+return {
+	[10682] = {id = 10682 , en = "Kog. Chainmail +2" , ["Dual Wield"] = 3 },
+	[10722] = {id = 10722 ,en = "Kog. Hakama +2" , ["Dual Wield"] = 7 },
+	[10838] = {id = 10838 , en = "Patentia Sash" , ["Dual Wield"] = 5 },
+	[11076] = {id = 11076 , en = "Iga Zukin +2" , ["Dual Wield"] = 5 },
+	[11102] = {id = 11102 , en = "Charis Casaque +2" , ["Dual Wield"] = 10 },
+	[11202] = {id = 11202 , en = "Charis Casaque +1" , ["Dual Wield"] = 5 },
+	[11603] = {id = 11603 , en = "Charis Necklace" , ["Dual Wield"] = 3 },
+	[11715] = {id = 11715 , en = "Iga Mimikazari" , ["Dual Wield"] = 1 },
+	[11732] = {id = 11732 , en = "Nusku's Sash" , ["Dual Wield"] = 5 },
+	[11855] = {id = 11855 , en = "Mextli Harness" , ["Dual Wield"] = 3 },
+	[13782] = {id = 13782 , en = "Ninja Chainmail" , ["Dual Wield"] = 5 },
+	[14485] = {id = 14485 , en = "Nin. Chainmail +1" , ["Dual Wield"] = 5 },
+	[14739] = {id = 14739 , en = "Suppanomimi" , ["Dual Wield"] = 5 },
+	[15129] = {id = 15129 , en = "Koga Hakama" , ["Dual Wield"] = 5 },
+	[15283] = {id = 15283 , en = "Sarashi" , ["Dual Wield"] = 1 },
+	[15592] = {id = 15592 , en = "Kog. Hakama +1" , ["Dual Wield"] = 5 },
+	[17626] = {id = 17626 , en = "Auric Dagger" , ["Dual Wield"] = 5 },
+	[19260] = {id = 19260 , en = "Raider's Bmrng." , ["Dual Wield"] = 3 },
+	[19302] = {id = 19302 , en = "Uguisu" , ["Dual Wield"] = 5 },
+	[27753] = {id = 27753 , en = "Thur. Chapeau +1" , ["Dual Wield"] = 5 },
+	[27784] = {id = 27784 , en = "Thurandaut Chapeau" , ["Dual Wield"] = 5 },
+	[27789] = {id = 27789 , en = "Skadi's Cuirie +1" , ["Dual Wield"] = 7 },
+	[27819] = {id = 27819 , en = "Hachi. Chainmail" , ["Dual Wield"] = 7},
+	[28102] = {id = 28102 , en = "Hachiya Hakama" , ["Dual Wield"] = 3 },
+	-- [28522] = {id = 28522 , en = "Dudgeon Earring" , ["Dual Wield"] = }
+	-- [28523] = {id = 28523 , en = "Heartseeker Earring", ["Dual Wield"] = }
+}

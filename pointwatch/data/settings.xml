@@ -1,0 +1,84 @@
+<?xml version="1.1" ?>
+<settings>
+    <global>
+        <options>
+            <message_printing>false</message_printing>
+        </options>
+        <strings>
+            <abyssea>xp.current..&apos;/&apos;..xp.tnl..&apos;XP &apos;..lp.current..&apos;/&apos;..lp.tnm..&apos;LP [&apos;..lp.number_of_merits..&apos;/&apos;..lp.maximum_merits..&apos;] XP/hr:&apos;..string.format(&apos;%.1f&apos;,math.floor(xp.rate/100)/10)..&apos;k Amber:&apos;..(abyssea.amber or 0)..&apos;/Azure:&apos;..(abyssea.azure or 0)..&apos;/Ruby:&apos;..(abyssea.ruby or 0)..&apos;/Pearlescent:&apos;..(abyssea.pearlescent or 0)..&apos;/Ebon:&apos;..(abyssea.ebon or 0)..&apos;/Silvery:&apos;..(abyssea.silvery or 0)..&apos;/Golden:&apos;..(abyssea.golden or 0)..&apos;/Time Remaining:&apos;..(abyssea.time_remaining or 0)</abyssea>
+            <default>xp.current..&apos;/&apos;..xp.tnl..&apos;XP &apos;..lp.current..&apos;/&apos;..lp.tnm..&apos;LP [&apos;..lp.number_of_merits..&apos;/&apos;..lp.maximum_merits..&apos;] XP/hr:&apos;..string.format(&apos;%.1f&apos;,math.floor(xp.rate/100)/10)..&apos;k &apos;..cp.current..&apos;/&apos;..cp.tnjp..&apos;CP [&apos;..cp.number_of_job_points..&apos;] CP/hr:&apos;..string.format(&apos;%.1f&apos;,math.floor(cp.rate/100)/10)..&apos;k&apos;</default>
+            <dynamis>xp.current..&apos;/&apos;..xp.tnl..&apos;XP &apos;..lp.current..&apos;/&apos;..lp.tnm..&apos;LP [&apos;..lp.number_of_merits..&apos;/&apos;..lp.maximum_merits..&apos;] XP/hr:&apos;..string.format(&apos;%.1f&apos;,math.floor(xp.rate/100)/10)..&apos;k &apos;..cp.current..&apos;/&apos;..cp.tnjp..&apos;CP [&apos;..cp.number_of_job_points..&apos;] &apos;..dynamis.KIs..&apos; &apos;..dynamis.time_remaining</dynamis>
+        </strings>
+        <text_box_settings>
+            <bg>
+                <alpha>255</alpha>
+                <blue>0</blue>
+                <green>0</green>
+                <red>0</red>
+                <visible>true</visible>
+            </bg>
+            <flags>
+                <bold>false</bold>
+                <bottom>false</bottom>
+                <draggable>true</draggable>
+                <italic>false</italic>
+                <right>false</right>
+            </flags>
+            <padding>0</padding>
+            <pos>
+                <x>0</x>
+                <y>0</y>
+            </pos>
+            <text>
+                <alpha>255</alpha>
+                <blue>255</blue>
+                <font>Consolas</font>
+                <fonts>
+
+                </fonts>
+                <green>255</green>
+                <red>255</red>
+                <size>12</size>
+                <stroke>
+                    <alpha>255</alpha>
+                    <blue>0</blue>
+                    <green>0</green>
+                    <red>0</red>
+                    <width>0</width>
+                </stroke>
+            </text>
+        </text_box_settings>
+    </global>
+    <clubfoot>
+        <text_box_settings>
+            <pos>
+                <x>285</x>
+                <y>1062</y>
+            </pos>
+        </text_box_settings>
+    </clubfoot>
+    <icybreath>
+        <text_box_settings>
+            <pos>
+                <x>340</x>
+                <y>1063</y>
+            </pos>
+        </text_box_settings>
+    </icybreath>
+    <icydeath>
+        <text_box_settings>
+            <pos>
+                <x>321</x>
+                <y>1064</y>
+            </pos>
+        </text_box_settings>
+    </icydeath>
+    <rythor>
+        <text_box_settings>
+            <pos>
+                <x>323</x>
+                <y>1062</y>
+            </pos>
+        </text_box_settings>
+    </rythor>
+</settings>

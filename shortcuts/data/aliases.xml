@@ -1,0 +1,63 @@
+<?xml version="1.1" ?>
+<settings>
+    <global>
+        <altep>Teleport-Altep</altep>
+        <bl>Blink</bl>
+        <c1>Cure</c1>
+        <c2>Cure II</c2>
+        <c3>Cure III</c3>
+        <c4>Cure IV</c4>
+        <c5>Cure V</c5>
+        <c6>Cure VI</c6>
+        <cel>Celerity</cel>
+        <cw1>Curing Waltz</cw1>
+        <cw2>Curing Waltz II</cw2>
+        <cw3>Curing Waltz III</cw3>
+        <cw4>Curing Waltz IV</cw4>
+        <cw5>Curing Waltz V</cw5>
+        <da>Dark Arts</da>
+        <dem>Teleport-Dem</dem>
+        <ds>Divine Seal</ds>
+        <es>Elemental Seal</es>
+        <holla>Teleport-Holla</holla>
+        <hw>Healing Waltz</hw>
+        <ichi>Utsusemi: Ichi</ichi>
+        <jugner>Recall-Jugner</jugner>
+        <la>Light Arts</la>
+        <mea>Teleport-Mea</mea>
+        <meri>Recall-Meriph</meri>
+        <meriph>Recall-Meriph</meriph>
+        <ni>Utsusemi: Ni</ni>
+        <pash>Recall-Pashh</pash>
+        <pashh>Recall-Pashh</pashh>
+        <pen>Penury</pen>
+        <pro1>Protectra</pro1>
+        <pro2>Protectra II</pro2>
+        <pro3>Protectra III</pro3>
+        <pro4>Protectra IV</pro4>
+        <pro5>Protectra V</pro5>
+        <r1>Raise</r1>
+        <r2>Raise II</r2>
+        <r3>Raise III</r3>
+        <re1>Regen</re1>
+        <re2>Regen II</re2>
+        <re3>Regen III</re3>
+        <re4>Regen IV</re4>
+        <re5>Regen V</re5>
+        <sh1>Shellra</sh1>
+        <sh2>Shellra II</sh2>
+        <sh3>Shellra III</sh3>
+        <sh4>Shellra IV</sh4>
+        <sh5>Shellra V</sh5>
+        <she1>Shellra</she1>
+        <she2>Shellra II</she2>
+        <she3>Shellra III</she3>
+        <she4>Shellra IV</she4>
+        <she5>Shellra V</she5>
+        <ss>Stoneskin</ss>
+        <utsu1>Utsusemi: Ichi</utsu1>
+        <utsu2>Utsusemi: Ni</utsu2>
+        <vahzl>Teleport-Vahzl</vahzl>
+        <yhoat>Teleport-Yhoat</yhoat>
+    </global>
+</settings>

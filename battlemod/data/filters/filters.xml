@@ -1,0 +1,346 @@
+<?xml version="1.1" ?>
+<settings>
+    <!--
+        Filters are customizable based on the action user. So if you filter other pets, you're going
+        to eliminate all messages initiated by everyone's pet but your own.
+        True means "filter this"
+        False means "don't filter this"
+        
+        Generally, the outer tag is the actor and the inner tag is the action.
+        If the monster is the actor, then the inner tag is the target and the tag beyond that is the action.
+    -->
+    <global>
+        <alliance>
+        <!-- He's targeting an alliance member -->
+            <all>true</all>          <!-- Prevents all of your messages from appearing -->
+            <casting>false</casting> <!-- Prevents your "Jim begins casting ____" messages from appearing -->
+            <damage>false</damage>   <!-- Prevents your damage from appearing -->
+            <healing>false</healing> <!-- Prevents your healing from appearing -->
+            <items>false</items>     <!-- Prevents your "Jim used an item. Jim gains the effect of Reraise." messages from appearing -->
+            <melee>false</melee>     <!-- Prevents your melee ("white") damage from appearing -->
+            <misses>false</misses>   <!-- Prevents your misses from appearing -->
+            <ranged>false</ranged>   <!-- Prevents your ranged damage from appearing -->
+            <readies>false</readies> <!-- Prevents your "Jim readies ____" messages from appearing -->
+            <target>false</target>   <!-- true = SHOW all actions where I am the target. -->
+            <uses>false</uses>       <!-- Prevents your "Jim uses an item." messages from appearing -->
+        </alliance>
+        <enemies>
+        <!-- He's targeting a monster your party has claimed -->
+            <alliance>
+            <!-- He's targeting an alliance member -->
+                <all>true</all>          <!-- Prevents all of your messages from appearing -->
+                <casting>false</casting> <!-- Prevents your "Jim begins casting ____" messages from appearing -->
+                <damage>false</damage>   <!-- Prevents your damage from appearing -->
+                <healing>false</healing> <!-- Prevents your healing from appearing -->
+                <items>false</items>     <!-- Prevents your "Jim used an item. Jim gains the effect of Reraise." messages from appearing -->
+                <melee>false</melee>     <!-- Prevents your melee ("white") damage from appearing -->
+                <misses>false</misses>   <!-- Prevents your misses from appearing -->
+                <ranged>false</ranged>   <!-- Prevents your ranged damage from appearing -->
+                <readies>false</readies> <!-- Prevents your "Jim readies ____" messages from appearing -->
+                <uses>false</uses>       <!-- Prevents your "Jim uses an item." messages from appearing -->
+            </alliance>
+            <enemies>
+            <!-- He's targeting a monster your party has claimed -->
+                <all>true</all>          <!-- Prevents all of your messages from appearing -->
+                <casting>false</casting> <!-- Prevents your "Jim begins casting ____" messages from appearing -->
+                <damage>false</damage>   <!-- Prevents your damage from appearing -->
+                <healing>false</healing> <!-- Prevents your healing from appearing -->
+                <items>false</items>     <!-- Prevents your "Jim used an item. Jim gains the effect of Reraise." messages from appearing -->
+                <melee>false</melee>     <!-- Prevents your melee ("white") damage from appearing -->
+                <misses>false</misses>   <!-- Prevents your misses from appearing -->
+                <ranged>false</ranged>   <!-- Prevents your ranged damage from appearing -->
+                <readies>false</readies> <!-- Prevents your "Jim readies ____" messages from appearing -->
+                <uses>false</uses>       <!-- Prevents your "Jim uses an item." messages from appearing -->
+            </enemies>
+            <me>
+            <!-- He's targeting you! -->
+                <all>false</all>         <!-- Prevents all of your messages from appearing -->
+                <casting>false</casting> <!-- Prevents your "Jim begins casting ____" messages from appearing -->
+                <damage>false</damage>   <!-- Prevents your damage from appearing -->
+                <healing>false</healing> <!-- Prevents your healing from appearing -->
+                <items>false</items>     <!-- Prevents your "Jim used an item. Jim gains the effect of Reraise." messages from appearing -->
+                <melee>false</melee>     <!-- Prevents your melee ("white") damage from appearing -->
+                <misses>false</misses>   <!-- Prevents your misses from appearing -->
+                <ranged>false</ranged>   <!-- Prevents your ranged damage from appearing -->
+                <readies>false</readies> <!-- Prevents your "Jim readies ____" messages from appearing -->
+                <uses>false</uses>       <!-- Prevents your "Jim uses an item." messages from appearing -->
+            </me>
+            <monsters>
+            <!-- He's targeting himself or another monster -->
+                <all>true</all>          <!-- Prevents all of your messages from appearing -->
+                <casting>false</casting> <!-- Prevents your "Jim begins casting ____" messages from appearing -->
+                <damage>false</damage>   <!-- Prevents your damage from appearing -->
+                <healing>false</healing> <!-- Prevents your healing from appearing -->
+                <items>false</items>     <!-- Prevents your "Jim used an item. Jim gains the effect of Reraise." messages from appearing -->
+                <melee>false</melee>     <!-- Prevents your melee ("white") damage from appearing -->
+                <misses>false</misses>   <!-- Prevents your misses from appearing -->
+                <ranged>false</ranged>   <!-- Prevents your ranged damage from appearing -->
+                <readies>false</readies> <!-- Prevents your "Jim readies ____" messages from appearing -->
+                <uses>false</uses>       <!-- Prevents your "Jim uses an item." messages from appearing -->
+            </monsters>
+            <my_fellow>
+            <!-- He's targeting your adventuring fellow -->
+                <all>true</all>          <!-- Prevents all of your messages from appearing -->
+                <casting>false</casting> <!-- Prevents your "Jim begins casting ____" messages from appearing -->
+                <damage>false</damage>   <!-- Prevents your damage from appearing -->
+                <healing>false</healing> <!-- Prevents your healing from appearing -->
+                <items>false</items>     <!-- Prevents your "Jim used an item. Jim gains the effect of Reraise." messages from appearing -->
+                <melee>false</melee>     <!-- Prevents your melee ("white") damage from appearing -->
+                <misses>false</misses>   <!-- Prevents your misses from appearing -->
+                <ranged>false</ranged>   <!-- Prevents your ranged damage from appearing -->
+                <readies>false</readies> <!-- Prevents your "Jim readies ____" messages from appearing -->
+                <uses>false</uses>       <!-- Prevents your "Jim uses an item." messages from appearing -->
+            </my_fellow>
+            <my_pet>
+            <!-- He's targeting your pet -->
+                <all>false</all>         <!-- Prevents all of your messages from appearing -->
+                <casting>false</casting> <!-- Prevents your "Jim begins casting ____" messages from appearing -->
+                <damage>false</damage>   <!-- Prevents your damage from appearing -->
+                <healing>false</healing> <!-- Prevents your healing from appearing -->
+                <items>false</items>     <!-- Prevents your "Jim used an item. Jim gains the effect of Reraise." messages from appearing -->
+                <melee>false</melee>     <!-- Prevents your melee ("white") damage from appearing -->
+                <misses>false</misses>   <!-- Prevents your misses from appearing -->
+                <ranged>false</ranged>   <!-- Prevents your ranged damage from appearing -->
+                <readies>false</readies> <!-- Prevents your "Jim readies ____" messages from appearing -->
+                <uses>false</uses>       <!-- Prevents your "Jim uses an item." messages from appearing -->
+            </my_pet>
+            <other_pets>
+            <!-- He's targeting someone else's pet -->
+                <all>true</all>          <!-- Prevents all of your messages from appearing -->
+                <casting>false</casting> <!-- Prevents your "Jim begins casting ____" messages from appearing -->
+                <damage>false</damage>   <!-- Prevents your damage from appearing -->
+                <healing>false</healing> <!-- Prevents your healing from appearing -->
+                <items>false</items>     <!-- Prevents your "Jim used an item. Jim gains the effect of Reraise." messages from appearing -->
+                <melee>false</melee>     <!-- Prevents your melee ("white") damage from appearing -->
+                <misses>false</misses>   <!-- Prevents your misses from appearing -->
+                <ranged>false</ranged>   <!-- Prevents your ranged damage from appearing -->
+                <readies>false</readies> <!-- Prevents your "Jim readies ____" messages from appearing -->
+                <uses>false</uses>       <!-- Prevents your "Jim uses an item." messages from appearing -->
+            </other_pets>
+            <others>
+            <!-- He's targeting some guy nearby -->
+                <all>true</all>          <!-- Prevents all of your messages from appearing -->
+                <casting>false</casting> <!-- Prevents your "Jim begins casting ____" messages from appearing -->
+                <damage>false</damage>   <!-- Prevents your damage from appearing -->
+                <healing>false</healing> <!-- Prevents your healing from appearing -->
+                <items>false</items>     <!-- Prevents your "Jim used an item. Jim gains the effect of Reraise." messages from appearing -->
+                <melee>false</melee>     <!-- Prevents your melee ("white") damage from appearing -->
+                <misses>false</misses>   <!-- Prevents your misses from appearing -->
+                <ranged>false</ranged>   <!-- Prevents your ranged damage from appearing -->
+                <readies>false</readies> <!-- Prevents your "Jim readies ____" messages from appearing -->
+                <uses>false</uses>       <!-- Prevents your "Jim uses an item." messages from appearing -->
+            </others>
+            <party>
+            <!-- He's targeting a party member -->
+                <all>true</all>          <!-- Prevents all of your messages from appearing -->
+                <casting>false</casting> <!-- Prevents your "Jim begins casting ____" messages from appearing -->
+                <damage>false</damage>   <!-- Prevents your damage from appearing -->
+                <healing>false</healing> <!-- Prevents your healing from appearing -->
+                <items>false</items>     <!-- Prevents your "Jim used an item. Jim gains the effect of Reraise." messages from appearing -->
+                <melee>false</melee>     <!-- Prevents your melee ("white") damage from appearing -->
+                <misses>false</misses>   <!-- Prevents your misses from appearing -->
+                <ranged>false</ranged>   <!-- Prevents your ranged damage from appearing -->
+                <readies>false</readies> <!-- Prevents your "Jim readies ____" messages from appearing -->
+                <uses>false</uses>       <!-- Prevents your "Jim uses an item." messages from appearing -->
+            </party>
+        </enemies>
+        <me>
+        <!-- He's targeting you! -->
+            <all>false</all>         <!-- Prevents all of your messages from appearing -->
+            <casting>false</casting> <!-- Prevents your "Jim begins casting ____" messages from appearing -->
+            <damage>false</damage>   <!-- Prevents your damage from appearing -->
+            <healing>false</healing> <!-- Prevents your healing from appearing -->
+            <items>false</items>     <!-- Prevents your "Jim used an item. Jim gains the effect of Reraise." messages from appearing -->
+            <melee>false</melee>     <!-- Prevents your melee ("white") damage from appearing -->
+            <misses>false</misses>   <!-- Prevents your misses from appearing -->
+            <ranged>false</ranged>   <!-- Prevents your ranged damage from appearing -->
+            <readies>false</readies> <!-- Prevents your "Jim readies ____" messages from appearing -->
+            <target>true</target>    <!-- true = SHOW all actions where I am the target. -->
+            <uses>false</uses>       <!-- Prevents your "Jim uses an item." messages from appearing -->
+        </me>
+        <monsters>
+        <!-- He's targeting himself or another monster -->
+            <alliance>
+            <!-- He's targeting an alliance member -->
+                <all>true</all>          <!-- Prevents all of your messages from appearing -->
+                <casting>false</casting> <!-- Prevents your "Jim begins casting ____" messages from appearing -->
+                <damage>false</damage>   <!-- Prevents your damage from appearing -->
+                <healing>false</healing> <!-- Prevents your healing from appearing -->
+                <items>false</items>     <!-- Prevents your "Jim used an item. Jim gains the effect of Reraise." messages from appearing -->
+                <melee>false</melee>     <!-- Prevents your melee ("white") damage from appearing -->
+                <misses>false</misses>   <!-- Prevents your misses from appearing -->
+                <ranged>false</ranged>   <!-- Prevents your ranged damage from appearing -->
+                <readies>false</readies> <!-- Prevents your "Jim readies ____" messages from appearing -->
+                <uses>false</uses>       <!-- Prevents your "Jim uses an item." messages from appearing -->
+            </alliance>
+            <enemies>
+            <!-- He's targeting a monster your party has claimed -->
+                <all>true</all>          <!-- Prevents all of your messages from appearing -->
+                <casting>false</casting> <!-- Prevents your "Jim begins casting ____" messages from appearing -->
+                <damage>false</damage>   <!-- Prevents your damage from appearing -->
+                <healing>false</healing> <!-- Prevents your healing from appearing -->
+                <items>false</items>     <!-- Prevents your "Jim used an item. Jim gains the effect of Reraise." messages from appearing -->
+                <melee>false</melee>     <!-- Prevents your melee ("white") damage from appearing -->
+                <misses>false</misses>   <!-- Prevents your misses from appearing -->
+                <ranged>false</ranged>   <!-- Prevents your ranged damage from appearing -->
+                <readies>false</readies> <!-- Prevents your "Jim readies ____" messages from appearing -->
+                <uses>false</uses>       <!-- Prevents your "Jim uses an item." messages from appearing -->
+            </enemies>
+            <me>
+            <!-- He's targeting you! -->
+                <all>false</all>         <!-- Prevents all of your messages from appearing -->
+                <casting>false</casting> <!-- Prevents your "Jim begins casting ____" messages from appearing -->
+                <damage>false</damage>   <!-- Prevents your damage from appearing -->
+                <healing>false</healing> <!-- Prevents your healing from appearing -->
+                <items>false</items>     <!-- Prevents your "Jim used an item. Jim gains the effect of Reraise." messages from appearing -->
+                <melee>false</melee>     <!-- Prevents your melee ("white") damage from appearing -->
+                <misses>false</misses>   <!-- Prevents your misses from appearing -->
+                <ranged>false</ranged>   <!-- Prevents your ranged damage from appearing -->
+                <readies>false</readies> <!-- Prevents your "Jim readies ____" messages from appearing -->
+                <uses>false</uses>       <!-- Prevents your "Jim uses an item." messages from appearing -->
+            </me>
+            <monsters>
+            <!-- He's targeting himself or another monster -->
+                <all>true</all>          <!-- Prevents all of your messages from appearing -->
+                <casting>false</casting> <!-- Prevents your "Jim begins casting ____" messages from appearing -->
+                <damage>false</damage>   <!-- Prevents your damage from appearing -->
+                <healing>false</healing> <!-- Prevents your healing from appearing -->
+                <items>false</items>     <!-- Prevents your "Jim used an item. Jim gains the effect of Reraise." messages from appearing -->
+                <melee>false</melee>     <!-- Prevents your melee ("white") damage from appearing -->
+                <misses>false</misses>   <!-- Prevents your misses from appearing -->
+                <ranged>false</ranged>   <!-- Prevents your ranged damage from appearing -->
+                <readies>false</readies> <!-- Prevents your "Jim readies ____" messages from appearing -->
+                <uses>false</uses>       <!-- Prevents your "Jim uses an item." messages from appearing -->
+            </monsters>
+            <my_fellow>
+            <!-- He's targeting your adventuring fellow -->
+                <all>true</all>          <!-- Prevents all of your messages from appearing -->
+                <casting>false</casting> <!-- Prevents your "Jim begins casting ____" messages from appearing -->
+                <damage>false</damage>   <!-- Prevents your damage from appearing -->
+                <healing>false</healing> <!-- Prevents your healing from appearing -->
+                <items>false</items>     <!-- Prevents your "Jim used an item. Jim gains the effect of Reraise." messages from appearing -->
+                <melee>false</melee>     <!-- Prevents your melee ("white") damage from appearing -->
+                <misses>false</misses>   <!-- Prevents your misses from appearing -->
+                <ranged>false</ranged>   <!-- Prevents your ranged damage from appearing -->
+                <readies>false</readies> <!-- Prevents your "Jim readies ____" messages from appearing -->
+                <uses>false</uses>       <!-- Prevents your "Jim uses an item." messages from appearing -->
+            </my_fellow>
+            <my_pet>
+            <!-- He's targeting your pet -->
+                <all>false</all>         <!-- Prevents all of your messages from appearing -->
+                <casting>false</casting> <!-- Prevents your "Jim begins casting ____" messages from appearing -->
+                <damage>false</damage>   <!-- Prevents your damage from appearing -->
+                <healing>false</healing> <!-- Prevents your healing from appearing -->
+                <items>false</items>     <!-- Prevents your "Jim used an item. Jim gains the effect of Reraise." messages from appearing -->
+                <melee>false</melee>     <!-- Prevents your melee ("white") damage from appearing -->
+                <misses>false</misses>   <!-- Prevents your misses from appearing -->
+                <ranged>false</ranged>   <!-- Prevents your ranged damage from appearing -->
+                <readies>false</readies> <!-- Prevents your "Jim readies ____" messages from appearing -->
+                <uses>false</uses>       <!-- Prevents your "Jim uses an item." messages from appearing -->
+            </my_pet>
+            <other_pets>
+            <!-- He's targeting someone else's pet -->
+                <all>true</all>          <!-- Prevents all of your messages from appearing -->
+                <casting>false</casting> <!-- Prevents your "Jim begins casting ____" messages from appearing -->
+                <damage>false</damage>   <!-- Prevents your damage from appearing -->
+                <healing>false</healing> <!-- Prevents your healing from appearing -->
+                <items>false</items>     <!-- Prevents your "Jim used an item. Jim gains the effect of Reraise." messages from appearing -->
+                <melee>false</melee>     <!-- Prevents your melee ("white") damage from appearing -->
+                <misses>false</misses>   <!-- Prevents your misses from appearing -->
+                <ranged>false</ranged>   <!-- Prevents your ranged damage from appearing -->
+                <readies>false</readies> <!-- Prevents your "Jim readies ____" messages from appearing -->
+                <uses>false</uses>       <!-- Prevents your "Jim uses an item." messages from appearing -->
+            </other_pets>
+            <others>
+            <!-- He's targeting some guy nearby -->
+                <all>true</all>          <!-- Prevents all of your messages from appearing -->
+                <casting>false</casting> <!-- Prevents your "Jim begins casting ____" messages from appearing -->
+                <damage>false</damage>   <!-- Prevents your damage from appearing -->
+                <healing>false</healing> <!-- Prevents your healing from appearing -->
+                <items>false</items>     <!-- Prevents your "Jim used an item. Jim gains the effect of Reraise." messages from appearing -->
+                <melee>false</melee>     <!-- Prevents your melee ("white") damage from appearing -->
+                <misses>false</misses>   <!-- Prevents your misses from appearing -->
+                <ranged>false</ranged>   <!-- Prevents your ranged damage from appearing -->
+                <readies>false</readies> <!-- Prevents your "Jim readies ____" messages from appearing -->
+                <uses>false</uses>       <!-- Prevents your "Jim uses an item." messages from appearing -->
+            </others>
+            <party>
+            <!-- He's targeting a party member -->
+                <all>true</all>          <!-- Prevents all of your messages from appearing -->
+                <casting>false</casting> <!-- Prevents your "Jim begins casting ____" messages from appearing -->
+                <damage>false</damage>   <!-- Prevents your damage from appearing -->
+                <healing>false</healing> <!-- Prevents your healing from appearing -->
+                <items>false</items>     <!-- Prevents your "Jim used an item. Jim gains the effect of Reraise." messages from appearing -->
+                <melee>false</melee>     <!-- Prevents your melee ("white") damage from appearing -->
+                <misses>false</misses>   <!-- Prevents your misses from appearing -->
+                <ranged>false</ranged>   <!-- Prevents your ranged damage from appearing -->
+                <readies>false</readies> <!-- Prevents your "Jim readies ____" messages from appearing -->
+                <uses>false</uses>       <!-- Prevents your "Jim uses an item." messages from appearing -->
+            </party>
+        </monsters>
+        <my_fellow>
+        <!-- He's targeting your adventuring fellow -->
+            <all>true</all>          <!-- Prevents all of your messages from appearing -->
+            <casting>false</casting> <!-- Prevents your "Jim begins casting ____" messages from appearing -->
+            <damage>false</damage>   <!-- Prevents your damage from appearing -->
+            <healing>false</healing> <!-- Prevents your healing from appearing -->
+            <melee>false</melee>     <!-- Prevents your melee ("white") damage from appearing -->
+            <misses>false</misses>   <!-- Prevents your misses from appearing -->
+            <ranged>false</ranged>   <!-- Prevents your ranged damage from appearing -->
+            <readies>false</readies> <!-- Prevents your "Jim readies ____" messages from appearing -->
+            <target>false</target>   <!-- true = SHOW all actions where I am the target. -->
+        </my_fellow>
+        <my_pet>
+        <!-- He's targeting your pet -->
+            <all>false</all>         <!-- Prevents all of your messages from appearing -->
+            <casting>false</casting> <!-- Prevents your "Jim begins casting ____" messages from appearing -->
+            <damage>false</damage>   <!-- Prevents your damage from appearing -->
+            <healing>false</healing> <!-- Prevents your healing from appearing -->
+            <melee>false</melee>     <!-- Prevents your melee ("white") damage from appearing -->
+            <misses>false</misses>   <!-- Prevents your misses from appearing -->
+            <ranged>false</ranged>   <!-- Prevents your ranged damage from appearing -->
+            <readies>false</readies> <!-- Prevents your "Jim readies ____" messages from appearing -->
+            <target>false</target>   <!-- true = SHOW all actions where I am the target. -->
+        </my_pet>
+        <other_pets>
+        <!-- He's targeting someone else's pet -->
+            <all>true</all>          <!-- Prevents all of your messages from appearing -->
+            <casting>false</casting> <!-- Prevents your "Jim begins casting ____" messages from appearing -->
+            <damage>false</damage>   <!-- Prevents your damage from appearing -->
+            <healing>false</healing> <!-- Prevents your healing from appearing -->
+            <melee>false</melee>     <!-- Prevents your melee ("white") damage from appearing -->
+            <misses>false</misses>   <!-- Prevents your misses from appearing -->
+            <ranged>false</ranged>   <!-- Prevents your ranged damage from appearing -->
+            <readies>false</readies> <!-- Prevents your "Jim readies ____" messages from appearing -->
+            <target>false</target>   <!-- true = SHOW all actions where I am the target. -->
+        </other_pets>
+        <others>
+        <!-- He's targeting some guy nearby -->
+            <all>true</all>          <!-- Prevents all of your messages from appearing -->
+            <casting>false</casting> <!-- Prevents your "Jim begins casting ____" messages from appearing -->
+            <damage>false</damage>   <!-- Prevents your damage from appearing -->
+            <healing>false</healing> <!-- Prevents your healing from appearing -->
+            <items>false</items>     <!-- Prevents your "Jim used an item. Jim gains the effect of Reraise." messages from appearing -->
+            <melee>false</melee>     <!-- Prevents your melee ("white") damage from appearing -->
+            <misses>false</misses>   <!-- Prevents your misses from appearing -->
+            <ranged>false</ranged>   <!-- Prevents your ranged damage from appearing -->
+            <readies>false</readies> <!-- Prevents your "Jim readies ____" messages from appearing -->
+            <target>false</target>   <!-- true = SHOW all actions where I am the target. -->
+            <uses>false</uses>       <!-- Prevents your "Jim uses an item." messages from appearing -->
+        </others>
+        <party>
+        <!-- He's targeting a party member -->
+            <all>true</all>          <!-- Prevents all of your messages from appearing -->
+            <casting>false</casting> <!-- Prevents your "Jim begins casting ____" messages from appearing -->
+            <damage>false</damage>   <!-- Prevents your damage from appearing -->
+            <healing>false</healing> <!-- Prevents your healing from appearing -->
+            <items>false</items>     <!-- Prevents your "Jim used an item. Jim gains the effect of Reraise." messages from appearing -->
+            <melee>false</melee>     <!-- Prevents your melee ("white") damage from appearing -->
+            <misses>false</misses>   <!-- Prevents your misses from appearing -->
+            <ranged>false</ranged>   <!-- Prevents your ranged damage from appearing -->
+            <readies>false</readies> <!-- Prevents your "Jim readies ____" messages from appearing -->
+            <target>false</target>   <!-- true = SHOW all actions where I am the target. -->
+            <uses>false</uses>       <!-- Prevents your "Jim uses an item." messages from appearing -->
+        </party>
+    </global>
+</settings>

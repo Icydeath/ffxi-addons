@@ -1,0 +1,15 @@
+<?xml version="1.1" ?>
+<settings>
+    <global>
+        <AutoDrop>false</AutoDrop>
+        <AutoStack>true</AutoStack>
+        <Delay>0</Delay>
+        <Drop>Titanite,Dark Crystal,Garudite,Ice Crystal,Soil Geode,Water Crystal,Breeze Geode,Light Geode,Shivite,Flame Geode,Lightng. Crystal,Light Crystal,Ramuite,Shadow Geode,Thunder Geode,Aqua Geode,Earth Crystal,Ifritite,Snow Geode,Carbite,Fenrite,Fire Crystal,Wind Crystal,Leviatite</Drop>
+        <Lot />
+        <Pass>Fire Crystal,Dark Crystal,Garudite,Ice Crystal,Soil Geode,Water Crystal,Breeze Geode,Light Geode,Shivite,Flame Geode,Lightng. Crystal,Light Crystal,Ramuite,Leviatite,Thunder Geode,Titanite,Fenrite,Ifritite,Snow Geode,Carbite,Earth Crystal,Aqua Geode,Wind Crystal,Shadow Geode</Pass>
+        <Verbose>false</Verbose>
+    </global>
+    <rythor>
+        <Lot>Alexandrite,Lin. Purse (Alx.),Ctn. Purse (Alx.)</Lot>
+    </rythor>
+</settings>

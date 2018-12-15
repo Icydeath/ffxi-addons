@@ -1,0 +1,91 @@
+<?xml version="1.1" ?>
+<settings>
+    <global>
+        <autoupdate>true</autoupdate>
+        <blinking>
+            <all>
+                <always>true</always>
+                <combat>true</combat>
+                <target>true</target>
+            </all>
+            <follow>
+                <always>false</always>
+                <combat>false</combat>
+                <target>false</target>
+            </follow>
+            <others>
+                <always>true</always>
+                <combat>true</combat>
+                <target>true</target>
+            </others>
+            <party>
+                <always>true</always>
+                <combat>false</combat>
+                <target>false</target>
+            </party>
+            <self>
+                <always>true</always>
+                <combat>true</combat>
+                <target>true</target>
+            </self>
+        </blinking>
+        <eldiablo>
+            <race>8</race>
+        </eldiablo>
+        <gorby>
+
+        </gorby>
+        <icydeath>
+
+        </icydeath>
+        <others>
+            <race>6</race>
+        </others>
+        <profiles>
+            <>
+
+            </>
+            <default>
+
+            </default>
+            <rythor>
+                <race>5</race>
+            </rythor>
+        </profiles>
+        <replacements>
+            <body>
+
+            </body>
+            <face>
+
+            </face>
+            <feet>
+
+            </feet>
+            <hands>
+
+            </hands>
+            <head>
+
+            </head>
+            <legs>
+
+            </legs>
+            <main>
+
+            </main>
+            <race>
+
+            </race>
+            <ranged>
+
+            </ranged>
+            <sub>
+
+            </sub>
+        </replacements>
+        <rythor>
+
+        </rythor>
+    </global>
+</settings>
