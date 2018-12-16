@@ -17,8 +17,8 @@
         </flags>
         <padding>0</padding>
         <pos>
-            <x>0</x>
-            <y>0</y>
+            <x>1963</x>
+            <y>22</y>
         </pos>
         <text>
             <alpha>255</alpha>
@@ -51,12 +51,6 @@
             <y>21</y>
         </pos>
     </icybreath>
-    <icydeath>
-        <pos>
-            <x>1963</x>
-            <y>22</y>
-        </pos>
-    </icydeath>
     <rythor>
         <pos>
             <x>1895</x>
