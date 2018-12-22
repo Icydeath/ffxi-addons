@@ -1,0 +1,17 @@
+sets.exported={
+    main={ name="Solstice", augments={'Mag. Acc.+20','Pet: Damage taken -4%','"Fast Cast"+5',}},
+    sub="Harpy Shield",
+    ammo="Memoria Sachet",
+    head={ name="Merlinic Hood", augments={'Mag. Acc.+22','Magic burst dmg.+8%','CHR+10',}},
+    body="Azimuth Coat",
+    hands={ name="Merlinic Dastanas", augments={'Mag. Acc.+18 "Mag.Atk.Bns."+18','Magic burst dmg.+7%','STR+5','Mag. Acc.+9','"Mag.Atk.Bns."+10',}},
+    legs="Azimuth Tights",
+    feet={ name="Merlinic Crackows", augments={'Mag. Acc.+18 "Mag.Atk.Bns."+18','"Occult Acumen"+8','"Mag.Atk.Bns."+12',}},
+    neck="Eddy Necklace",
+    waist="Yamabuki-no-Obi",
+    left_ear="Barkaro. Earring",
+    right_ear="Gwati Earring",
+    left_ring="Acumen Ring",
+    right_ring="Balrahn's Ring",
+    back={ name="Lifestream Cape", augments={'Geomancy Skill +10','Indi. eff. dur. +12','Pet: Damage taken -2%',}},
+}

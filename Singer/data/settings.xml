@@ -83,5 +83,13 @@
                 <y>825</y>
             </pos>
         </box>
+        <clarion>
+            <aoe>ballad</aoe>
+        </clarion>
+        <dummy>Valor Minuet V,</dummy>
+        <marcato>Valor Minuet V</marcato>
+        <songs>
+            <march>2</march>
+        </songs>
     </rythor>
 </settings>

@@ -58,22 +58,33 @@
     <clubfoot>
         <display>
             <pos>
-                <x>3</x>
-                <y>375</y>
+                <x>750</x>
+                <y>794</y>
             </pos>
         </display>
     </clubfoot>
+    <icybreath>
+        <display>
+            <pos>
+                <x>1395</x>
+                <y>963</y>
+            </pos>
+        </display>
+    </icybreath>
     <icydeath>
         <display>
             <pos>
-                <x>752</x>
-                <y>797</y>
+                <x>1415</x>
+                <y>951</y>
             </pos>
-            <text>
-                <fonts>
-
-                </fonts>
-            </text>
         </display>
     </icydeath>
+    <rythor>
+        <display>
+            <pos>
+                <x>754</x>
+                <y>796</y>
+            </pos>
+        </display>
+    </rythor>
 </settings>

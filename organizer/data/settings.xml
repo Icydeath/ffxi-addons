@@ -25,9 +25,9 @@
         </ignore>
         <item_delay>0</item_delay>
         <retain>
-            <items>false</items>
+            <items>true</items>
             <moogle_slip_gear>false</moogle_slip_gear>
-            <seals>false</seals>
+            <seals>true</seals>
             <slips>false</slips>
         </retain>
         <verbose>false</verbose>

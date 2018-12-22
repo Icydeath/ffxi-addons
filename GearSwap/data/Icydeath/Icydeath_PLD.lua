@@ -230,7 +230,7 @@ function init_gear_sets()
 	
 	-- Divine magic to enhance Enlight
 	sets.midcast['Divine Magic'] = {
-		head={ name="Jumalik Helm", augments={'MND+7','"Mag.Atk.Bns."+12','Magic burst mdg.+7%',}},
+		head={ name="Jumalik Helm", augments={'MND+7','"Mag.Atk.Bns."+12','Magic burst dmg.+7%',}},
 		hands={ name="Eschite Gauntlets", augments={'Mag. Evasion+15','Spell interruption rate down +15%','Enmity+7',}},
 		feet="Templar Sabatons",
 		neck="Divine Torque",
