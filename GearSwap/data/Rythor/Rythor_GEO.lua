@@ -9,8 +9,10 @@ function user_unload()
     send_command('unbind ^f9')	
     send_command('unbind ^f10')
     send_command('unbind ^f11')		
+	
 end	
 function get_sets()
+	include('organizer-lib')
 -- Binds for modes
     send_command('bind ^f1 gs c C1')
 	send_command('bind ^f9 gs c C9')	
@@ -198,11 +200,11 @@ function get_sets()
     sets.midcast.Elemental = { -- Normal Nukes --
 		main="Solstice",
 		range={ name="Dunna", augments={'MP+20','Mag. Acc.+10','"Fast Cast"+3',}},
-		head={ name="Merlinic Hood", augments={'Mag. Acc.+28','Magic burst mdg.+9%','"Mag.Atk.Bns."+10',}},
+		head={ name="Merlinic Hood", augments={'Mag. Acc.+28','Magic burst dmg.+9%','"Mag.Atk.Bns."+10',}},
 		body="Azimuth Coat",
-		hands={ name="Merlinic Dastanas", augments={'Mag. Acc.+23 "Mag.Atk.Bns."+23','Magic burst mdg.+11%','Mag. Acc.+8','"Mag.Atk.Bns."+7',}},
-		legs={ name="Merlinic Shalwar", augments={'"Mag.Atk.Bns."+21','Magic burst mdg.+9%','Mag. Acc.+15',}},
-		feet={ name="Merlinic Crackows", augments={'Mag. Acc.+23','Magic burst mdg.+8%','MND+1','"Mag.Atk.Bns."+10',}},
+		hands={ name="Merlinic Dastanas", augments={'Mag. Acc.+23 "Mag.Atk.Bns."+23','Magic burst dmg.+11%','Mag. Acc.+8','"Mag.Atk.Bns."+7',}},
+		legs={ name="Merlinic Shalwar", augments={'"Mag.Atk.Bns."+21','Magic burst dmg.+9%','Mag. Acc.+15',}},
+		feet={ name="Merlinic Crackows", augments={'Mag. Acc.+23','Magic burst dmg.+8%','MND+1','"Mag.Atk.Bns."+10',}},
 		neck="Mizu. Kubikazari",
 		waist="Aswang Sash",
 		left_ear="Friomisi Earring",

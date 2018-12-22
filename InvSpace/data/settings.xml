@@ -63,11 +63,19 @@
             </pos>
         </display>
     </clubfoot>
+    <icybreath>
+        <display>
+            <pos>
+                <x>1395</x>
+                <y>963</y>
+            </pos>
+        </display>
+    </icybreath>
     <icydeath>
         <display>
             <pos>
-                <x>752</x>
-                <y>797</y>
+                <x>1415</x>
+                <y>951</y>
             </pos>
         </display>
     </icydeath>

@@ -70,7 +70,7 @@
 	/con gs c toggle MagicBurst
 --]]
 
-
+res = require ("resources")
 
 -- Initialization function for this job file.
 function get_sets()
@@ -79,8 +79,8 @@ function get_sets()
 	include('organizer-lib')
     -- Load and initialize the include file.
     include('Mote-Include.lua')
-	include('Icy-Include.lua')	
 end
+
 
 -- Setup vars that are user-independent.  state.Buff vars initialized here will automatically be tracked.
 function job_setup()
@@ -154,9 +154,9 @@ function init_gear_sets()
 		ammo="Incantor Stone",
 		head={ name="Merlinic Hood", augments={'Mag. Acc.+20 "Mag.Atk.Bns."+20','INT+3','Mag. Acc.+15','"Mag.Atk.Bns."+11',}},
 		body="Vanir Cotehardie",
-		hands={ name="Helios Gloves", augments={'Mag. Acc.+25','"Fast Cast"+3','Magic burst mdg.+7%',}},
+		hands={ name="Helios Gloves", augments={'Mag. Acc.+25','"Fast Cast"+3','Magic burst dmg.+7%',}},
 		legs={ name="Lengo Pants", augments={'INT+10','Mag. Acc.+15','"Mag.Atk.Bns."+15','"Refresh"+1',}},
-		feet={ name="Merlinic Crackows", augments={'"Mag.Atk.Bns."+21','Magic burst mdg.+10%','VIT+4',}},
+		feet="Merlinic Crackows",
 		waist="Channeler's Stone",
 		left_ear="Enchntr. Earring +1",
 		right_ear="Loquac. Earring",
@@ -268,7 +268,7 @@ function init_gear_sets()
 		ammo="Hydrocera",
 		head="Befouled Crown",
 		body={ name="Amalric Doublet", augments={'MP+60','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
-		hands={ name="Helios Gloves", augments={'Mag. Acc.+25','"Fast Cast"+3','Magic burst mdg.+7%',}},
+		hands={ name="Helios Gloves", augments={'Mag. Acc.+25','"Fast Cast"+3','Magic burst dmg.+7%',}},
 		legs="Arbatel Pants",
 		feet={ name="Medium's Sabots", augments={'MP+50','MND+10','"Conserve MP"+7','"Cure" potency +5%',}},
 		neck="Mizu. Kubikazari",
@@ -288,7 +288,7 @@ function init_gear_sets()
 		ammo="Hydrocera",
 		head="Befouled Crown",
 		body={ name="Amalric Doublet", augments={'MP+60','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
-		hands={ name="Helios Gloves", augments={'Mag. Acc.+25','"Fast Cast"+3','Magic burst mdg.+7%',}},
+		hands={ name="Helios Gloves", augments={'Mag. Acc.+25','"Fast Cast"+3','Magic burst dmg.+7%',}},
 		legs="Arbatel Pants",
 		feet={ name="Medium's Sabots", augments={'MP+50','MND+10','"Conserve MP"+7','"Cure" potency +5%',}},
 		neck="Satlada Necklace",
@@ -311,9 +311,9 @@ function init_gear_sets()
 		ammo="Hydrocera",
 		head="Pixie Hairpin +1",
 		body={ name="Amalric Doublet", augments={'MP+60','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
-		hands={ name="Helios Gloves", augments={'Mag. Acc.+25','"Fast Cast"+3','Magic burst mdg.+7%',}},
+		hands={ name="Helios Gloves", augments={'Mag. Acc.+25','"Fast Cast"+3','Magic burst dmg.+7%',}},
 		legs={ name="Pedagogy Pants", augments={'Enhances "Tabula Rasa" effect',}},
-		feet={ name="Merlinic Crackows", augments={'"Mag.Atk.Bns."+21','Magic burst mdg.+10%','VIT+4',}},
+		feet={ name="Merlinic Crackows", augments={'"Mag.Atk.Bns."+21','Magic burst dmg.+10%','VIT+4',}},
 		neck="Deceiver's Torque",
 		waist="Porous Rope",
 		left_ear="Barkarole Earring",
@@ -330,8 +330,8 @@ function init_gear_sets()
 		head="Pixie Hairpin +1",
 		body={ name="Amalric Doublet", augments={'MP+60','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
 		hands={ name="Amalric Gages", augments={'INT+10','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
-		legs={ name="Merlinic Shalwar", augments={'Mag. Acc.+11 "Mag.Atk.Bns."+11','Magic burst mdg.+7%','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
-		feet={ name="Merlinic Crackows", augments={'"Mag.Atk.Bns."+21','Magic burst mdg.+10%','VIT+4',}},
+		legs={ name="Merlinic Shalwar", augments={'Mag. Acc.+11 "Mag.Atk.Bns."+11','Magic burst dmg.+7%','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
+		feet={ name="Merlinic Crackows", augments={'"Mag.Atk.Bns."+21','Magic burst dmg.+10%','VIT+4',}},
 		neck="Deceiver's Torque",
 		waist="Yamabuki-no-Obi",
 		left_ear="Barkaro. Earring",
@@ -349,9 +349,9 @@ function init_gear_sets()
 		ammo="Hydrocera",
 		head="Pixie Hairpin +1",
 		body={ name="Amalric Doublet", augments={'MP+60','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
-		hands={ name="Helios Gloves", augments={'Mag. Acc.+25','"Fast Cast"+3','Magic burst mdg.+7%',}},
-		legs={ name="Merlinic Shalwar", augments={'Mag. Acc.+11 "Mag.Atk.Bns."+11','Magic burst mdg.+7%','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
-		feet={ name="Merlinic Crackows", augments={'"Mag.Atk.Bns."+21','Magic burst mdg.+10%','VIT+4',}},
+		hands={ name="Helios Gloves", augments={'Mag. Acc.+25','"Fast Cast"+3','Magic burst dmg.+7%',}},
+		legs={ name="Merlinic Shalwar", augments={'Mag. Acc.+11 "Mag.Atk.Bns."+11','Magic burst dmg.+7%','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
+		feet={ name="Merlinic Crackows", augments={'"Mag.Atk.Bns."+21','Magic burst dmg.+10%','VIT+4',}},
 		neck="Deceiver's Torque",
 		waist="Fucho-no-Obi",
 		left_ear="Barkaro. Earring",
@@ -369,9 +369,9 @@ function init_gear_sets()
 		ammo="Hydrocera",
 		head={ name="Merlinic Hood", augments={'Mag. Acc.+20 "Mag.Atk.Bns."+20','INT+3','Mag. Acc.+15','"Mag.Atk.Bns."+11',}},
 		body={ name="Amalric Doublet", augments={'MP+60','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
-		hands={ name="Helios Gloves", augments={'Mag. Acc.+25','"Fast Cast"+3','Magic burst mdg.+7%',}},
-		legs={ name="Merlinic Shalwar", augments={'Mag. Acc.+11 "Mag.Atk.Bns."+11','Magic burst mdg.+7%','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
-		feet={ name="Merlinic Crackows", augments={'"Mag.Atk.Bns."+21','Magic burst mdg.+10%','VIT+4',}},
+		hands={ name="Helios Gloves", augments={'Mag. Acc.+25','"Fast Cast"+3','Magic burst dmg.+7%',}},
+		legs={ name="Merlinic Shalwar", augments={'Mag. Acc.+11 "Mag.Atk.Bns."+11','Magic burst dmg.+7%','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
+		feet={ name="Merlinic Crackows", augments={'"Mag.Atk.Bns."+21','Magic burst dmg.+10%','VIT+4',}},
 		neck="Sanctity Necklace",
 		waist="Porous Rope",
 		left_ear="Barkarole Earring",
@@ -390,8 +390,8 @@ function init_gear_sets()
 		head={ name="Merlinic Hood", augments={'Mag. Acc.+20 "Mag.Atk.Bns."+20','INT+3','Mag. Acc.+15','"Mag.Atk.Bns."+11',}},
 		body="Gyve Doublet",
 		hands={ name="Amalric Gages", augments={'INT+10','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
-		legs={ name="Merlinic Shalwar", augments={'Mag. Acc.+11 "Mag.Atk.Bns."+11','Magic burst mdg.+7%','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
-		feet={ name="Merlinic Crackows", augments={'"Mag.Atk.Bns."+21','Magic burst mdg.+10%','VIT+4',}},
+		legs={ name="Merlinic Shalwar", augments={'Mag. Acc.+11 "Mag.Atk.Bns."+11','Magic burst dmg.+7%','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
+		feet={ name="Merlinic Crackows", augments={'"Mag.Atk.Bns."+21','Magic burst dmg.+10%','VIT+4',}},
 		neck="Sanctity Necklace",
 		waist="Yamabuki-no-Obi",
 		left_ear="Barkaro. Earring",
@@ -415,8 +415,8 @@ function init_gear_sets()
 		head={ name="Merlinic Hood", augments={'Mag. Acc.+20 "Mag.Atk.Bns."+20','INT+3','Mag. Acc.+15','"Mag.Atk.Bns."+11',}},
 		body={ name="Amalric Doublet", augments={'MP+60','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
 		hands={ name="Amalric Gages", augments={'INT+10','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
-		legs={ name="Merlinic Shalwar", augments={'Mag. Acc.+11 "Mag.Atk.Bns."+11','Magic burst mdg.+7%','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
-		feet={ name="Merlinic Crackows", augments={'"Mag.Atk.Bns."+21','Magic burst mdg.+10%','VIT+4',}},
+		legs={ name="Merlinic Shalwar", augments={'Mag. Acc.+11 "Mag.Atk.Bns."+11','Magic burst dmg.+7%','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
+		feet={ name="Merlinic Crackows", augments={'"Mag.Atk.Bns."+21','Magic burst dmg.+10%','VIT+4',}},
 		neck="Sanctity Necklace",
 		waist="Yamabuki-no-Obi",
 		left_ear="Barkaro. Earring",
@@ -433,8 +433,8 @@ function init_gear_sets()
 		head={ name="Merlinic Hood", augments={'Mag. Acc.+20 "Mag.Atk.Bns."+20','INT+3','Mag. Acc.+15','"Mag.Atk.Bns."+11',}},
 		body={ name="Amalric Doublet", augments={'MP+60','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
 		hands={ name="Amalric Gages", augments={'INT+10','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
-		legs={ name="Merlinic Shalwar", augments={'Mag. Acc.+11 "Mag.Atk.Bns."+11','Magic burst mdg.+7%','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
-		feet={ name="Merlinic Crackows", augments={'"Mag.Atk.Bns."+21','Magic burst mdg.+10%','VIT+4',}},
+		legs={ name="Merlinic Shalwar", augments={'Mag. Acc.+11 "Mag.Atk.Bns."+11','Magic burst dmg.+7%','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
+		feet={ name="Merlinic Crackows", augments={'"Mag.Atk.Bns."+21','Magic burst dmg.+10%','VIT+4',}},
 		neck="Sanctity Necklace",
 		waist="Porous Rope",
 		left_ear="Barkaro. Earring",
@@ -452,11 +452,11 @@ function init_gear_sets()
 		main={ name="Akademos", augments={'INT+15','"Mag.Atk.Bns."+15','Mag. Acc.+15',}},
 		sub="Niobid Strap",
 		ammo="Hydrocera",
-		head={ name="Merlinic Hood", augments={'"Mag.Atk.Bns."+25','Magic burst mdg.+10%',}},
+		head={ name="Merlinic Hood", augments={'"Mag.Atk.Bns."+25','Magic burst dmg.+10%',}},
 		body={ name="Amalric Doublet", augments={'MP+60','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
 		hands={ name="Amalric Gages", augments={'INT+10','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
-		legs={ name="Merlinic Shalwar", augments={'Mag. Acc.+11 "Mag.Atk.Bns."+11','Magic burst mdg.+7%','Mag. Acc.+15','"Mag.Atk.Bns."+15',}}, --need +10 burst
-		feet={ name="Merlinic Crackows", augments={'"Mag.Atk.Bns."+21','Magic burst mdg.+10%','VIT+4',}},
+		legs={ name="Merlinic Shalwar", augments={'Mag. Acc.+11 "Mag.Atk.Bns."+11','Magic burst dmg.+7%','Mag. Acc.+15','"Mag.Atk.Bns."+15',}}, --need +10 burst
+		feet={ name="Merlinic Crackows", augments={'"Mag.Atk.Bns."+21','Magic burst dmg.+10%','VIT+4',}},
 		neck="Mizukage-no-Kubikazari",
 		waist="Yamabuki-no-Obi",
 		left_ear="Barkaro. Earring",
@@ -1161,7 +1161,7 @@ end
 
 -- Gets the current number of available strategems based on the recast remaining
 -- and the level of the sch.
-function get_current_strategem_count()
+function get_current_strategem_count_OLD()
     -- returns recast in seconds.
     local allRecasts = windower.ffxi.get_ability_recasts()
 	
@@ -1173,6 +1173,42 @@ function get_current_strategem_count()
 
     local currentCharges = math.floor(maxStrategems - maxStrategems * stratsRecast / fullRechargeTime)
 	
+    return currentCharges
+end
+
+function get_current_strategem_count()
+    -- returns recast in seconds.
+    local allRecasts = windower.ffxi.get_ability_recasts()
+    local stratsRecast = allRecasts[231]
+	local StratagemChargeTimer = 240
+	local maxStrategems = 1
+	
+	if player.sub_job == 'SCH' and player.sub_job_level > 29 then
+		StratagemChargeTimer = 120
+	elseif player.main_job_level > 89 then
+		if player.job_points[(res.jobs[player.main_job_id].ens):lower()].jp_spent > 549 then
+			StratagemChargeTimer = 33
+		else
+			StratagemChargeTimer = 48
+		end
+	elseif player.main_job_level > 69 then
+		StratagemChargeTimer = 60
+	elseif player.main_job_level > 49 then
+		StratagemChargeTimer = 80
+	elseif player.main_job_level > 29 then
+		StratagemChargeTimer = 120
+	end
+	
+	if player.sub_job == 'SCH' then
+		if player.sub_job_level > 29 then
+			maxStrategems = 2
+		end
+	else
+		maxStrategems = math.floor((player.main_job_level + 10) / 20)
+	end
+
+
+    local currentCharges = math.floor(maxStrategems - (stratsRecast / StratagemChargeTimer))
     return currentCharges
 end
 

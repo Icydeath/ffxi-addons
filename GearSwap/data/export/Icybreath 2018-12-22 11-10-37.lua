@@ -1,0 +1,17 @@
+sets.exported={
+    main="Bolelabunga",
+    sub="Genbu's Shield",
+    range="Dunna",
+    head={ name="Merlinic Hood", augments={'Mag. Acc.+22','Magic burst dmg.+8%','CHR+10',}},
+    body="Artsieq Jubbah",
+    hands={ name="Merlinic Dastanas", augments={'Mag. Acc.+18 "Mag.Atk.Bns."+18','Magic burst dmg.+1%','Mag. Acc.+4','"Mag.Atk.Bns."+14',}},
+    legs="Gyve Trousers",
+    feet={ name="Merlinic Crackows", augments={'Mag. Acc.+18 "Mag.Atk.Bns."+18','"Occult Acumen"+8','"Mag.Atk.Bns."+12',}},
+    neck={ name="Jeweled Collar", augments={'"Fast Cast"+1','INT+2',}},
+    waist="Fucho-no-Obi",
+    left_ear="Zennaroi Earring",
+    right_ear="Loquac. Earring",
+    left_ring={ name="Dark Ring", augments={'Phys. dmg. taken -6%','Breath dmg. taken -3%',}},
+    right_ring={ name="Dark Ring", augments={'Phys. dmg. taken -5%','Magic dmg. taken -3%','Breath dmg. taken -4%',}},
+    back={ name="Lifestream Cape", augments={'Geomancy Skill +10','Indi. eff. dur. +12','Pet: Damage taken -2%',}},
+}
