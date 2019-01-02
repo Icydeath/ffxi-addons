@@ -1,0 +1,73 @@
+<?xml version="1.1" ?>
+<settings>
+    <global>
+        <bg>
+            <alpha>255</alpha>
+            <blue>0</blue>
+            <green>0</green>
+            <red>0</red>
+            <visible>true</visible>
+        </bg>
+        <flags>
+            <bold>true</bold>
+            <bottom>false</bottom>
+            <draggable>true</draggable>
+            <italic>false</italic>
+            <right>false</right>
+        </flags>
+        <padding>0</padding>
+        <pos>
+            <x>400</x>
+            <y>500</y>
+        </pos>
+        <text>
+            <alpha>255</alpha>
+            <blue>255</blue>
+            <font>Courier New</font>
+            <fonts>
+
+            </fonts>
+            <green>255</green>
+            <red>255</red>
+            <size>15</size>
+            <stroke>
+                <alpha>255</alpha>
+                <blue>0</blue>
+                <green>0</green>
+                <red>0</red>
+                <width>0</width>
+            </stroke>
+        </text>
+        <textColors>
+            <Black>\cs( 0, 0, 0)</Black>
+            <Compression>\cs( 0, 0, 180)Compression</Compression>
+            <Darkness>\cs(153, 76, 0)Da\cs( 0, 102, 255)rk\cs( 0, 255, 255)ne\cs( 0, 0, 180)ss</Darkness>
+            <Detonation>\cs(102, 255, 102)Detonation</Detonation>
+            <Distortion>\cs( 0, 102, 255)Disto\cs( 0, 255, 255)rtion</Distortion>
+            <Fragmentation>\cs(102, 255, 102)Fragmen\cs(255, 0, 255)tation</Fragmentation>
+            <Fusion>\cs(255, 102, 102)Fus\cs(255, 255, 255)ion</Fusion>
+            <Gravitation>\cs(153, 76, 0)Gravi\cs( 0, 0, 180)tation</Gravitation>
+            <Gray>\cs(128, 128, 128)</Gray>
+            <Green>\cs( 0, 255, 0)</Green>
+            <Impaction>\cs(255, 0, 255)Impaction</Impaction>
+            <Induration>\cs( 0, 255, 255)Induration</Induration>
+            <Light>\cs(102, 255, 102)L\cs(255, 102, 102)i\cs(255, 0, 255)gh\cs(255, 255, 255)t</Light>
+            <Liquefaction>\cs(255, 102, 102)Liquefaction</Liquefaction>
+            <Orange>\cs(255, 165, 0)</Orange>
+            <Radiance>\cs(102, 255, 102)Ra\cs(255, 102, 102)di\cs(255, 0, 255)an\cs(255, 255, 255)ce</Radiance>
+            <Red>\cs(255, 0, 0)</Red>
+            <Reverberation>\cs( 0, 102, 255)Reverberation</Reverberation>
+            <Scission>\cs(153, 76, 0)Scission</Scission>
+            <Transfixion>\cs(255, 255, 255)Transfixion</Transfixion>
+            <Umbra>\cs(153, 76, 0)U\cs( 0, 102, 255)m\cs( 0, 255, 255)br\cs( 0, 0, 180)a</Umbra>
+            <White>\cs(222, 222, 222)</White>
+            <Yellow>\cs(255, 255, 0)</Yellow>
+        </textColors>
+    </global>
+    <icydeath>
+        <pos>
+            <x>300</x>
+            <y>136</y>
+        </pos>
+    </icydeath>
+</settings>

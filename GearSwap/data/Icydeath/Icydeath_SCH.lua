@@ -502,7 +502,7 @@ function init_gear_sets()
 		legs={ name="Lengo Pants", augments={'INT+10','Mag. Acc.+15','"Mag.Atk.Bns."+15','"Refresh"+1',}},
 		feet="Serpentes Sabots",
 		neck="Sanctity Necklace",
-		waist="Flume Belt +1",
+		waist="Isa Belt",
 		left_ear="Etiolation Earring",
 		right_ear="Infused Earring",
 		left_ring={ name="Dark Ring", augments={'Magic dmg. taken -5%','Phys. dmg. taken -5%',}},

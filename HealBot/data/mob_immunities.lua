@@ -1,39 +1,42 @@
 return {
-    ['Bedrock Crag'] = S{
+    ["Bedrock Crag"] = S{
         4,
         194
     },
-    ['Bozzetto Necronura'] = S{
+    ["Bozzetto Necronura"] = S{
         7
     },
-    ['Broadleaf Palm'] = S{
+    ["Broadleaf Palm"] = S{
         2,
         194
     },
-    ['Cloud of Darkness'] = S{
+    ["Cloud of Darkness"] = S{
         7
     },
-    ['Despot'] = S{
+    ["Despot"] = S{
         194
     },
-    ['Dhorme Khimaira'] = S{
+    ["Dhorme Khimaira"] = S{
         13
     },
-    ['Dimensional Tether'] = S{
+    ["Dimensional Tether"] = S{
         194
     },
-    ['Gnarled Rampart'] = S{
+    ["Gnarled Rampart"] = S{
         194
     },
-    ['Knotted Root'] = S{
+    ["King Behemoth"] = S{
+        7
+    },
+    ["Knotted Root"] = S{
         194
     },
-    ['Sere Stump'] = S{
+    ["Sere Stump"] = S{
         194
     },
-    ['Wintry Cave'] = S{
+    ["Wintry Cave"] = S{
         5,
         13
     },
-    ['_comment'] = 'This file is automatically updated with buff IDs as immunities are discovered'
+    ["_comment"] = "This file is automatically updated with buff IDs as immunities are discovered"
 }

@@ -202,7 +202,7 @@ function get_sets()
 		range={ name="Dunna", augments={'MP+20','Mag. Acc.+10','"Fast Cast"+3',}},
 		head={ name="Merlinic Hood", augments={'Mag. Acc.+28','Magic burst dmg.+9%','"Mag.Atk.Bns."+10',}},
 		body="Azimuth Coat",
-		hands={ name="Merlinic Dastanas", augments={'Mag. Acc.+23 "Mag.Atk.Bns."+23','Magic burst dmg.+11%','Mag. Acc.+8','"Mag.Atk.Bns."+7',}},
+		hands="Amalric Gages",
 		legs={ name="Merlinic Shalwar", augments={'"Mag.Atk.Bns."+21','Magic burst dmg.+9%','Mag. Acc.+15',}},
 		feet={ name="Merlinic Crackows", augments={'Mag. Acc.+23','Magic burst dmg.+8%','MND+1','"Mag.Atk.Bns."+10',}},
 		neck="Mizu. Kubikazari",
@@ -215,6 +215,7 @@ function get_sets()
 	} 
     sets.midcast.Elemental.MB = set_combine(sets.midcast.Elemental, { -- For when MB mode is turned on --
 		left_ring="Mujin Band",
+		hands="Amalric Gages",
 	})		
     sets.midcast.Elemental.Weather = set_combine(sets.midcast.Elemental, { -- For normal nukes with weather on/appropriate day --
 		back="Twilight Cape",

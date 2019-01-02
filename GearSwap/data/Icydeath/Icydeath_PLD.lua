@@ -263,7 +263,7 @@ function init_gear_sets()
 		left_ear="Etiolation Earring",
 		right_ear="Infused Earring",
 		left_ring="Sheltered Ring",
-		right_ring="Paguroidea Ring",
+		right_ring="Defending Ring",
 		back="Weard Mantle",
 	}
 

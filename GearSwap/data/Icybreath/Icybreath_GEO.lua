@@ -171,7 +171,7 @@ function get_sets()
     sets.midcast.Enfeebling.INT = set_combine(sets.midcast.Enfeebling, {
 		-- For Blind/Bind who's Macc is enhanced by INT --
 		main="Eosuchus Club", -- MND +6
-		legs="Gyve Trousers", -- INT +35
+		legs={ name="Merlinic Shalwar", augments={'Mag. Acc.+18 "Mag.Atk.Bns."+18','Magic Damage +2','INT+12','Mag. Acc.+6','"Mag.Atk.Bns."+13',}},
 		neck="Mizu. Kubikazari", -- INT +4
 		right_ring="Dark Ring", -- INT +1
 	}) 
@@ -202,8 +202,8 @@ function get_sets()
 		ammo="Memoria Sachet",
 		head={ name="Merlinic Hood", augments={'Mag. Acc.+22','Magic burst dmg.+8%','CHR+10',}},
 		body="Azimuth Coat",
-		hands={ name="Merlinic Dastanas", augments={'Mag. Acc.+18 "Mag.Atk.Bns."+18','Magic burst dmg.+1%','Mag. Acc.+4','"Mag.Atk.Bns."+14',}},
-		legs="Gyve Trousers",
+		hands={ name="Amalric Gages", augments={'INT+10','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
+		legs={ name="Merlinic Shalwar", augments={'Mag. Acc.+18 "Mag.Atk.Bns."+18','Magic Damage +2','INT+12','Mag. Acc.+6','"Mag.Atk.Bns."+13',}},
 		feet={ name="Merlinic Crackows", augments={'Mag. Acc.+18 "Mag.Atk.Bns."+18','"Occult Acumen"+8','"Mag.Atk.Bns."+12',}},
 		neck="Eddy Necklace",
 		waist="Yamabuki-no-Obi",
@@ -216,9 +216,10 @@ function get_sets()
     sets.midcast.Elemental.MB = set_combine(sets.midcast.Elemental, { 
 		-- For when MB mode is turned on --
 		head={ name="Merlinic Hood", augments={'Mag. Acc.+22','Magic burst dmg.+8%','CHR+10',}}, -- MBD 8
-		hands={ name="Merlinic Dastanas", augments={'Mag. Acc.+18 "Mag.Atk.Bns."+18','Magic burst dmg.+7%','STR+5','Mag. Acc.+9','"Mag.Atk.Bns."+10',}}, -- MBD 7
+		hands={ name="Amalric Gages", augments={'INT+10','Mag. Acc.+15','"Mag.Atk.Bns."+15',}}, -- MBD II 5
+		legs={ name="Merlinic Shalwar", augments={'Mag. Acc.+8','Magic burst dmg.+7%','DEX+15','"Mag.Atk.Bns."+14',}}, -- MBD 7
 		feet={ name="Merlinic Crackows", augments={'Mag. Acc.+10 "Mag.Atk.Bns."+10','Magic burst dmg.+10%','CHR+5','Mag. Acc.+5','"Mag.Atk.Bns."+6',}}, -- MBD 10
-		neck="Mizu. Kubikazari", -- MBD II 5
+		neck="Mizu. Kubikazari", -- MBD 10
 		left_ring="Mujin Band", -- MBD II 5
 		right_ring="Locus Ring", -- MBD 5
 		back="Seshaw Cape", --MBD 5

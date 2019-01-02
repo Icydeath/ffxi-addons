@@ -78,7 +78,7 @@ function job_setup()
 	state.Currentqd = M{['description']='Current Quick Draw', 'Main', 'Alt'}
 	
 	-- Whether to use Luzaf's Ring
-	state.LuzafRing = M(false, "Luzaf's Ring")
+	state.LuzafRing = M(true, "Luzaf's Ring")
 	-- Whether a warning has been given for low ammo
 	state.warned = M(false)
 
@@ -102,6 +102,7 @@ function user_setup()
 	state.WeaponLock = M(false, 'Weapon Lock')	
 	state.CP = M(false, "Capacity Points Mode")
 
+	gear.PRCape = "Camulus's Mantle"
 	gear.RAbullet = "Adlivun Bullet"
 	gear.WSbullet = "Eminent Bullet"
 	gear.MAbullet = "Orichalc. Bullet"

@@ -1,6 +1,3 @@
--------------------------------------------------------------------------------------------------------------------
--- Setup functions for this job.  Generally should not be modified.
--------------------------------------------------------------------------------------------------------------------
 -- City areas for town gear and behavior.
 areas = {}
 areas.Cities = S{
@@ -31,6 +28,7 @@ areas.Cities = S{
     "Kazham"
 }
 
+include('Arcon-Recasts.lua')
 
 -- Initialization function for this job file.
 function get_sets()
@@ -39,7 +37,6 @@ function get_sets()
     -- Load and initialize the include file.
     include('Mote-Include.lua')
 end
-
 
 -- Setup vars that are user-independent.  state.Buff vars initialized here will automatically be tracked.
 function job_setup()
@@ -60,19 +57,82 @@ function user_setup()
     state.HybridMode:options('Normal', 'PDT', 'Reraise')
     state.WeaponskillMode:options('Normal', 'Acc', 'Mod')
     state.PhysicalDefenseMode:options('PDT', 'Reraise')
-
+	
+	state.CP = M(false, "Capacity Points Mode")
+	
+	state.FullAuto = M{['description'] = 'Full Auto(default: Off)'}
+	state.FullAuto:options('Off', 'On')
+	
+	state.AutoStance = M{['description'] = 'Auto Hasso/Seigan(default: Hasso)'}
+	state.AutoStance:options('Hasso', 'Seigan')
+	
+	state.AutoWS = M{['description'] = 'Auto WS(default: Off)'}
+	state.AutoWS:options('Off', 'On')
+	
+	state.WSHP = M{['description'] = 'WS when HP is greater than(default: 0)'}
+	state.WSHP:options(0, 10, 20, 30, 40, 50)
+	
+	state.AutoWSName = M{['description'] = 'Set Weapon Skill (default: Tachi: Fudo)'}
+	state.AutoWSName:options('Tachi: Fudo', 'Tachi: Shoha', 'Tachi: Rana')
+	
     update_combat_form()
-
+	
+	-- Map for auto activation of Berserk/Warcry based
+    -- on Weaponskills listed
+    berserk_warcry_automation = S{'Tachi: Fudo', 'Tachi: Shoha', 'Tachi: Rana'}
+	
 	windower.register_event('tp change', function(new, old)
-		if not areas.Cities:contains(world.area)
-			and player.status == 'Engaged'
-			and not buffactive['Hasso'] 
-			and not buffactive['Seigan']
-			and not buffactive['Invisible'] then
-				send_command('Hasso')
-				return true
+		if state.FullAuto.value == 'On' then
+			full_auto()
+			return true
+			
+		elseif not midaction() 
+		  and not areas.Cities:contains(world.area) 
+		  and not buffactive['amnesia']  
+		  and player.status == 'Engaged' then
+		  
+			if not buffactive['Hasso'] 
+			  and not buffactive['Seigan'] then
+				send_command(state.AutoStance.value)
+				
+			elseif buffactive['Seigan'] 
+		      and player.hpp < 60
+			  and not buffactive['Third Eye'] 
+			  and check_recasts(j('Third Eye')) then
+				send_command('Third Eye')
+				
+			elseif state.AutoWS.value == 'On' then
+			  if player.target.distance ~= nil and player.tp > 999 then
+			    if player.target.distance < 6 then send_command(state.AutoWSName.value) end
+			  end
+			end
+			
+			return true
+		end
+	end)
+
+	windower.register_event('time change', function(time)
+		if player.tp == 3000 then
+			if state.FullAuto.value == 'On' then
+				full_auto()
+				
+			elseif not midaction() 
+			  and not areas.Cities:contains(world.area) 
+			  and not buffactive['amnesia'] 
+			  and player.status == 'Engaged' then 
+			  
+			  if not buffactive['Hasso'] and not buffactive['Seigan'] then
+				send_command(state.AutoStance.value)
+			  elseif state.AutoWS.value == 'On' then
+			    if player.target.distance ~= nil and player.tp > 999 then
+			      if player.target.distance < 6 then send_command(state.AutoWSName.value) end
+			    end
+			  end
+			end
 		end
 	end)	
+	
+	set_lockstyle('1')
 end
 
 
@@ -88,12 +148,13 @@ function init_gear_sets()
     --------------------------------------
     -- Start defining the sets
     --------------------------------------
-    
+    sets.CP = {back="Mecisto. Mantle"}
+	
     -- Precast Sets
     -- Precast sets to enhance JAs
-    sets.precast.JA.Meditate = {} --head="Myochin Kabuto",hands="Sakonji Kote"
+    sets.precast.JA.Meditate = {head="Myochin Kabuto", hands="Sakonji Kote +1", back="Smertrios's Mantle"} --,hands="Sakonji Kote"
     sets.precast.JA['Warding Circle'] = {} --head="Myochin Kabuto"
-    sets.precast.JA['Blade Bash'] = {} --hands="Sakonji Kote"
+    sets.precast.JA['Blade Bash'] = {hands="Sakonji Kote +1"} 
 
     -- Waltz set (chr and vit)
     sets.precast.Waltz = {}
@@ -107,16 +168,16 @@ function init_gear_sets()
     sets.precast.WS = {
 		head={ name="Valorous Mask", augments={'Accuracy+29','Weapon skill damage +1%','VIT+7','Attack+15',}},
 		body={ name="Found. Breastplate", augments={'Accuracy+14','Mag. Acc.+13','Attack+14','"Mag.Atk.Bns."+14',}},
-		hands={ name="Valorous Mitts", augments={'Accuracy+25','"Dbl.Atk."+1','STR+6','Attack+8',}},
+		hands={ name="Valorous Mitts", augments={'Accuracy+23 Attack+23','Weapon Skill Acc.+1','Accuracy+11','Attack+12',}},
 		legs={ name="Ryuo Hakama", augments={'Accuracy+20','"Store TP"+4','Phys. dmg. taken -3',}},
-		feet={ name="Valorous Greaves", augments={'Accuracy+30','"Dbl.Atk."+1','DEX+1','Attack+7',}},
+		feet={ name="Valorous Greaves", augments={'Weapon skill damage +3%','STR+5','Accuracy+15','Attack+14',}},
 		neck="Fotia Gorget",
 		waist="Fotia Belt",
 		left_ear="Ishvara Earring",
 		right_ear={ name="Moonshade Earring", augments={'"Mag.Atk.Bns."+4','TP Bonus +250',}},
 		left_ring="Petrov Ring",
-		right_ring="Cacoethic Ring +1",
-		back={ name="Takaha Mantle", augments={'STR+4','"Zanshin"+2','"Store TP"+1',}},
+		right_ring="Apate Ring",
+		back="Smertrios's Mantle",
 	}
     sets.precast.WS.Acc = set_combine(sets.precast.WS, {})
 
@@ -199,12 +260,12 @@ function init_gear_sets()
     
     -- Normal melee group
     sets.engaged = {
-		main={ name="Himetsuruichimonji", augments={'STR+10','Accuracy+10','Attack+10','Quadruple Attack +3',}},
+		main="Kurikaranotachi",
 		sub="Bloodrain Strap",
 		ammo="Ginsen",
 		head={ name="Valorous Mask", augments={'Accuracy+16 Attack+16','"Store TP"+6','AGI+4','Accuracy+7','Attack+2',}},
 		body={ name="Found. Breastplate", augments={'Accuracy+14','Mag. Acc.+13','Attack+14','"Mag.Atk.Bns."+14',}},
-		hands={ name="Valorous Mitts", augments={'Accuracy+25','"Dbl.Atk."+1','STR+6','Attack+8',}},
+		hands={ name="Valorous Mitts", augments={'Accuracy+23 Attack+23','Weapon Skill Acc.+1','Accuracy+11','Attack+12',}},
 		legs={ name="Ryuo Hakama", augments={'Accuracy+20','"Store TP"+4','Phys. dmg. taken -3',}},
 		feet={ name="Valorous Greaves", augments={'Accuracy+30','"Dbl.Atk."+1','DEX+1','Attack+7',}},
 		neck="Lissome Necklace",
@@ -213,21 +274,21 @@ function init_gear_sets()
 		right_ear="Cessance Earring",
 		left_ring="Petrov Ring",
 		right_ring="Rajas Ring",
-		back={ name="Takaha Mantle", augments={'STR+4','"Zanshin"+2','"Store TP"+1',}},
+		back="Smertrios's Mantle",
 	}
-    sets.engaged.Acc = {}
-    sets.engaged.PDT = {}
-    sets.engaged.Acc.PDT = {}
-    sets.engaged.Reraise = {}
-    sets.engaged.Acc.Reraise = {}
+    sets.engaged.Acc = set_combine(sets.engaged, {})
+    sets.engaged.PDT = set_combine(sets.engaged, {})
+    sets.engaged.Acc.PDT = set_combine(sets.engaged, {})
+    sets.engaged.Reraise = set_combine(sets.engaged, {})
+    sets.engaged.Acc.Reraise = set_combine(sets.engaged, {})
         
     -- Melee sets for in Adoulin, which has an extra 10 Save TP for weaponskills.
-    sets.engaged.Adoulin = {}
-    sets.engaged.Adoulin.Acc = {}
-    sets.engaged.Adoulin.PDT = {}
-    sets.engaged.Adoulin.Acc.PDT = {}
-    sets.engaged.Adoulin.Reraise = {}
-    sets.engaged.Adoulin.Acc.Reraise = {}
+    sets.engaged.Adoulin = set_combine(sets.engaged, {})
+    sets.engaged.Adoulin.Acc = set_combine(sets.engaged, {})
+    sets.engaged.Adoulin.PDT = set_combine(sets.engaged, {})
+    sets.engaged.Adoulin.Acc.PDT = set_combine(sets.engaged, {})
+    sets.engaged.Adoulin.Reraise = set_combine(sets.engaged, {})
+    sets.engaged.Adoulin.Acc.Reraise = set_combine(sets.engaged, {})
 
 
     sets.buff.Sekkanoki = {} --hands="Unkai Kote +2"
@@ -250,6 +311,22 @@ function job_pretarget(spell, action, spellMap, eventArgs)
                 eventArgs.cancel = true
             end
         end
+    end
+end
+
+-- Set eventArgs.handled to true if we don't want any automatic gear equipping to be done.
+-- Set eventArgs.useMidcastGear to true if we want midcast gear equipped on precast.
+function job_precast(spell, action, spellMap, eventArgs)
+	-- Automates Aggressor/Berserk/Warcry for Warrior sub job
+    if (state.FullAuto.value == 'On' or state.AutoWS.value == 'On')
+	  and berserk_warcry_automation:contains(spell.name)
+	  and player.status == 'Engaged'
+	  and player.sub_job == 'WAR'
+	  and check_recasts(j('Aggressor'))
+	  and not check_buffs('Amnesia', 'Berserk', 'Obliviscence', 'Paralysis') then
+		windower.send_command('aggressor; wait 1; berserk; wait 1; warcry; wait 1;'..spell.name..' '..spell.target.raw)
+		cancel_spell()
+		return
     end
 end
 
@@ -283,6 +360,16 @@ end
 -------------------------------------------------------------------------------------------------------------------
 -- User code that supplements standard library decisions.
 -------------------------------------------------------------------------------------------------------------------
+-- Modify the default idle set after it was constructed.
+function customize_idle_set(idleSet)
+	if state.CP.current == 'on' then
+		equip(sets.CP)
+		disable('back')
+	else
+		enable('back')
+	end
+	return idleSet
+end
 
 -- Called by the 'update' self-command, for common needs.
 -- Set eventArgs.handled to true if we don't want automatic equipping of gear.
@@ -296,6 +383,46 @@ function display_current_job_state(eventArgs)
 end
 
 
+-- /con gs c toggle AutoMode
+-- This method trys to utilize all of SAMs job abilities before using weapon skills.
+-- Gets called during windowers event 'tp change'
+function full_auto()
+	if not midaction() then
+	  if not areas.Cities:contains(world.area) and not buffactive['amnesia'] and player.status == 'Engaged' then
+	  
+	    if not has_any_buff_of(S{'Hasso', 'Seigan'}) then --not buffactive['Hasso'] and not buffactive['Seigan'] then
+		  send_command(state.AutoStance.value)
+		
+		elseif buffactive['Seigan'] 
+		  and player.hpp < 60
+		  and not buffactive['Third Eye'] 
+		  and check_recasts(j('Third Eye')) then
+		    send_command('Third Eye')
+		
+		elseif player.target.distance ~= nil and player.target.hpp ~= nil then
+		  if player.target.distance < 6 and player.target.hpp > state.WSHP.value then
+			if player.tp > 999 then
+			  if player.tp > 1500 and check_recasts(j('Sekkanoki')) then
+				send_command('Sekkanoki') -- limits weapon skill to 1000tp
+			  elseif player.tp < 2000 and check_recasts(j('Hagakure')) then 
+				send_command('Hagakure') -- 1000 TP Bonus & 400 Save TP
+			  else
+				send_command(state.AutoWSName.value) -- Default = Tachi: Fudo
+			  end
+			else --if player.tp < 999 then
+			  if check_recasts(j('Meditate')) then
+				send_command('Meditate') -- Regain
+			  elseif check_recasts(j('Konozen-ittai')) then
+				send_command('Konozen-ittai') -- readies target of skillchain
+			  end
+			end
+	      end
+		end
+		
+	  end
+	  
+	end -- end of not midaction()
+end -- end of function
 -------------------------------------------------------------------------------------------------------------------
 -- Utility functions specific to this job.
 -------------------------------------------------------------------------------------------------------------------
@@ -322,4 +449,8 @@ function select_default_macro_book()
     else
         set_macro_page(1, 11)
     end
+end
+
+function set_lockstyle(num)
+	send_command('wait 2; input /lockstyleset '..num)
 end
