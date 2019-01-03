@@ -55,6 +55,23 @@ _List of custom addons. Some have been modified by me to suit my own needs, full
 
 **unm** by [Darkdoom]()
 
+**MagicAssistant** by [Valok] -Automated magic bursting script
+  //lua load MagicAssistant
+  Syntax: maa nap [spell/helix/ga/ja/ra/nin] [tier]
+  Example for auto magic bursting with tier 5 spells
+	//maa nap spell 5
+
+  There is a small popup window you can drag and move around to a spot where you want it.
+	//maa example
+  then click and drag the box where you want it.
+
+  Sends a command to Gearswap that you can use to instruct Gearswap to perform a certain action, such as equipping magic burst gear
+  Examples:
+	A Fusion skillchain will send:  MAABurst LightFire
+	A Darkness skillchain will send: MAABurst DarkEarthWaterIce
+	A Scission skillchain will sent: MAABurst Earth
+
+	
 Most addons include a readme file if you need further information, otherwise you can skim the addons file to get an idea of how it works.
 
 I will try to keep this list updated, but no promises :smiley:
