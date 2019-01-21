@@ -1,0 +1,921 @@
+--[[ Elidyr : Template Library ]]--
+
+-- All main settings for file located here. Initiates all key bind functions, and set default variables.
+function LoadSettings()
+    
+    -- **Keybind Settings** ^(Control) | !(Alt) | @(Windows Key)
+    
+    -- (Job Specific Key Binds)
+    send_command('bind @f9 gs c _modeIMPACT')    -- Toggle Impact mode on, and off.
+    --send_command('bind @f10 gs c ')            -- Open Command slot
+    --send_command('bind @f11 gs c ')            -- Open Command slot
+    send_command('bind @f12 gs c _modeCHAIN')    -- Toggle Scholar Self-Skillchain mode. Use command in macro to use Self-Skillchain toggle. ( /console gs c SelfSC )
+    
+    -- Job specific key binds.
+    send_command('bind @- input /ja "Modus Veritas" <me>') 						-- Modus Veritas
+    send_command('bind @= input /ja "Sublimation" <me>') 						-- Sublimation
+    send_command('bind @0 input /ja "Accession" <me>; input /ja "Manifestation" <me>') 			-- Accession   / Manifestation                  (Force AOE)
+    send_command('bind @9 input /ja "Celerity" <me>; input /ja "Alacrity" <me>')			-- Celerity    / Alacrity			(Cast Reduction)
+    send_command('bind @8 input /ja "Penury" <me>; input /ja "Parsimony" <me>') 			-- Penury      / Parsimony		 	(Mana Reduction)
+    send_command('bind @7 input /ja "Rapture" <me>; input /ja "Ebullience" <me>') 			-- Rapture     / Ebullience			(Potency Increase)
+    send_command('bind @6 input /ja "Perpetuance" <me>; input /ja "Immanence" <me>') 			-- Perpetuance / Immanence			(Duration Increase / Skillchain)
+    send_command('bind @insert input /ja "Dark Arts" <me>')                                             -- Dark Arts
+    send_command('bind @delete input /ja "Light Arts" <me>')                                            -- Light Arts
+    send_command('bind @home input /ja "Addendum: Black" <me>') 					-- Addendum: Dark
+    send_command('bind @end input /ja "Addendum: White" <me>') 						-- Addendum: White
+    
+    send_command('bind @r input /ma "Reraise III" <me>')     						-- Reraise
+    send_command('bind @c input /ja "Convert" <me>;wait 1; input /ma "Cure IV" <me>') 			-- Convert
+    send_command('bind @p input /ja "Accession" <me>;wait 1; input /ma "Protect V" <me>;wait 7; input /ja "Accession" <me>;wait 1; input /ma "Shell V" <me>') -- Protectra / Shellra
+    
+    -- These are job-specific variables. Be careful adjusting as it may cause unwanted changes to your gearswap.
+    _modeIMPACTi = 1;   -- Variable: Toggle between Impact gear being on, and off.
+    _modeCHAINi  = 1;   -- Variable: Determines which skillchain to create.
+    _modeBURSTi  = 0;   -- Variable: Determine whether Magic Bursting is available. 
+    
+    -- ** List of all Job Ability sets. Will always equip this set when the assigned Job Ability is used. 
+    sets.JobAbility = {}
+        
+        sets.JobAbility['Sublimation'] 		= {main  = "Sriti", head  = "Acad. Mortar. +1", ear1 = "Savant's Earring", body = "Pedagogy Gown +1"}
+        sets.JobAbility['Altruism']     	= {head  = "Pedagogy Mortarboard +1"}
+        sets.JobAbility['Focalization']     	= {head  = "Pedagogy Mortarboard +1"}
+        sets.JobAbility['Enlightenment']	= {body  = "Pedagogy Gown +1"}
+        sets.JobAbility['Tranquility']          = {hands = "Pedagogy Bracers +1"}
+        sets.JobAbility['Equanimity']           = {hands = "Pedagogy Bracers +1"}
+        sets.JobAbility['Tabula Rasa']          = {legs  = "Pedagogy Pants +1"}
+        sets.JobAbility['Stormsurge'] 		= {feet  = "Peda. Loafers +1"}
+        sets.JobAbility['Celerity'] 		= {feet  = "Peda. Loafers +1"}
+        sets.JobAbility['Alacrity'] 		= {feet  = "Peda. Loafers +1"}
+        sets.JobAbility['Penury'] 		= {legs  = "Arbatel Pants +1"}
+        sets.JobAbility['Parsimony'] 		= {legs  = "Arbatel Pants +1"}
+        sets.JobAbility['Rapture']  		= {head  = "Arbatel Bonnet +1"}
+        sets.JobAbility['Ebullience'] 		= {head  = "Arbatel Bonnet +1"}
+        sets.JobAbility['Perpetuance'] 		= {hands = "Arbatel Bracers +1"}
+        sets.JobAbility['Immanence'] 		= {hands = "Arbatel Bracers +1"}
+    
+    -- ** List of all idle sets. Will always equip this set when engaged, and not performing any other actions.
+    sets.NA = {}
+    sets.NA.Mode = {'IDLE','PDT','MDT'}
+    
+        -- Idle Build
+        sets.NA.IDLE = 
+        {ammo  = "Homilary",
+         neck  = "Twilight Torque",
+         ear1  = "Ethereal Earring",
+         ear2  = "Loquac. Earring",
+         body  = "Hagondes Coat +1",
+         head  = "Gende. Caubeen +1",
+         hands = "Serpentes Cuffs",
+         ring1 = "Paguroidea Ring",
+         ring2 = "Sheltered Ring",
+         back  = "Umbra Cape",
+         waist = "Fucho-no-obi",
+         legs  = "Assid. Pants +1",
+         feet  = "Serpentes Sabots"}
+ 
+        -- Physical Damage Taken Build
+        sets.NA.PDT =
+        {ammo  = "Brigantia Pebble",
+         head  = "Gende. Caubeen +1",
+         neck  = "Twilight Torque",
+         ear1  = "Ethereal Earring",
+         ear2  = "Handler's Earring +1 +1",
+         body  = "Hagondes Coat +1",
+         hands = "Gende. Gages +1",
+         ring1 = "Defending Ring",
+         ring2 = "Dark Ring", augments={'Magic Dmg. Taken -4%','Phys. Dmg. Taken -4%'},
+         back  = "Umbra Cape",
+         waist = "Chaac Belt",
+         legs  = "Artsieq Hose",
+         feet  = "Gende. Galosh. +1"}
+         
+         -- Magic Damage Taken Build
+        sets.NA.MDT =
+        {ammo  = "Brigantia Pebble",
+         head  = "Gende. Caubeen +1",
+         neck  = "Twilight Torque",
+         ear1  = "Ethereal Earring",
+         ear2  = "Handler's Earring +1",
+         body  = "Hagondes Coat +1",
+         hands = "Gende. Gages +1",
+         ring1 = "Defending Ring",
+         ring2 = "Dark Ring", augments={'Magic Dmg. Taken -4%','Phys. Dmg. Taken -4%'},
+         back  = "Umbra Cape",
+         waist = "Chaac Belt",
+         legs  = "Artsieq Hose",
+         feet  = "Gende. Galosh. +1"}
+    
+    -- ** List of all melee sets. Will always equip this set when engaged, and not performing any other actions.
+    sets.TP = {}
+    sets.TP.Mode = {'TP1','TP2','TP3','PDT','MDT'}			
+    
+        -- Low Accuracy Build
+        sets.TP.TP1 =
+        {ammo  = "Homilary",
+         head  = "Hagondes Hat +1",
+         neck  = "Twilight Torque",
+         ear1  = "Ethereal Earring",
+         ear2  = "Loquac. Earring",
+         body  = "Hagondes Coat +1",
+         hands = "Serpentes Cuffs",
+         ring1 = "Paguroidea Ring",
+         ring2 = "Sheltered Ring",
+         back  = "Umbra Cape",
+         waist = "Fucho-no-obi",
+         legs  = "Assid. Pants +1",
+         feet  = "Serpentes Sabots"}
+    
+        -- Mid Accuracy Build
+        sets.TP.TP2 =
+        {}
+    
+        -- High Accuracy Build
+        sets.TP.TP3 =
+        {}
+    
+        -- Physical Damage Taken Build
+        sets.TP.PDT =
+        {ammo  = "Brigantia Pebble",
+         head  = "Gende. Caubeen +1",
+         neck  = "Twilight Torque",
+         ear1  = "Ethereal Earring",
+         ear2  = "Handler's Earring +1",
+         body  = "Hagondes Coat +1",
+         hands = "Gende. Gages +1",
+         ring1 = "Defending Ring",
+         ring2 = "Dark Ring", augments={'Magic Dmg. Taken -4%','Phys. Dmg. Taken -4%'},
+         back  = "Umbra Cape",
+         waist = "Chaac Belt",
+         legs  = "Artsieq Hose",
+         feet  = "Gende. Galosh. +1"}
+    
+        -- Magical Damage Taken Build
+        sets.TP.MDT =
+        {ammo  = "Vanir Battery",
+         head  = "Telchine Cap",
+         neck  = "Loricate Torque +1",
+         ear1  = "Flashward Earring",
+         ear2  = "Etiolation Earring",
+         body  = "Telchine Chasuble",
+         hands = "Telchine Gloves",
+         ring1 = "Defending Ring",
+         ring2 = "Dark Ring", augments={'Magic Dmg. Taken -4%','Phys. Dmg. Taken -4%'},
+         back  = "Hexerei Cape",
+         waist = "Slipor Sash",
+         legs  = "Telchine Braconi",
+         feet  = "Telchine Pigaches"}
+    
+    -- ** List of all midcasting sets. Will always midcast in this set when casting elemental magic.
+    sets.MID = {}
+    sets.MID.Mode = {'MAB','ACC','BURST','BURSTACC'}
+    
+        -- Magic Attack Bonus Build
+        sets.MID.MAB =
+        {ammo  = "Ghastly Tathlum +1",
+         head  = { name = "Merlinic Hood", augments={'Mag. Acc.+18 "Mag.Atk.Bns."+18','Magic burst mdg.+6%','INT+6','"Mag.Atk.Bns."+12',}},
+         neck  = "Eddy Necklace",
+         ear1  = "Barkaro. Earring",
+         ear2  = "Friomisi Earring",
+         body  = { name = "Amalric Doublet", augments={'MP+60','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
+         hands = { name = "Amalric Gages", augments={'INT+10','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
+         ring1 = "Fenrir Ring +1",
+         ring2 = "Fenrir Ring +1",
+         back  = "Lugh's Cape",
+         waist = "Refoccilation Stone",
+         legs  = { name = "Merlinic Shalwar", augments={'"Mag.Atk.Bns."+30','Mag. crit. hit dmg. +11%','CHR+3','Mag. Acc.+15',}},
+         feet  = "Helios Boots"}
+    
+        -- Magic Accuracy Build
+        sets.MID.ACC =
+        {ammo  = "Ghastly Tathlum +1",
+         head  = { name = "Merlinic Hood", augments={'Mag. Acc.+18 "Mag.Atk.Bns."+18','Magic burst mdg.+6%','INT+6','"Mag.Atk.Bns."+12',}},
+         neck  = "Eddy Necklace",
+         ear1  = "Barkaro. Earring",
+         ear2  = "Friomisi Earring",
+         body  = { name = "Amalric Doublet", augments={'MP+60','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
+         hands = { name = "Amalric Gages", augments={'INT+10','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
+         ring1 = "Fenrir Ring +1",
+         ring2 = "Fenrir Ring +1",
+         back  = "Lugh's Cape",
+         waist = "Refoccilation Stone",
+         legs  = { name = "Merlinic Shalwar", augments={'"Mag.Atk.Bns."+30','Mag. crit. hit dmg. +11%','CHR+3','Mag. Acc.+15',}},
+         feet  = "Helios Boots"}
+        
+        -- Magic Burst Build
+        sets.MID.BURST =
+        {ammo  = "Ghastly Tathlum +1",
+         head  = { name = "Merlinic Hood", augments={'Mag. Acc.+18 "Mag.Atk.Bns."+18','Magic burst mdg.+6%','INT+6','"Mag.Atk.Bns."+12',}},
+         neck  = "Mizu. Kubikazari",
+         ear1  = "Barkaro. Earring",
+         ear2  = "Friomisi Earring",
+         body  = { name = "Amalric Doublet", augments={'MP+60','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
+         hands = { name = "Amalric Gages", augments={'INT+10','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
+         ring1 = "Mujin Band",
+         ring2 = "Locus Ring",
+         back  = "Seshaw Cape",
+         waist = "Refoccilation Stone",
+         legs  = { name = "Merlinic Shalwar", augments={'"Mag.Atk.Bns."+30','Mag. crit. hit dmg. +11%','CHR+3','Mag. Acc.+15',}},
+         feet  = "Helios Boots"}
+        
+        -- Magic Burst Accuracy Build
+        sets.MID.BURSTACC =
+        {ammo  = "Ghastly Tathlum +1",
+         head  = { name = "Merlinic Hood", augments={'Mag. Acc.+18 "Mag.Atk.Bns."+18','Magic burst mdg.+6%','INT+6','"Mag.Atk.Bns."+12',}},
+         neck  = "Eddy Necklace",
+         ear1  = "Barkaro. Earring",
+         ear2  = "Friomisi Earring",
+         body  = { name = "Amalric Doublet", augments={'MP+60','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
+         hands = { name = "Amalric Gages", augments={'INT+10','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
+         ring1 = "Fenrir Ring +1",
+         ring2 = "Fenrir Ring +1",
+         back  = "Lugh's Cape",
+         waist = "Refoccilation Stone",
+         legs  = { name = "Merlinic Shalwar", augments={'"Mag.Atk.Bns."+30','Mag. crit. hit dmg. +11%','CHR+3','Mag. Acc.+15',}},
+         feet  = "Helios Boots"}
+    
+    -- ** List of all weaponskill sets. Will always weaponskill in default unless specific set is made.
+    sets.WSATT = {}
+        
+        sets.WSATT['Default'] =
+        {ammo  = "Ghastly Tathlum +1",
+         head  = { name = "Merlinic Hood", augments={'Mag. Acc.+18 "Mag.Atk.Bns."+18','Magic burst mdg.+6%','INT+6','"Mag.Atk.Bns."+12',}},
+         neck  = "Eddy Necklace",
+         ear1  = "Barkaro. Earring",
+         ear2  = "Friomisi Earring",
+         body  = { name = "Amalric Doublet", augments={'MP+60','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
+         hands = { name = "Amalric Gages", augments={'INT+10','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
+         ring1 = "Fenrir Ring +1",
+         ring2 = "Fenrir Ring +1",
+         back  = "Lugh's Cape",
+         waist = "Refoccilation Stone",
+         legs  = { name = "Merlinic Shalwar", augments={'"Mag.Atk.Bns."+30','Mag. crit. hit dmg. +11%','CHR+3','Mag. Acc.+15',}},
+         feet  = "Helios Boots"}
+        
+    sets.WSACC = {}
+        
+        sets.WSACC['Default'] =
+        {ammo  = "Ghastly Tathlum +1",
+         head  = { name = "Merlinic Hood", augments={'Mag. Acc.+18 "Mag.Atk.Bns."+18','Magic burst mdg.+6%','INT+6','"Mag.Atk.Bns."+12',}},
+         neck  = "Eddy Necklace",
+         ear1  = "Barkaro. Earring",
+         ear2  = "Friomisi Earring",
+         body  = { name = "Amalric Doublet", augments={'MP+60','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
+         hands = { name = "Amalric Gages", augments={'INT+10','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
+         ring1 = "Fenrir Ring +1",
+         ring2 = "Fenrir Ring +1",
+         back  = "Lugh's Cape",
+         waist = "Refoccilation Stone",
+         legs  = { name = "Merlinic Shalwar", augments={'"Mag.Atk.Bns."+30','Mag. crit. hit dmg. +11%','CHR+3','Mag. Acc.+15',}},
+         feet  = "Helios Boots"}
+    
+    -- ** List of all magic sets to be used during midcast. Must setup appropriately.
+    sets.Magic = {}
+    
+        sets.Magic.HealingMagic =
+        {head  = "Vanya Hood",
+         neck  = "Enquisitor's Chain",
+         body  = "Pedagogy Gown",
+         hands = "Peda. Bracers +1",
+         ring1 = "Ephedra Ring",
+         ring2 = "Sirona's Ring",
+         back  = "Pahtli Cape",
+         waist = "Bishop's Sash",
+         legs  = "Academic's Pants",
+         feet  = "Regal Pumps +1"}
+    
+        sets.Magic.HealingMagicMax =
+        {head  = "Vanya Hood",
+         neck  = "Colossus's Torque",
+         body  = "Gende. Bilaut +1",
+         hands = "Telchine Gloves",
+         ring1 = "Ephedra Ring",
+         ring2 = "Siron's Ring",
+         back  = "Twilight Cape",
+         waist = "Korin Obi",
+         legs  = "Academic's Pants",
+         feet  = "Regal Pumps +1"}
+        
+        sets.Magic.HealingMagicSelf =
+        {head  = "Vanya Hood",
+         neck  = "Enquisitor's Chain",
+         body  = "Pedagogy Gown",
+         hands = "Peda. Bracers +1",
+         ring1 = "Ephedra Ring",
+         ring2 = "Sirona's Ring",
+         back  = "Pahtli Cape",
+         waist = "Bishop's Sash",
+         legs  = "Academic's Pants",
+         feet  = "Regal Pumps +1"}
+    
+        sets.Magic.EnhancingMagic =
+        {ammo  = "Savant's Treatise",
+         head  = "Umuthi Hat",
+         ear1  = "Andoaa Earring",
+         hands = "Chironic Gloves",
+         waist = "Olympus Sash",
+         legs  = "Academi's Pants",
+         feet  = "Regal Pumps +1"}
+    
+        sets.Magic.EnfeeblingMagic =
+        {ammo  = "Hydrocera",
+         head  = "Merlinic Hood",
+         neck  = "Imbodla Necklace",
+         ear1  = "Barkaro. Earring",
+         ear2  = "Gwati Earring",
+         body  = "Vanya Robe",
+         hands = "Peda. Bracers +1",
+         ring1 = "Fenrir Ring +1",
+         ring2 = "Weather. Ring",
+         back  = "Lugh's Cape",
+         waist = "Refoccilation Stone",
+         legs  = "Psycloth Lappas",
+         feet  = "Medium's Sabots"}
+    
+        sets.Magic.DarkMagic =
+        {}
+    
+        -- ** List of all magic sets to be used during precast. Must setup appropriately.
+        sets.Magic.Precast =
+        {ammo  = "Incantor Stone",
+         head  = { name="Merlinic Hood", augments={'Mag. Acc.+13','"Fast Cast"+5','AGI+5','"Mag.Atk.Bns."+6',}},
+         neck  = "Orunmila's Torque",
+         ear2  = "Loquac. Earring",
+         body  = "Rosette Jaseran",
+         hands = { name="Gende. Gages +1", augments={'Phys. dmg. taken -3%',}},
+         ring1 = "Prolix Ring",
+         ring2 = "Weather. Ring",
+         back  = "Swith Cape +1",
+         legs  = { name="Psycloth Lappas", augments={'MP+80','Mag. Acc.+15','"Fast Cast"+7',}},
+         feet  = "Regal Pumps +1"}
+         
+        sets.Magic.PrecastGrimoire =
+        {feet  = "Acad. Loafers +1"}
+        
+        sets.Magic.PrecastStratagems =
+        {feet  = "Peda. Loafers +1"}
+    
+        sets.Magic.PreHealing =
+        {ammo  = "Incantor Stone",
+         head  = { name="Merlinic Hood", augments={'Mag. Acc.+13','"Fast Cast"+5','AGI+5','"Mag.Atk.Bns."+6',}},
+         neck  = "Orunmila's Torque",
+         ear2  = "Loquac. Earring",
+         body  = "Rosette Jaseran",
+         hands = { name="Gende. Gages +1", augments={'Phys. dmg. taken -3%',}},
+         ring1 = "Prolix Ring",
+         ring2 = "Weather. Ring",
+         back  = "Swith Cape +1",
+         legs  = { name="Psycloth Lappas", augments={'MP+80','Mag. Acc.+15','"Fast Cast"+7',}},
+         feet  = "Regal Pumps +1"}
+    
+        sets.Magic.PreEnfeebling =
+        {}
+    
+        sets.Magic.PreStoneskin =
+        {head  = "Umuthi Hat",
+         hands = "Carapacho Cuffs",
+         waist = "Siegel Sash"}
+    
+    -- ** List of all sets that target a specific action. Must be manually setup in functions below.
+    sets.Stoneskin =
+    {ammo  = "Savant's Treatise",
+     head  = "Umuthi Hat",
+     neck  = "Nodens Gorget",
+     ear1  = "Andoaa Earring",
+     ear2  = "Earthcry Earring",
+     body  = "Telchine Chasuble",
+     hands = "Chironic Gloves",
+     ring2 = "Siron's Ring",
+     back  = "Pahtli Cape",
+     waist = "Olympus Sash",
+     legs  = "Haven Hose",
+     feet  = "Regal Pumps +1"}
+     
+    sets.Regen =
+    {}
+    
+    sets.Aquaveil =
+    {head  = "Amalric Coif"}
+    
+    sets.Helix =
+    {ammo  = "Ghastly Tathlum +1",
+     head  = { name = "Merlinic Hood", augments={'Mag. Acc.+18 "Mag.Atk.Bns."+18','Magic burst mdg.+6%','INT+6','"Mag.Atk.Bns."+12',}},
+     neck  = "Saevus Pendant +1",
+     ear1  = "Barkaro. Earring",
+     ear2  = "Friomisi Earring",
+     body  = { name = "Amalric Doublet", augments={'MP+60','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
+     hands = { name = "Amalric Gages", augments={'INT+10','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
+     ring1 = "Shiva Ring",
+     ring2 = "Shiva Ring",
+     back  = "Lugh's Cape",
+     waist = "Refoccilation Stone",
+     legs  = { name = "Merlinic Shalwar", augments={'"Mag.Atk.Bns."+30','Mag. crit. hit dmg. +11%','CHR+3','Mag. Acc.+15',}},
+     feet  = "Helios Boots"}
+    
+    sets.Luminohelix =
+    {ammo  = "Ghastly Tathlum +1",
+     head  = { name = "Merlinic Hood", augments={'Mag. Acc.+18 "Mag.Atk.Bns."+18','Magic burst mdg.+6%','INT+6','"Mag.Atk.Bns."+12',}},
+     neck  = "Saevus Pendant +1",
+     ear1  = "Barkaro. Earring",
+     ear2  = "Friomisi Earring",
+     body  = { name = "Amalric Doublet", augments={'MP+60','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
+     hands = { name = "Amalric Gages", augments={'INT+10','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
+     ring1 = "Shiva Ring",
+     ring2 = "Weather. Ring",
+     back  = "Lugh's Cape",
+     waist = "Refoccilation Stone",
+     legs  = { name = "Merlinic Shalwar", augments={'"Mag.Atk.Bns."+30','Mag. crit. hit dmg. +11%','CHR+3','Mag. Acc.+15',}},
+     feet  = "Helios Boots"}
+    
+    sets.Cursna =
+    {}
+    
+    sets.Drain =
+    {ammo  = "Ghastly Tathlum +1",
+     head  = { name = "Merlinic Hood", augments={'Mag. Acc.+18 "Mag.Atk.Bns."+18','Magic burst mdg.+6%','INT+6','"Mag.Atk.Bns."+12',}},
+     neck  = "Saevus Pendant +1",
+     ear1  = "Barkaro. Earring",
+     ear2  = "Friomisi Earring",
+     body  = "Psycloth Vest",
+     hands = { name = "Amalric Gages", augments={'INT+10','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
+     ring1 = "Fenrir Ring +1",
+     ring2 = "Fenrir Ring +1",
+     back  = "Bookworm's Cape",
+     waist = "Refoccilation Stone",
+     legs  = { name = "Merlinic Shalwar", augments={'"Mag.Atk.Bns."+30','Mag. crit. hit dmg. +11%','CHR+3','Mag. Acc.+15',}},
+     feet  = "Helios Boots"}
+    
+    sets.Stun =
+    {}
+    
+    sets.Impact =
+    {body  = "Twilight Cloak"}
+    
+    sets.Klimaform =
+    {waist = "Hachirin-No-Obi",
+     feet  = "Arbatel Loafers +1"}
+    
+    sets.Capacity =
+    {back  = "Mecisto. Mantle"}
+    
+    sets.Crafting =
+    {ammo  = "",
+     head  = "",
+     neck  = "",
+     ear1  = "",
+     ear2  = "",
+     body  = "",
+     hands = "",
+     ring1 = "",
+     ring2 = "",
+     back  = "",
+     waist = "",
+     legs  = "",
+     feet  = ""}
+    
+    sets.Kite =
+    {feet  = "Herald's Gaiters"}
+    
+    sets.Treasure =
+    {waist = "Chaac Belt"}
+    
+    sets.MDT =
+    {ammo  = "",
+     head  = "",
+     neck  = "",
+     ear1  = "",
+     ear2  = "",
+     body  = "",
+     hands = "",
+     ring1 = "",
+     ring2 = "",
+     back  = "",
+     waist = "",
+     legs  = "",
+     feet  = ""}
+    
+    sets.MEV =
+    {ammo  = "Vanir Battery",
+     head  = "Telchine Cap",
+     neck  = "Warder's Charm +1",
+     ear1  = "Flashward Earring",
+     ear2  = "Eabani Earring",
+     body  = "Telchine Chasuble",
+     hands = "Telchine Gloves",
+     ring1 = "Purity Ring",
+     ring2 = "Vengeful Ring",
+     back  = "Felicitas Cape +1",
+     waist = "Slipor Sash",
+     legs  = "Telchine Braconi",
+     feet  = "Telchine Pigaches"}
+    
+    enable('main','sub','range','ammo','head','neck','ear1','ear2','body','hands','ring1','ring2','back','waist','legs','feet')
+    
+end
+
+function LocalPrecast(spell, act)
+    
+    -- Handles all logic if Job Ability is used.
+    if spell.type == 'JobAbility' then
+        
+        if sets.JobAbility[spell.english] then
+            equip(sets.JobAbility[spell.english])
+            
+        end
+        
+    end
+    
+    
+    -- Handles all logic if Ranged Attack is used.
+    if spell.name == 'Ranged' then
+        
+    end
+    
+    
+    -- Handles all logic if a Weaponskill is used.
+    if spell.type == 'WeaponSkill' then
+        
+        if _modeWSi == 1 then
+            
+            if sets.WSATT[spell.name] then
+                equip(sets.WSATT[spell.name])
+            
+            else
+                equip(sets.WSATT['Default'])
+                
+            end
+            
+        elseif _modeWSi == 2 then
+            
+            if sets.WSACC[spell.name] then
+                equip(sets.WSACC[spell.name])
+            
+            else
+                equip(sets.WSACC['Default'])
+                
+            end
+            
+        end
+        
+    end
+    
+    -- Handles all logic before a spell is cast.		
+    if spell.skill == "Divine Magic" then
+        equip(sets.Magic.Precast)
+        
+    elseif spell.skill == "Enhancing Magic" then        
+        
+        if string.find(spell.name:lower(), 'stoneskin') then
+            equip(sets.Magic.Precast, sets.Magic.PreStoneskin)
+            
+        else
+            equip(sets.Magic.Precast)
+            
+        end
+        
+    elseif spell.skill == "Elemental Magic" then
+        equip(sets.Magic.Precast)
+        
+    elseif spell.skill == "Singing Magic" then
+        equip(sets.Magic.Precast)
+        
+    elseif spell.skill == "Wind Magic" then
+        equip(sets.Magic.Precast)
+        
+    elseif spell.skill == "Healing Magic" then
+        equip(sets.Magic.Precast)
+        
+    elseif spell.skill == "Enfeebling Magic" then
+        equip(sets.Magic.Precast)
+        
+    elseif spell.skill == "Dark Magic" then
+        equip(sets.Magic.Precast)
+        
+    elseif spell.skill == "String Magic" then
+        equip(sets.Magic.Precast)
+        
+    elseif spell.skill == "Blue Magic" then
+        equip(sets.Magic.Precast)
+        
+    end
+    
+   if buffactive['Light Arts'] then
+        
+        if buffactive['Celerity'] then
+            equip(sets.Magic.PrecastStratagems)
+            
+        else
+            equip(sets.Magic.PrecastGrimoire)
+        
+        end
+        
+    elseif buffactive['Dark Arts'] then
+        
+        if buffactive['Alacrity'] then
+            equip(sets.Magic.PrecastStratagems)
+            
+        else
+            equip(sets.Magic.PrecastGrimoire)
+        
+        end
+                
+    end 
+       
+end
+
+function LocalMidcast(spell, act)
+    
+    -- Handles all logic if Job Ability is used.
+    if spell.type == 'JobAbility' then	
+        
+        if sets.JobAbility[spell.english] then
+            equip(sets.JobAbility[spell.english])
+            
+        end
+        
+    end
+    
+    
+    -- Handles all logic if Ranged Attack is used.
+    if spell.name == 'Ranged' then
+        
+    end
+    
+    
+    -- Handles all logic if a Weaponskill is used.
+    if spell.type == 'WeaponSkill' then
+        
+        if _modeWSi == 1 then
+            
+            if sets.WSATT[spell.name] then
+                equip(sets.WSATT[spell.name])
+            
+            else
+                equip(sets.WSATT['Default'])
+                
+            end
+            
+        elseif _modeWSi == 2 then
+            
+            if sets.WSACC[spell.name] then
+                equip(sets.WSACC[spell.name])
+            
+            else
+                equip(sets.WSACC['Default'])
+                
+            end
+            
+        end
+        
+    end
+    
+
+    -- Handles all logic during the casting of a spell.
+    if spell.skill == "Divine Magic" then
+        
+    elseif spell.skill == "Enhancing Magic" then
+        
+        if string.find(spell.name:lower(), 'stoneskin') then
+            equip(sets.Magic.EnhancingMagic, sets.Stoneskin)
+            
+        elseif string.find(spell.name:lower(), 'aquaveil') then
+            equip(sets.Magic.EnhancingMagic, sets.Aquaveil)
+            
+        elseif string.find(spell.name:lower(), 'regen') then
+            equip(sets.Magic.EnhancingMagic, sets.Regen)
+            
+        else
+            equip(sets.Magic.EnhancingMagic)
+            
+        end
+        
+    elseif spell.skill == "Elemental Magic" then
+        
+        if string.find(spell.name:lower(), 'helix') then
+                    
+            if string.find(spell.name:lower(), 'luminohelix') then
+                equip(sets.MID[sets.MID.Mode[_modeMIDi]], sets.Luminohelix)
+                        
+            else
+                equip(sets.MID[sets.MID.Mode[_modeMIDi]], sets.Helix)
+                        
+            end
+            
+            if buffactive['Klimaform'] then
+                
+                if spell.element == world.weather_element then
+                    equip(sets.Klimaform)
+                
+                end
+            
+            end
+                    
+        else            
+            equip(sets.MID[sets.MID.Mode[_modeMIDi]])
+            
+            if buffactive['Klimaform'] then
+                
+                if spell.element == world.weather_element then
+                    equip(sets.Klimaform)
+                
+                end
+            
+            end
+            
+        end
+        
+    elseif spell.skill == "Singing Magic" then
+        
+    elseif spell.skill == "Wind Magic" then
+        
+    elseif spell.skill == "Healing Magic" then
+        
+        if buffactive['Aurorastorm'] then
+            
+            if spell.target.type == 'SELF' then
+                equip(sets.Magic.HealingMagicSelf)
+                
+            else
+                equip(sets.Magic.HealingMagicMax)
+                
+            end
+            
+        else
+            equip(sets.Magic.HealingMagic)
+        
+        end
+        
+    elseif spell.skill == "Enfeebling Magic" then
+        equip(sets.Magic.EnfeeblingMagic)
+        
+    elseif spell.skill == "Dark Magic" then
+        
+        if string.find(spell.name:lower(), 'kaustra') then
+            equip(sets.MID[sets.MID.Mode[_modeMIDi]], sets.Kaustra)
+                    
+        elseif string.find(spell.name:lower(), 'drain') then
+            equip(sets.MID[sets.MID.Mode[_modeMIDi]], sets.Drain)
+            
+        elseif string.find(spell.name:lower(), 'aspir') then
+            equip(sets.MID[sets.MID.Mode[_modeMIDi]], sets.Aspir)
+            
+        elseif string.find(spell.name:lower(), 'bio') then
+            equip(sets.MID[sets.MID.Mode[_modeMIDi]], sets.Bio)
+            
+        end
+        
+        if buffactive['Klimaform'] then
+            
+            if spell.element == world.weather_element then
+                equip(sets.Klimaform)
+                
+            end
+        
+        end
+        
+    elseif spell.skill == "String Magic" then
+        
+    elseif spell.skill == "Blue Magic" then
+    
+    end
+    
+end
+
+function LocalAftercast(spell, act)
+    
+    -- Equip selected TP set if engaged on a mob.
+    if player.status == 'Engaged' then
+        equip(sets.TP[sets.TP.Mode[_modeTPi]])
+    
+    -- Not engaged then default back to Idle set.
+    else 
+        equip(sets.NA[sets.NA.Mode[_modeNAi]])
+    
+    end
+    
+    if _modeBURSTi == 1 then
+        equip(sets.MID.BURST)
+            
+        -- FOR DEBUG PURPOSES ONLY!
+        if _DEBUG == 1 and _modeBURSTi == 1 then
+            add_to_chat(1200, '<< Magic Burst Mode is now deactive. >>')
+        end
+            
+        --Reset magic burst window.
+        _modeBURSTi = 0
+            
+    end
+    
+end
+
+function LocalStatusChange(new, old)
+    
+end
+
+function LocalBuffChange(name, gain)
+    
+end
+
+function LocalPetChange(pet, gain)
+    
+end
+
+function LocalPetMidcast(spell)
+    
+end
+
+function LocalPetAftercast(spell)
+    
+end
+
+function LocalPetStatusChange(new, old)
+    
+end
+
+function LocalSelfCommand(command)
+    
+    --Toggle for locking into Impact casting mode.
+    if command == '_modeIMPACT' then
+        
+        -- Keeps track of variable.
+        if _modeIMPACTi < 2 then _modeIMPACTi = _modeIMPACTi + 1 else _modeIMPACTi = 1 end        
+        
+        if _modeIMPACTi == 1 then
+            add_to_chat(200, '<< Impact Mode Disabled >>')
+            enable('body','head')
+            
+            if player.status == 'Engaged' then
+                equip(sets.TP[sets.TP.Mode[_modeTPi]])
+            else 
+                equip(sets.NA[sets.NA.Mode[_modeNAi]])
+            end	
+            
+        elseif _modeIMPACTi == 2 then
+            
+            add_to_chat(200, '<< Impact Mode Enabled >>')
+            equip(sets.MID[sets.MID.Mode[_modeMIDi]], sets.Impact)
+            disable('body','head')
+            
+        end
+        
+    end
+    
+    --Toggle Scholar Self-Skillchain mode.
+    if command == '_modeCHAIN' then
+        
+        -- Keeps track of variable.
+        if _modeCHAINi < 4 then	_modeCHAINi = _modeCHAINi + 1 else _modeCHAINi = 1 end
+        
+        -- Fire / Light
+        if _modeCHAINi == 1 then
+            add_to_chat(200, '<< Fusion Skillchain Set >>')
+            
+            -- Water / Ice
+        elseif _modeCHAINi == 2 then
+            add_to_chat(200, '<< Distortion Skillchain Set >>')
+            
+            -- Wind / Thunder
+        elseif _modeCHAINi == 3 then
+            add_to_chat(200, '<< Fragmentation Skillchain Set >>')
+            
+            -- Earth / Dark
+        elseif _modeCHAINi == 4 then
+            add_to_chat(200, '<< Gravitation Skillchain Set >>')
+            
+        end
+        
+    end
+    
+    
+    
+    --Toggle Scholar Self-Skillchain mode.
+    if command == 'SelfSC' then
+	
+        -- Fire / Light		- _modeCHAINi = 1
+        if _modeCHAINi == 1 then
+            send_command('input /p ** Scholar: Creating Fusion Skillchain!; input /ja "Immanence" <me>;wait 1; input /ma "Fire" <t>;wait 4; input /ja "Immanence" <me>;wait 1; input /ma "Thunder" <t>;wait 4; input /p **[[ Fusion Created ]]**')
+            add_to_chat(200, '<< Magic Burst Mode is now active. >>')
+            _modeBURSTi = 1
+            
+            -- Water / Ice	- _modeCHAINi = 2
+        elseif _modeCHAINi == 2 then
+            send_command('input /p ** Scholar: Creating Distortion Skillchain!; input /ja "Immanence" <me>;wait 1; input /ma "Luminohelix" <t>;wait 6; input /ja "Immanence" <me>;wait 1; input /ma "Stone" <t>;wait 4; input /p **[[ Distortion Created ]]**')
+            add_to_chat(200, '<< Magic Burst Mode is now active. >>')
+            _modeBURSTi = 1
+            
+            -- Wind / Thunder	- _modeCHAINi = 3
+        elseif _modeCHAINi == 3 then
+            send_command('input /p ** Scholar: Creating Fragmentation Skillchain!; input /ja "Immanence" <me>;wait 1; input /ma "Blizzard" <t>;wait 4; input /ja "Immanence" <me>;wait 1; input /ma "Water" <t>;wait 4; input /p **[[ Fragmentation Created ]]**')
+            add_to_chat(200, '<< Magic Burst Mode is now active. >>')
+            _modeBURSTi = 1
+            
+            -- Earth / Dark 	- _modeCHAINi = 4
+        elseif _modeCHAINi == 4 then
+            send_command('input /p ** Scholar: Creating Gravitation Skillchain!; input /ja "Immanence" <me>;wait 1; input /ma "Aero" <t>;wait 4; input /ja "Immanence" <me>;wait 1; input /ma "Noctohelix" <t>;wait 4; input /p **[[ Gravitation Created ]]**')
+            add_to_chat(200, '<< Magic Burst Mode is now active. >>')
+            _modeBURSTi = 1
+            
+        end
+        
+    end
+    
+end

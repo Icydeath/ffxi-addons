@@ -1,0 +1,13 @@
+<?xml version="1.1" ?>
+<settings>
+    <global>
+        <blacklist />
+        <clear>true</clear>
+        <clearall>false</clearall>
+        <clearprogress>false</clearprogress>
+        <profiles>
+            <daily>726,16,4082,4084,883,3995,946,528,3009,3011,3046,903,904,12,3060,3775,860,322,943,953,829,3777,4083,3056</daily>
+            <default />
+        </profiles>
+    </global>
+</settings>

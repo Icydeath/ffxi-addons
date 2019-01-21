@@ -1,0 +1,18 @@
+<?xml version="1.1" ?>
+<settings>
+    <global>
+        <bad_B>0</bad_B>
+        <bad_G>0</bad_G>
+        <bad_R>255</bad_R>
+        <bg_alpha>255</bg_alpha>
+        <font_size>11</font_size>
+        <good_B>0</good_B>
+        <good_G>255</good_G>
+        <good_R>0</good_R>
+        <pos_x>0</pos_x>
+        <pos_y>0</pos_y>
+        <text_B>255</text_B>
+        <text_G>255</text_G>
+        <text_R>255</text_R>
+    </global>
+</settings>

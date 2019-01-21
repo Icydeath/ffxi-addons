@@ -1,0 +1,54 @@
+<?xml version="1.1" ?>
+<settings>
+    <global>
+        <gilImage>
+            <color>
+                <alpha>255</alpha>
+                <blue>255</blue>
+                <green>255</green>
+                <red>255</red>
+            </color>
+            <visible>true</visible>
+        </gilImage>
+        <gilText>
+            <bg>
+                <alpha>100</alpha>
+                <blue>0</blue>
+                <green>0</green>
+                <red>0</red>
+                <visible>false</visible>
+            </bg>
+            <flags>
+                <bold>false</bold>
+                <bottom>true</bottom>
+                <italic>true</italic>
+                <right>true</right>
+            </flags>
+            <pos>
+                <x>-1410</x>
+                <y>-90</y>
+            </pos>
+            <text>
+                <alpha>255</alpha>
+                <blue>250</blue>
+                <font>sans-serif</font>
+                <fonts>
+                    <1>Arial</1>
+                    <2>Trebuchet MS</2>
+                </fonts>
+                <green>252</green>
+                <red>253</red>
+                <size>9</size>
+                <stroke>
+                    <alpha>200</alpha>
+                    <blue>50</blue>
+                    <green>50</green>
+                    <red>50</red>
+                    <width>2</width>
+                </stroke>
+                <visible>true</visible>
+            </text>
+        </gilText>
+        <hideKey>70</hideKey>
+    </global>
+</settings>

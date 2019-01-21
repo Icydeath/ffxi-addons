@@ -1,0 +1,75 @@
+<?xml version="1.1" ?>
+<settings>
+    <!--
+        This file controls the settings for the Scoreboard plugin.
+        Settings in the <global> section apply to all characters
+        
+        The available settings are:
+        posX - x coordinate for position
+        posY - y coordinate for position
+        numPlayers - The maximum number of players to display damage for
+        bgTransparency - Transparency level for the background. 0-255 range
+    -->
+    <global>
+        <UpdateFrequency>0.5</UpdateFrequency>
+        <bgtransparency>200</bgtransparency>
+        <combinepets>true</combinepets>
+        <display>
+            <bg>
+                <alpha>200</alpha>
+                <blue>0</blue>
+                <green>0</green>
+                <red>0</red>
+                <visible>true</visible>
+            </bg>
+            <flags>
+                <bold>false</bold>
+                <bottom>false</bottom>
+                <draggable>true</draggable>
+                <italic>false</italic>
+                <right>false</right>
+            </flags>
+            <padding>0</padding>
+            <pos>
+                <x>500</x>
+                <y>100</y>
+            </pos>
+            <text>
+                <alpha>255</alpha>
+                <blue>255</blue>
+                <font>Courier New</font>
+                <fonts>
+                    <1>consolas</1>
+                    <2>courier new</2>
+                    <3>monospace</3>
+                </fonts>
+                <green>255</green>
+                <red>255</red>
+                <size>10</size>
+                <stroke>
+                    <alpha>255</alpha>
+                    <blue>0</blue>
+                    <green>0</green>
+                    <red>0</red>
+                    <width>0</width>
+                </stroke>
+            </text>
+        </display>
+        <numplayers>8</numplayers>
+        <posx>10</posx>
+        <posy>250</posy>
+        <resetfilters>true</resetfilters>
+        <sbcolor>204</sbcolor>
+        <showallidps>true</showallidps>
+        <showfellow>true</showfellow>
+        <visible>true</visible>
+    </global>
+    <icydeath>
+        <display>
+            <pos>
+                <x>1529</x>
+                <y>825</y>
+            </pos>
+        </display>
+    </icydeath>
+</settings>

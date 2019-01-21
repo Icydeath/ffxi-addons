@@ -1,1 +1,6 @@
 *.zip
+.gitattributes
+/UnityNPC/model/.gitignore
+.gitignore
+*.png
+*.jpg

@@ -1,0 +1,569 @@
+input \/\/tr drop add Cagebeast Blood
+wait .2
+input \/\/tr drop add Shadescale Femur
+wait .2
+input \/\/tr drop add Shadescale Talon
+wait .2
+input \/\/tr drop add Shadescale Heart
+wait .2
+input \/\/tr drop add Shadescale Skull
+wait .2
+input \/\/tr drop add Nightmare Roast
+wait .2
+input \/\/tr drop add Nightmare Loin
+wait .2
+input \/\/tr drop add Nightmare Chop
+wait .2
+input \/\/tr drop add Nightmare Shank
+wait .2
+input \/\/tr drop add Odorless Fungus
+wait .2
+input \/\/tr drop add Absorbent Moss
+wait .2
+input \/\/tr drop add Redolent Root
+wait .2
+input \/\/tr drop add Nightmare Log
+wait .2
+input \/\/tr drop add Nightmare Bud
+wait .2
+input \/\/tr drop add Nightmare Water
+wait .2
+input \/\/tr drop add Nightmare Shell
+wait .2
+input \/\/tr drop add Nightmare Blood
+wait .2
+input \/\/tr drop add Nightmare Shard
+wait .2
+input \/\/tr drop add Fiendish Tome (1)
+wait .2
+input \/\/tr drop add Fiendish Tome (2)
+wait .2
+input \/\/tr drop add Fiendish Tome (3)
+wait .2
+input \/\/tr drop add Fiendish Tome (4)
+wait .2
+input \/\/tr drop add Fiendish Tome (5)
+wait .2
+input \/\/tr drop add Fiendish Tome (6)
+wait .2
+input \/\/tr drop add Fiendish Tome (7)
+wait .2
+input \/\/tr drop add Fiendish Tome (8)
+wait .2
+input \/\/tr drop add Fiendish Tome (9)
+wait .2
+input \/\/tr drop add Fiendish Tome (10)
+wait .2
+input \/\/tr drop add Fiendish Tome (11)
+wait .2
+input \/\/tr drop add Fiendish Tome (12)
+wait .2
+input \/\/tr drop add Fiendish Tome (13)
+wait .2
+input \/\/tr drop add Fiendish Tome (14)
+wait .2
+input \/\/tr drop add Fiendish Tome (15)
+wait .2
+input \/\/tr drop add Fiendish Tome (16)
+wait .2
+input \/\/tr drop add Fiendish Tome (17)
+wait .2
+input \/\/tr drop add Fiendish Tome (18)
+wait .2
+input \/\/tr drop add Fiendish Tome (19)
+wait .2
+input \/\/tr drop add Fiendish Tome (20)
+wait .2
+input \/\/tr drop add Fiendish Tome (21)
+wait .2
+input \/\/tr drop add Fiendish Tome (22)
+wait .2
+input \/\/tr drop add Fiendish Tome (23)
+wait .2
+input \/\/tr drop add Fiendish Tome (24)
+wait .2
+input \/\/tr drop add Fiendish Tome (25)
+wait .2
+input \/\/tr drop add Fiendish Tome (26)
+wait .2
+input \/\/tr drop add Fiendish Tome (27)
+wait .2
+input \/\/tr drop add Fiendish Tome (28)
+wait .2
+input \/\/tr drop add Fiendish Tome (29)
+wait .2
+input \/\/tr drop add Fiendish Tome (30)
+wait .2
+input \/\/tr drop add Fiendish Tome II: Chapter 1
+wait .2
+input \/\/tr drop add Fiendish Tome II: Chapter 2
+wait .2
+input \/\/tr drop add Fiendish Tome II: Chapter 3
+wait .2
+input \/\/tr drop add Fiendish Tome II: Chapter 4
+wait .2
+input \/\/tr drop add Fiendish Tome II: Chapter 5
+wait .2
+input \/\/tr drop add Fiendish Tome II: Chapter 6
+wait .2
+input \/\/tr drop add Fiendish Tome II: Chapter 7
+wait .2
+input \/\/tr drop add Fiendish Tome II: Chapter 8
+wait .2
+input \/\/tr drop add Fiendish Tome II: Chapter 9
+wait .2
+input \/\/tr drop add Fiendish Tome II: Chapter 10
+wait .2
+input \/\/tr drop add Fiendish Tome II: Chapter 11
+wait .2
+input \/\/tr drop add Fiendish Tome II: Chapter 12
+wait .2
+input \/\/tr drop add Fiendish Tome II: Chapter 13
+wait .2
+input \/\/tr drop add Fiendish Tome II: Chapter 14
+wait .2
+input \/\/tr drop add Fiendish Tome II: Chapter 15
+wait .2
+input \/\/tr drop add Fiendish Tome II: Chapter 16
+wait .2
+input \/\/tr drop add Fiendish Tome II: Chapter 17
+wait .2
+input \/\/tr drop add Sorcerer's Coat
+wait .2
+input \/\/tr drop add Sorcerer's Gloves
+wait .2
+input \/\/tr drop add Sorcerer's Petasos
+wait .2
+input \/\/tr drop add Sorcerer's Sabots
+wait .2
+input \/\/tr drop add Sorcerer's Tonban
+wait .2
+input \/\/tr drop add Sorcerer's Belt
+wait .2
+input \/\/tr drop add Melee Crown
+wait .2
+input \/\/tr drop add Melee Cyclas
+wait .2
+input \/\/tr drop add Melee Gaiters
+wait .2
+input \/\/tr drop add Melee Gloves
+wait .2
+input \/\/tr drop add Melee Hose
+wait .2
+input \/\/tr drop add Melee Cape
+wait .2
+input \/\/tr drop add Duelist's Chapeau
+wait .2
+input \/\/tr drop add Duelist's Boots
+wait .2
+input \/\/tr drop add Duelist's Gloves
+wait .2
+input \/\/tr drop add Duelist's Tabard
+wait .2
+input \/\/tr drop add Duelist's Tights
+wait .2
+input \/\/tr drop add Duelist's Belt
+wait .2
+input \/\/tr drop add Assassin's Armlets
+wait .2
+input \/\/tr drop add Assassin's Bonnet
+wait .2
+input \/\/tr drop add Assassin's Culottes
+wait .2
+input \/\/tr drop add Assassin's Poulaines
+wait .2
+input \/\/tr drop add Assassin's Vest
+wait .2
+input \/\/tr drop add Assassin's Cape
+wait .2
+input \/\/tr drop add Warrior's Calligae
+wait .2
+input \/\/tr drop add Warrior's Cuisses
+wait .2
+input \/\/tr drop add Warrior's Lorica
+wait .2
+input \/\/tr drop add Warrior's Mask
+wait .2
+input \/\/tr drop add Warrior's Mufflers
+wait .2
+input \/\/tr drop add Warrior's Stone
+wait .2
+input \/\/tr drop add Cleric's Briault
+wait .2
+input \/\/tr drop add Cleric's Cap
+wait .2
+input \/\/tr drop add Cleric's Duckbills
+wait .2
+input \/\/tr drop add Cleric's Mitts
+wait .2
+input \/\/tr drop add Cleric's Pantaloons
+wait .2
+input \/\/tr drop add Cleric's Belt
+wait .2
+input \/\/tr drop add Bard's Cannions
+wait .2
+input \/\/tr drop add Bard's Cuffs
+wait .2
+input \/\/tr drop add Bard's Justaucorps
+wait .2
+input \/\/tr drop add Bard's Roundlet
+wait .2
+input \/\/tr drop add Bard's Slippers
+wait .2
+input \/\/tr drop add Bard's Cape
+wait .2
+input \/\/tr drop add Monster Gaiters
+wait .2
+input \/\/tr drop add Monster Gloves
+wait .2
+input \/\/tr drop add Monster Helm
+wait .2
+input \/\/tr drop add Monster Jackcoat
+wait .2
+input \/\/tr drop add Monster Trousers
+wait .2
+input \/\/tr drop add Monster Belt
+wait .2
+input \/\/tr drop add Abyss Burgeonet
+wait .2
+input \/\/tr drop add Abyss Cuirass
+wait .2
+input \/\/tr drop add Abyss Flanchard
+wait .2
+input \/\/tr drop add Abyss Gauntlets
+wait .2
+input \/\/tr drop add Abyss Sollerets
+wait .2
+input \/\/tr drop add Abyss Cape
+wait .2
+input \/\/tr drop add Wyrm Armet
+wait .2
+input \/\/tr drop add Wyrm Brais
+wait .2
+input \/\/tr drop add Wyrm Finger Gauntlets
+wait .2
+input \/\/tr drop add Wyrm Greaves
+wait .2
+input \/\/tr drop add Wyrm Mail
+wait .2
+input \/\/tr drop add Wyrm Belt
+wait .2
+input \/\/tr drop add Koga Chainmail
+wait .2
+input \/\/tr drop add Koga Hakama
+wait .2
+input \/\/tr drop add Koga Hatsuburi
+wait .2
+input \/\/tr drop add Koga Kyahan
+wait .2
+input \/\/tr drop add Koga Tekko
+wait .2
+input \/\/tr drop add Koga Sarashi
+wait .2
+input \/\/tr drop add Valor Breeches
+wait .2
+input \/\/tr drop add Valor Coronet
+wait .2
+input \/\/tr drop add Valor Gauntlets
+wait .2
+input \/\/tr drop add Valor Leggings
+wait .2
+input \/\/tr drop add Valor Surcoat
+wait .2
+input \/\/tr drop add Valor Cape
+wait .2
+input \/\/tr drop add Scout's Beret
+wait .2
+input \/\/tr drop add Scout's Braccae
+wait .2
+input \/\/tr drop add Scout's Bracers
+wait .2
+input \/\/tr drop add Scout's Jerkin
+wait .2
+input \/\/tr drop add Scout's Socks
+wait .2
+input \/\/tr drop add Scout's Belt
+wait .2
+input \/\/tr drop add Saotome Domaru
+wait .2
+input \/\/tr drop add Saotome Haidate
+wait .2
+input \/\/tr drop add Saotome Kabuto
+wait .2
+input \/\/tr drop add Saotome Kote
+wait .2
+input \/\/tr drop add Saotome Sune-Ate
+wait .2
+input \/\/tr drop add Saotome Koshi-Ate
+wait .2
+input \/\/tr drop add Summoner's Bracers
+wait .2
+input \/\/tr drop add Summoner's Doublet
+wait .2
+input \/\/tr drop add Summoner's Horn
+wait .2
+input \/\/tr drop add Summoner's Pigaches
+wait .2
+input \/\/tr drop add Summoner's Spats
+wait .2
+input \/\/tr drop add Summoner's Cape
+wait .2
+input \/\/tr drop add Mirage Keffiyeh
+wait .2
+input \/\/tr drop add Mirage Jubbah
+wait .2
+input \/\/tr drop add Mirage Shalwar
+wait .2
+input \/\/tr drop add Mirage Charuqs
+wait .2
+input \/\/tr drop add Mirage Bazubands
+wait .2
+input \/\/tr drop add Mirage Mantle
+wait .2
+input \/\/tr drop add Commodore Tricorne
+wait .2
+input \/\/tr drop add Commodore Frac
+wait .2
+input \/\/tr drop add Commodore Bottes
+wait .2
+input \/\/tr drop add Commodore Gants
+wait .2
+input \/\/tr drop add Commodore Trews
+wait .2
+input \/\/tr drop add Commodore Belt
+wait .2
+input \/\/tr drop add Pantin Taj
+wait .2
+input \/\/tr drop add Pantin Tobe
+wait .2
+input \/\/tr drop add Pantin Dastanas
+wait .2
+input \/\/tr drop add Pantin Churidars
+wait .2
+input \/\/tr drop add Pantin Babouches
+wait .2
+input \/\/tr drop add Pantin Cape
+wait .2
+input \/\/tr drop add Etoile Casaque
+wait .2
+input \/\/tr drop add Etoile Tights
+wait .2
+input \/\/tr drop add Etoile Tiara
+wait .2
+input \/\/tr drop add Etoile Bangles
+wait .2
+input \/\/tr drop add Etoile Toe Shoes
+wait .2
+input \/\/tr drop add Etoile Cape
+wait .2
+input \/\/tr drop add Argute Mortarboard
+wait .2
+input \/\/tr drop add Argute Gown
+wait .2
+input \/\/tr drop add Argute Pants
+wait .2
+input \/\/tr drop add Argute Loafers
+wait .2
+input \/\/tr drop add Argute Bracers
+wait .2
+input \/\/tr drop add Argute Belt
+wait .2
+input \/\/tr drop add Sorcerer's Coat -1
+wait .2
+input \/\/tr drop add Sorcerer's Gloves -1
+wait .2
+input \/\/tr drop add Sorcerer's Petasos -1
+wait .2
+input \/\/tr drop add Sorcerer's Sabots -1
+wait .2
+input \/\/tr drop add Sorcerer's Tonban -1
+wait .2
+input \/\/tr drop add Melee Crown -1
+wait .2
+input \/\/tr drop add Melee Cyclas -1
+wait .2
+input \/\/tr drop add Melee Gaiters -1
+wait .2
+input \/\/tr drop add Melee Gloves -1
+wait .2
+input \/\/tr drop add Melee Hose -1
+wait .2
+input \/\/tr drop add Duelist's Chapeau -1
+wait .2
+input \/\/tr drop add Duelist's Boots -1
+wait .2
+input \/\/tr drop add Duelist's Gloves -1
+wait .2
+input \/\/tr drop add Duelist's Tabard -1
+wait .2
+input \/\/tr drop add Duelist's Tights -1
+wait .2
+input \/\/tr drop add Assassin's Armlets -1
+wait .2
+input \/\/tr drop add Assassin's Bonnet -1
+wait .2
+input \/\/tr drop add Assassin's Culotte -1
+wait .2
+input \/\/tr drop add Assassin's Poulaines -1
+wait .2
+input \/\/tr drop add Assassin's Vest -1
+wait .2
+input \/\/tr drop add Warrior's Calligae -1
+wait .2
+input \/\/tr drop add Warrior's Cuisses -1
+wait .2
+input \/\/tr drop add Warrior's Lorica -1
+wait .2
+input \/\/tr drop add Warrior's Mask -1
+wait .2
+input \/\/tr drop add Warrior's Mufflers -1
+wait .2
+input \/\/tr drop add Cleric's Briault -1
+wait .2
+input \/\/tr drop add Cleric's Cap -1
+wait .2
+input \/\/tr drop add Cleric's Duckbills -1
+wait .2
+input \/\/tr drop add Cleric's Mitts -1
+wait .2
+input \/\/tr drop add Cleric's Pantaloons -1
+wait .2
+input \/\/tr drop add Bard's Cannions -1
+wait .2
+input \/\/tr drop add Bard's Cuffs -1
+wait .2
+input \/\/tr drop add Bard's Justaucorps -1
+wait .2
+input \/\/tr drop add Bard's Roundlet -1
+wait .2
+input \/\/tr drop add Bard's Slippers -1
+wait .2
+input \/\/tr drop add Monster Gaiters -1
+wait .2
+input \/\/tr drop add Monster Gloves -1
+wait .2
+input \/\/tr drop add Monster Helm -1
+wait .2
+input \/\/tr drop add Monster Jackcoat -1
+wait .2
+input \/\/tr drop add Monster Trousers -1
+wait .2
+input \/\/tr drop add Abyss Burgeonet -1
+wait .2
+input \/\/tr drop add Abyss Cuirass -1
+wait .2
+input \/\/tr drop add Abyss Flanchard -1
+wait .2
+input \/\/tr drop add Abyss Gauntlets -1
+wait .2
+input \/\/tr drop add Abyss Sollerets -1
+wait .2
+input \/\/tr drop add Wyrm Armet -1
+wait .2
+input \/\/tr drop add Wyrm Brais -1
+wait .2
+input \/\/tr drop add Wyrm Finger Gauntlets -1
+wait .2
+input \/\/tr drop add Wyrm Greaves -1
+wait .2
+input \/\/tr drop add Wyrm Mail -1
+wait .2
+input \/\/tr drop add Koga Chainmail -1
+wait .2
+input \/\/tr drop add Koga Hakama -1
+wait .2
+input \/\/tr drop add Koga Hatsuburi -1
+wait .2
+input \/\/tr drop add Koga Kyahan -1
+wait .2
+input \/\/tr drop add Koga Tekko -1
+wait .2
+input \/\/tr drop add Valor Breeches -1
+wait .2
+input \/\/tr drop add Valor Coronet -1
+wait .2
+input \/\/tr drop add Valor Gauntlets -1
+wait .2
+input \/\/tr drop add Valor Leggings -1
+wait .2
+input \/\/tr drop add Valor Surcoat -1
+wait .2
+input \/\/tr drop add Scout's Beret -1
+wait .2
+input \/\/tr drop add Scout's Braccae -1
+wait .2
+input \/\/tr drop add Scout's Bracers -1
+wait .2
+input \/\/tr drop add Scout's Jerkin -1
+wait .2
+input \/\/tr drop add Scout's Socks -1
+wait .2
+input \/\/tr drop add Saotome Domaru -1
+wait .2
+input \/\/tr drop add Saotome Haidate -1
+wait .2
+input \/\/tr drop add Saotome Kabuto -1
+wait .2
+input \/\/tr drop add Saotome Kote -1
+wait .2
+input \/\/tr drop add Saotome Sune-Ate -1
+wait .2
+input \/\/tr drop add Summoner's Bracers -1
+wait .2
+input \/\/tr drop add Summoner's Doublet -1
+wait .2
+input \/\/tr drop add Summoner's Horn -1
+wait .2
+input \/\/tr drop add Summoner's Pigaches -1
+wait .2
+input \/\/tr drop add Summoner's Spats -1
+wait .2
+input \/\/tr drop add Mirage Keffiyeh -1
+wait .2
+input \/\/tr drop add Mirage Jubbah -1
+wait .2
+input \/\/tr drop add Mirage Shalwar -1
+wait .2
+input \/\/tr drop add Mirage Charuqs -1
+wait .2
+input \/\/tr drop add Mirage Bazubands -1
+wait .2
+input \/\/tr drop add Commodore Tricorne -1
+wait .2
+input \/\/tr drop add Commodore Frac -1
+wait .2
+input \/\/tr drop add Commodore Bottes -1
+wait .2
+input \/\/tr drop add Commodore Gants -1
+wait .2
+input \/\/tr drop add Commodore Trews -1
+wait .2
+input \/\/tr drop add Pantin Taj -1
+wait .2
+input \/\/tr drop add Pantin Tobe -1
+wait .2
+input \/\/tr drop add Pantin Dastanas -1
+wait .2
+input \/\/tr drop add Pantin Churidars -1
+wait .2
+input \/\/tr drop add Pantin Babouches -1
+wait .2
+input \/\/tr drop add Etoile Casaque -1
+wait .2
+input \/\/tr drop add Etoile Tights -1
+wait .2
+input \/\/tr drop add Etoile Tiara -1
+wait .2
+input \/\/tr drop add Etoile Bangles -1
+wait .2
+input \/\/tr drop add Etoile Toe Shoes -1
+wait .2
+input \/\/tr drop add Argute Mortarboard -1
+wait .2
+input \/\/tr drop add Argute Gown -1
+wait .2
+input \/\/tr drop add Argute Pants -1
+wait .2
+input \/\/tr drop add Argute Loafers -1
+wait .2
+input \/\/tr drop add Argute Bracers -1

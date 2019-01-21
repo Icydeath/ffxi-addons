@@ -1,0 +1,28 @@
+<?xml version="1.1" ?>
+<settings>
+    <global>
+        <message_box>
+            <bg>
+                <alpha>150</alpha>
+                <blue>255</blue>
+                <green>255</green>
+                <red>255</red>
+            </bg>
+            <pos>
+                <x>750</x>
+                <y>300</y>
+            </pos>
+            <text>
+                <alpha>255</alpha>
+                <blue>23</blue>
+                <font>Arial</font>
+                <green>17</green>
+                <red>255</red>
+                <size>24</size>
+            </text>
+        </message_box>
+        <play_sound>true</play_sound>
+        <show_debug>false</show_debug>
+        <show_echo>true</show_echo>
+    </global>
+</settings>

@@ -1,0 +1,96 @@
+<?xml version="1.1" ?>
+<settings>
+    <global>
+        <centered>true</centered>
+        <displayTime>5</displayTime>
+        <fadeTime>1</fadeTime>
+        <regionName>
+            <bg>
+                <alpha>255</alpha>
+                <blue>0</blue>
+                <green>0</green>
+                <red>0</red>
+                <visible>false</visible>
+            </bg>
+            <flags>
+                <bold>true</bold>
+                <bottom>false</bottom>
+                <italic>false</italic>
+                <right>false</right>
+            </flags>
+            <format>- %s -</format>
+            <padding>0</padding>
+            <pos>
+                <x>0</x>
+                <y>0</y>
+            </pos>
+            <replaceNationNames>true</replaceNationNames>
+            <text>
+                <alpha>235</alpha>
+                <blue>193</blue>
+                <font>Century Schoolbook</font>
+                <fonts>
+                    <1>Lucida Console</1>
+                    <2>sans-serif</2>
+                    <3>Arial</3>
+                    <4>Trebuchet MS</4>
+                </fonts>
+                <green>255</green>
+                <red>255</red>
+                <size>16</size>
+                <stroke>
+                    <alpha>30</alpha>
+                    <blue>38</blue>
+                    <green>47</green>
+                    <red>51</red>
+                    <width>3</width>
+                </stroke>
+                <visible>true</visible>
+            </text>
+        </regionName>
+        <waitTime>2</waitTime>
+        <zoneName>
+            <bg>
+                <alpha>255</alpha>
+                <blue>0</blue>
+                <green>0</green>
+                <red>0</red>
+                <visible>false</visible>
+            </bg>
+            <flags>
+                <bold>true</bold>
+                <bottom>false</bottom>
+                <italic>false</italic>
+                <right>false</right>
+            </flags>
+            <format>%s</format>
+            <padding>0</padding>
+            <pos>
+                <x>0</x>
+                <y>0</y>
+            </pos>
+            <replaceAbbreviations>false</replaceAbbreviations>
+            <text>
+                <alpha>235</alpha>
+                <blue>193</blue>
+                <font>Century Schoolbook</font>
+                <fonts>
+                    <1>sans-serif</1>
+                    <2>Arial</2>
+                    <3>Trebuchet MS</3>
+                </fonts>
+                <green>255</green>
+                <red>255</red>
+                <size>34</size>
+                <stroke>
+                    <alpha>30</alpha>
+                    <blue>38</blue>
+                    <green>47</green>
+                    <red>51</red>
+                    <width>3</width>
+                </stroke>
+                <visible>true</visible>
+            </text>
+        </zoneName>
+    </global>
+</settings>
