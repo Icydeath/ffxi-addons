@@ -12,7 +12,7 @@ return {
             ["Sword"] = {
                 ["hps"] = {
                     ["<"] = 100,
-                    [">"] = 5
+                    [">"] = 0
                 },
                 ["mobs"] = {},
                 ["ws_cmd"] = "/ws \"Last Stand\" <t>"
@@ -60,6 +60,18 @@ return {
                 },
                 ["mobs"] = {},
                 ["ws_cmd"] = "/ws \"Resolution\" <t>"
+            }
+        }
+    },
+    ["Icydeath"] = {
+        ["SAM"] = {
+            ["Great Katana"] = {
+                ["hps"] = {
+                    ["<"] = 50,
+                    [">"] = 0
+                },
+                ["mobs"] = {},
+                ["ws_cmd"] = "/ws \"Namas Arrow\" <t>"
             }
         }
     },

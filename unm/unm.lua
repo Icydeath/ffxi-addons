@@ -1,7 +1,7 @@
 require 'luau'
 
 _addon.name = 'UNM'
-_addon.author = 'Darkdoom'
+_addon.author = 'Darkdoom, Modified by Icy'
 _addon.version = '1.1'
 _addon.command = 'unm'
 _addon.commands = {'unm'}
@@ -16,22 +16,26 @@ mobs = S{"Prickly Pitriv","Bounding Belinda","Hugemaw Harold","Ironhorn Baldurno
 	"Tolba","Thu'ban","Sarama","Shedu","Tumult Curator"}
 	
 checktimer = 5
+capsparkstop = true
 
 function check_incoming_text(original)
 	local org = original:lower()
 	
-	if org:find('sparks of eminence, and now possess a total of 99999') ~= nil then
+	-- [Icy] added the option to continue popping the unm even if sparks are capped.
+	if org:find('sparks of eminence, and now possess a total of 99999') ~= nil and capsparkstop then
 		running = false
+		windower.add_to_chat(167, 'UNM turned off! Sparks are capped.')
 	elseif org:find('one or more party/alliance members do not have the required') ~= nil then
 		running = false
-		end
+		windower.add_to_chat(167, 'UNM turned off! Requirements not met.')
+	end
 end
 
 function check()
-	windower.chat.input("/targetnpc")
-	coroutine.sleep(3) -- was 2
-	
 	if running == true then
+		windower.chat.input("/targetnpc")
+		coroutine.sleep(3) -- was 2
+	
 		if windower.ffxi.get_mob_by_target('t') == nil or windower.ffxi.get_mob_by_target('t').name == nil then
 			windower.add_to_chat(167, 'No target found. Running check again.')
 			coroutine.sleep(checktimer)
@@ -48,13 +52,18 @@ function check()
 		else
 			coroutine.sleep(checktimer) --was 10
 			windower.add_to_chat(167, 'Invalid target. Escaping and rechecking.')
-			windower.send_command('setkey ESCAPE down')
-			coroutine.sleep(0.5)
-			windower.send_command('setkey ESCAPE up')
-			coroutine.sleep(0.5)
+			escapebutton()
 			check()	
 		end
+		
 	end
+end
+
+function escapebutton()
+	windower.send_command('setkey ESCAPE down')
+	coroutine.sleep(0.5)
+	windower.send_command('setkey ESCAPE up')
+	coroutine.sleep(0.5)
 end
 
 function poke()
@@ -89,6 +98,12 @@ function poke()
 	windower.chat.input("/targetnpc")
 	coroutine.sleep(0.5)
 	
+	if mobs:contains(windower.ffxi.get_mob_by_target('t').name) then -- Added by Icy 1/7/19
+		windower.chat.input("/attack")
+	elseif windower.ffxi.get_mob_by_target('t').name ~= nil then
+		escapebutton()
+	end
+	
 	if running == true then
 		coroutine.sleep(checktimer)
 		check()
@@ -120,11 +135,20 @@ function unm_command(...)
 	elseif arg[1]:lower() == 'timer' then
 		checktimer = arg[2]
 		windower.add_to_chat(200, 'UNM - timer set to ' .. checktimer .. ' seconds.')
+	elseif arg[1]:lower() == 'sparks' then
+		if arg[2]:lower() == 'on' then
+			windower.add_to_chat(200, 'UNM - Auto stopping when capped on sparks.')
+			capsparkstop = true
+		else
+			windower.add_to_chat(200, 'UNM - Script will continue to pop even if sparks are capped.')
+			capsparkstop = false
+		end
 	elseif #arg == 1 and arg[1]:lower() == 'help' then
 		windower.add_to_chat(200, 'Available Options:')
 		windower.add_to_chat(200, '  //unm start - turns on UNM and starts trying to spawn')
 		windower.add_to_chat(200, '  //unm stop - turns off UNM')
 		windower.add_to_chat(200, '  //unm timer # - set timer between checks')
+		windower.add_to_chat(200, '  //unm sparks on/off - set to ON if you want to keep popping even if your sparks are capped.')
 		windower.add_to_chat(200, '  //unm help - displays this text')
 	end
 end

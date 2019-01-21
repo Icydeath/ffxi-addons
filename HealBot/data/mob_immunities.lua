@@ -10,6 +10,9 @@ return {
         2,
         194
     },
+    ["Centurio XX-I"] = S{
+        6
+    },
     ["Cloud of Darkness"] = S{
         7
     },

@@ -39,12 +39,24 @@
             </stroke>
         </text>
     </global>
+    <chocoforcocopuf>
+        <pos>
+            <x>929</x>
+            <y>828</y>
+        </pos>
+    </chocoforcocopuf>
     <clubfoot>
         <pos>
             <x>926</x>
             <y>824</y>
         </pos>
     </clubfoot>
+    <combat>
+        <pos>
+            <x>931</x>
+            <y>827</y>
+        </pos>
+    </combat>
     <icybreath>
         <pos>
             <x>926</x>

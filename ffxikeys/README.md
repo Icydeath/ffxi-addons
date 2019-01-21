@@ -5,20 +5,20 @@ Action                | Addon Command
 --------------------- | -----------------------------
 Load                  | //lua l ffxikeys
 Unload                | //lua u ffxikeys
-Use                   | //keys unlock \<key\> \<target\>
-Buy                   | //keys buy \<key\> \<target\> \<count\>
-Stop                  | //keys stop
+Use                   | //keys use \<key\>
 Toggle Printing Links | //keys printlinks
 Toggle Opening Links  | //keys openlinks
+Toggle Logging Items  | //keys logitems
+Toggle Looping        | //keys loop
 
 
-Ease of Use commands for 'SP Gobbie Keys'
+Aliases:
 
 Action                | Addon Command
 --------------------- | -----------------------------
-Use                   | //usekeys
-Buy                   | //buykeys \<count\>
+Use SP Gobbie Key     | //usekeys
 
-\<key\> and \<target\> should be replaced with values from data/keys.lua and data/locks.lua.
+\<key\> should be replaced with values from [data/keys.lua](https://github.com/Tny5989/FFXIKeys/blob/master/data/keys.lua).  
+\<count\> should be replaced with a number.
 
-\<count\> should be replaced with a number [0, 6].  This addon does not check your accolades.  It is up to you to verify your accolades amount before buying keys.
+This addon does not check your accolades.  It is up to you to verify your accolades amount before buying keys.

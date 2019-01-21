@@ -264,7 +264,7 @@ function init_gear_sets()
 		main="Malevolence",
 		sub="Thuellaic Ecu +1",
 		ammo="Kalboron Stone",
-		head="Vitiation Chapeau +1 +1",
+		head="Vitiation Chapeau +1",
 		body="Atrophy Tabard",
 		hands={ name="Merlinic Dastanas", augments={'Mag. Acc.+23 "Mag.Atk.Bns."+23','Magic burst dmg.+11%','Mag. Acc.+8','"Mag.Atk.Bns."+7',}},
 		legs={ name="Chironic Hose", augments={'Mag. Acc.+13','"Cure" spellcasting time -10%','INT+3','"Mag.Atk.Bns."+10',}},

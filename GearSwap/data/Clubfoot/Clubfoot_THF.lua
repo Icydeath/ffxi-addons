@@ -124,7 +124,6 @@ function init_gear_sets()
 	-- Weaponskill sets
 	-- Default set for any weaponskill that isn't any more specifically defined
 	sets.precast.WS = {
-		ammo="Ginsen",
 		head={ name="Adhemar Bonnet", augments={'DEX+10','AGI+10','Accuracy+15',}},
 		body="Mummu Jacket",
 		hands={ name="Herculean Gloves", augments={'Accuracy+23 Attack+23','"Dual Wield"+1','AGI+3','Accuracy+7','Attack+13',}},
@@ -196,7 +195,6 @@ function init_gear_sets()
 
 	-- Idle sets (default idle set not needed since the other three are defined, but leaving for testing purposes)
 	sets.idle = {
-		ammo="Ginsen",
 		head={ name="Adhemar Bonnet", augments={'DEX+10','AGI+10','Accuracy+15',}},
 		body="Mummu Jacket",
 		hands={ name="Plun. Armlets", augments={'Enhances "Perfect Dodge" effect',}},
@@ -235,7 +233,6 @@ function init_gear_sets()
 	
 	-- Normal melee group
 	sets.engaged = {
-		ammo="Ginsen",
 		head={ name="Adhemar Bonnet", augments={'DEX+10','AGI+10','Accuracy+15',}},
 		body="Mummu Jacket",
 		hands={ name="Plun. Armlets", augments={'Enhances "Perfect Dodge" effect',}},

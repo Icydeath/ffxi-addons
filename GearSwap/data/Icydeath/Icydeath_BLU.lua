@@ -19,7 +19,6 @@ function get_sets()
 	include('organizer-lib')
     -- Load and initialize the include file.
     include('Mote-Include.lua')
-	-- include('Icy-Include.lua') -- this is only required for auto open Velkk Coffers
 end
 
 

@@ -48,7 +48,7 @@ defaults.ShowSafe2 = false
 defaults.ShowStorage = false
 defaults.ShowLocker = false
 defaults.ShowTemporary = false
-defaults.ShowGil = true
+defaults.ShowGil = false
 defaults.display = {}
 defaults.display.pos = {}
 defaults.display.pos.x = 0
@@ -83,7 +83,7 @@ for i = 1, 13 do
         bags_text:appendline(' ${current_'..i..'|0}${max_'..i..'|0}${diff_'..i..'|0}')
     end
 end
-bags_text:appendline(' ${gil|0}')
+--bags_text:appendline(' ${gil|0}')
 
 -- Function to comma the gils
 
@@ -138,12 +138,14 @@ windower.register_event('prerender', function()
                 or 
                     '\\cs(255,128,0)' .. (' → '.. (bags[bag_names[i]:lower()].max - bags[bag_names[i]:lower()].count):string():lpad(' ', 2))) .. '\\cr'
         end
-        local gil = comma_value(giles)
-        info.gil = (
-            comma_value(giles) == 0 and
-                '\\cs(255,0,0)' .. ('Gil: ' .. comma_value(giles):lpad(' ', 16))
-            or
-                '\\cs(255,255,0)' .. ('Gil: ' .. comma_value(giles):lpad(' ', 16))) .. '\\cr'
+        if ShowGil then
+			local gil = comma_value(giles)
+			info.gil = (
+				comma_value(giles) == 0 and
+					'\\cs(255,0,0)' .. ('Gil: ' .. comma_value(giles):lpad(' ', 16))
+				or
+					'\\cs(255,255,0)' .. ('Gil: ' .. comma_value(giles):lpad(' ', 16))) .. '\\cr'
+		end
         bags_text:update(info)
         bags_text:show()
     end

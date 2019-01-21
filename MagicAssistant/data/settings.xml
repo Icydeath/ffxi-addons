@@ -69,5 +69,24 @@
             <x>300</x>
             <y>136</y>
         </pos>
+        <textColors>
+            <Black>\cs(  0,   0,   0)</Black>
+            <Compression>\cs(  0,   0, 180)Compression</Compression>
+            <Darkness>\cs(153,  76,   0)Da\cs(  0, 102, 255)rk\cs(  0, 255, 255)ne\cs(  0,   0, 180)ss</Darkness>
+            <Distortion>\cs(  0, 102, 255)Disto\cs(  0, 255, 255)rtion</Distortion>
+            <Fragmentation>\cs(102, 255, 102)Fragmen\cs(255,   0, 255)tation</Fragmentation>
+            <Gravitation>\cs(153,  76,   0)Gravi\cs(  0,   0, 180)tation</Gravitation>
+            <Green>\cs(  0, 255,   0)</Green>
+            <Impaction>\cs(255,   0, 255)Impaction</Impaction>
+            <Induration>\cs(  0, 255, 255)Induration</Induration>
+            <Light>\cs(102, 255, 102)L\cs(255, 102, 102)i\cs(255,   0, 255)gh\cs(255, 255, 255)t</Light>
+            <Orange>\cs(255, 165,   0)</Orange>
+            <Radiance>\cs(102, 255, 102)Ra\cs(255, 102, 102)di\cs(255,   0, 255)an\cs(255, 255, 255)ce</Radiance>
+            <Red>\cs(255,   0,   0)</Red>
+            <Reverberation>\cs(  0, 102, 255)Reverberation</Reverberation>
+            <Scission>\cs(153,  76,   0)Scission</Scission>
+            <Umbra>\cs(153,  76,   0)U\cs(  0, 102, 255)m\cs(  0, 255, 255)br\cs(  0,   0, 180)a</Umbra>
+            <Yellow>\cs(255, 255,   0)</Yellow>
+        </textColors>
     </icydeath>
 </settings>

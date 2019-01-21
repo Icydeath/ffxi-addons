@@ -2,7 +2,7 @@
 <settings>
     <global>
         <ShowCase>false</ShowCase>
-        <ShowGil>true</ShowGil>
+        <ShowGil>false</ShowGil>
         <ShowInventory>true</ShowInventory>
         <ShowLocker>false</ShowLocker>
         <ShowSack>false</ShowSack>
@@ -55,14 +55,30 @@
             </text>
         </display>
     </global>
+    <chocoforcocopuf>
+        <display>
+            <pos>
+                <x>756</x>
+                <y>812</y>
+            </pos>
+        </display>
+    </chocoforcocopuf>
     <clubfoot>
         <display>
             <pos>
                 <x>750</x>
-                <y>794</y>
+                <y>809</y>
             </pos>
         </display>
     </clubfoot>
+    <combat>
+        <display>
+            <pos>
+                <x>761</x>
+                <y>813</y>
+            </pos>
+        </display>
+    </combat>
     <icybreath>
         <display>
             <pos>
@@ -75,7 +91,7 @@
         <display>
             <pos>
                 <x>753</x>
-                <y>796</y>
+                <y>812</y>
             </pos>
         </display>
     </icydeath>
@@ -83,7 +99,7 @@
         <display>
             <pos>
                 <x>754</x>
-                <y>796</y>
+                <y>812</y>
             </pos>
         </display>
     </rythor>

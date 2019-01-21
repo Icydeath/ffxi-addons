@@ -73,13 +73,15 @@ function user_setup()
 	state.WSHP:options(0, 10, 20, 30, 40, 50)
 	
 	state.AutoWSName = M{['description'] = 'Set Weapon Skill (default: Tachi: Fudo)'}
-	state.AutoWSName:options('Tachi: Fudo', 'Tachi: Shoha', 'Tachi: Rana')
+	state.AutoWSName:options('Tachi: Fudo', 'Tachi: Shoha', 'Tachi: Rana', 'Namas Arrow')
+	
+	state.BowMode = M(true, "Bow Mode")
 	
     update_combat_form()
 	
 	-- Map for auto activation of Berserk/Warcry based
     -- on Weaponskills listed
-    berserk_warcry_automation = S{'Tachi: Fudo', 'Tachi: Shoha', 'Tachi: Rana'}
+    berserk_warcry_automation = S{'Tachi: Fudo', 'Tachi: Shoha', 'Tachi: Rana', 'Namas Arrow'}
 	
 	windower.register_event('tp change', function(new, old)
 		if state.FullAuto.value == 'On' then
@@ -102,8 +104,12 @@ function user_setup()
 				send_command('Third Eye')
 				
 			elseif state.AutoWS.value == 'On' then
-			  if player.target.distance ~= nil and player.tp > 999 then
-			    if player.target.distance < 6 then send_command(state.AutoWSName.value) end
+			  if player.target.distance ~= nil and player.tp > 999 and player.target.hpp > state.WSHP.value then
+			    if state.AutoWSName.value == 'Namas Arrow' and player.target.distance < 20 then 
+					send_command(state.AutoWSName.value) 
+			    elseif player.target.distance < 6 then 
+					send_command(state.AutoWSName.value) 
+				end
 			  end
 			end
 			
@@ -124,8 +130,12 @@ function user_setup()
 			  if not buffactive['Hasso'] and not buffactive['Seigan'] then
 				send_command(state.AutoStance.value)
 			  elseif state.AutoWS.value == 'On' then
-			    if player.target.distance ~= nil and player.tp > 999 then
-			      if player.target.distance < 6 then send_command(state.AutoWSName.value) end
+			    if player.target.distance ~= nil and player.tp > 999 and player.target.hpp > state.WSHP.value then
+			      if state.AutoWSName.value == 'Namas Arrow' and player.target.distance < 20 then 
+					send_command(state.AutoWSName.value) 
+			      elseif player.target.distance < 6 then 
+					send_command(state.AutoWSName.value) 
+				  end
 			    end
 			  end
 			end
@@ -149,6 +159,8 @@ function init_gear_sets()
     -- Start defining the sets
     --------------------------------------
     sets.CP = {back="Mecisto. Mantle"}
+	sets.BowArrow = {range="Yoichinoyumi", ammo="Yoichi's Arrow"}
+	sets.Ammo = {ammo="Ginsen"}
 	
     -- Precast Sets
     -- Precast sets to enhance JAs
@@ -167,8 +179,8 @@ function init_gear_sets()
     -- Default set for any weaponskill that isn't any more specifically defined
     sets.precast.WS = {
 		head={ name="Valorous Mask", augments={'Accuracy+29','Weapon skill damage +1%','VIT+7','Attack+15',}},
-		body={ name="Found. Breastplate", augments={'Accuracy+14','Mag. Acc.+13','Attack+14','"Mag.Atk.Bns."+14',}},
-		hands={ name="Valorous Mitts", augments={'Accuracy+23 Attack+23','Weapon Skill Acc.+1','Accuracy+11','Attack+12',}},
+		body="Ken. Samue",
+		hands="Ken. Tekko",
 		legs={ name="Ryuo Hakama", augments={'Accuracy+20','"Store TP"+4','Phys. dmg. taken -3',}},
 		feet={ name="Valorous Greaves", augments={'Weapon skill damage +3%','STR+5','Accuracy+15','Attack+14',}},
 		neck="Fotia Gorget",
@@ -200,9 +212,25 @@ function init_gear_sets()
 
     sets.precast.WS['Tachi: Yukikaze'] = set_combine(sets.precast.WS, {})
 
-    sets.precast.WS['Tachi: Ageha'] = set_combine(sets.precast.WS, {})
+    sets.precast.WS['Tachi: Ageha'] = set_combine(sets.precast.WS, {
+		head={ name="Founder's Corona", augments={'DEX+8','Accuracy+15','Mag. Acc.+14','Magic dmg. taken -3%',}},
+		neck="Sanctity Necklace",
+		waist="Anguinus Belt",
+		left_ear="Gwati Earring",
+		right_ear="Enchntr. Earring +1",
+		left_ring="Fenrir Ring +1",
+		right_ring="Balrahn's Ring",
+	})
 
     sets.precast.WS['Tachi: Jinpu'] = set_combine(sets.precast.WS, {})
+	
+	sets.precast.WS['Namas Arrow'] = set_combine(sets.precast.WS, {
+		ammo=gear.Arrow,
+		right_ear="Enervating Earring",
+		left_ring="Cacoethic Ring +1",
+		right_ring="Paqichikaji Ring",
+		back="Sokolski Mantle",
+	})
 
 
     -- Midcast Sets
@@ -260,12 +288,9 @@ function init_gear_sets()
     
     -- Normal melee group
     sets.engaged = {
-		main="Kurikaranotachi",
-		sub="Bloodrain Strap",
-		ammo="Ginsen",
 		head={ name="Valorous Mask", augments={'Accuracy+16 Attack+16','"Store TP"+6','AGI+4','Accuracy+7','Attack+2',}},
-		body={ name="Found. Breastplate", augments={'Accuracy+14','Mag. Acc.+13','Attack+14','"Mag.Atk.Bns."+14',}},
-		hands={ name="Valorous Mitts", augments={'Accuracy+23 Attack+23','Weapon Skill Acc.+1','Accuracy+11','Attack+12',}},
+		body="Ken. Samue",
+		hands="Ken. Tekko",
 		legs={ name="Ryuo Hakama", augments={'Accuracy+20','"Store TP"+4','Phys. dmg. taken -3',}},
 		feet={ name="Valorous Greaves", augments={'Accuracy+30','"Dbl.Atk."+1','DEX+1','Attack+7',}},
 		neck="Lissome Necklace",
@@ -369,6 +394,15 @@ function customize_idle_set(idleSet)
 		enable('back')
 	end
 	return idleSet
+end
+
+-- Called any time we attempt to handle automatic gear equips (ie: engaged or idle gear).
+function job_handle_equipping_gear(playerStatus, eventArgs)    	
+	if state.BowMode.current == 'on' then
+		equip(sets.BowArrow)
+	else
+		equip(sets.Ammo)
+	end
 end
 
 -- Called by the 'update' self-command, for common needs.

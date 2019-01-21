@@ -49,12 +49,15 @@
             </text>
         </text_box_settings>
     </global>
+    <chocoforcocopuf>
+        <text_box_settings>
+            <pos>
+                <x>186</x>
+                <y>1062</y>
+            </pos>
+        </text_box_settings>
+    </chocoforcocopuf>
     <clubfoot>
-        <strings>
-            <abyssea>xp.current..&apos;/&apos;..xp.tnl..&apos;XP   &apos;..lp.current..&apos;/&apos;..lp.tnm..&apos;LP [&apos;..lp.number_of_merits..&apos;/&apos;..lp.maximum_merits..&apos;]   XP/hr:&apos;..string.format(&apos;%.1f&apos;,math.floor(xp.rate/100)/10)..&apos;k   Amber:&apos;..(abyssea.amber or 0)..&apos;/Azure:&apos;..(abyssea.azure or 0)..&apos;/Ruby:&apos;..(abyssea.ruby or 0)..&apos;/Pearlescent:&apos;..(abyssea.pearlescent or 0)..&apos;/Ebon:&apos;..(abyssea.ebon or 0)..&apos;/Silvery:&apos;..(abyssea.silvery or 0)..&apos;/Golden:&apos;..(abyssea.golden or 0)..&apos;/Time Remaining:&apos;..(abyssea.time_remaining or 0)</abyssea>
-            <default>xp.current..&apos;/&apos;..xp.tnl..&apos;XP   &apos;..lp.current..&apos;/&apos;..lp.tnm..&apos;LP [&apos;..lp.number_of_merits..&apos;/&apos;..lp.maximum_merits..&apos;]   XP/hr:&apos;..string.format(&apos;%.1f&apos;,math.floor(xp.rate/100)/10)..&apos;k   &apos;..cp.current..&apos;/&apos;..cp.tnjp..&apos;CP [&apos;..cp.number_of_job_points..&apos;]   CP/hr:&apos;..string.format(&apos;%.1f&apos;,math.floor(cp.rate/100)/10)..&apos;k&apos;</default>
-            <dynamis>xp.current..&apos;/&apos;..xp.tnl..&apos;XP   &apos;..lp.current..&apos;/&apos;..lp.tnm..&apos;LP [&apos;..lp.number_of_merits..&apos;/&apos;..lp.maximum_merits..&apos;]   XP/hr:&apos;..string.format(&apos;%.1f&apos;,math.floor(xp.rate/100)/10)..&apos;k   &apos;..cp.current..&apos;/&apos;..cp.tnjp..&apos;CP [&apos;..cp.number_of_job_points..&apos;]   &apos;..dynamis.KIs..&apos;  &apos;..dynamis.time_remaining</dynamis>
-        </strings>
         <text_box_settings>
             <pos>
                 <x>285</x>
@@ -62,12 +65,15 @@
             </pos>
         </text_box_settings>
     </clubfoot>
+    <combat>
+        <text_box_settings>
+            <pos>
+                <x>290</x>
+                <y>1062</y>
+            </pos>
+        </text_box_settings>
+    </combat>
     <icybreath>
-        <strings>
-            <abyssea>xp.current..&apos;/&apos;..xp.tnl..&apos;XP   &apos;..lp.current..&apos;/&apos;..lp.tnm..&apos;LP [&apos;..lp.number_of_merits..&apos;/&apos;..lp.maximum_merits..&apos;]   XP/hr:&apos;..string.format(&apos;%.1f&apos;,math.floor(xp.rate/100)/10)..&apos;k   Amber:&apos;..(abyssea.amber or 0)..&apos;/Azure:&apos;..(abyssea.azure or 0)..&apos;/Ruby:&apos;..(abyssea.ruby or 0)..&apos;/Pearlescent:&apos;..(abyssea.pearlescent or 0)..&apos;/Ebon:&apos;..(abyssea.ebon or 0)..&apos;/Silvery:&apos;..(abyssea.silvery or 0)..&apos;/Golden:&apos;..(abyssea.golden or 0)..&apos;/Time Remaining:&apos;..(abyssea.time_remaining or 0)</abyssea>
-            <default>xp.current..&apos;/&apos;..xp.tnl..&apos;XP   &apos;..lp.current..&apos;/&apos;..lp.tnm..&apos;LP [&apos;..lp.number_of_merits..&apos;/&apos;..lp.maximum_merits..&apos;]   XP/hr:&apos;..string.format(&apos;%.1f&apos;,math.floor(xp.rate/100)/10)..&apos;k   &apos;..cp.current..&apos;/&apos;..cp.tnjp..&apos;CP [&apos;..cp.number_of_job_points..&apos;]   CP/hr:&apos;..string.format(&apos;%.1f&apos;,math.floor(cp.rate/100)/10)..&apos;k&apos;</default>
-            <dynamis>xp.current..&apos;/&apos;..xp.tnl..&apos;XP   &apos;..lp.current..&apos;/&apos;..lp.tnm..&apos;LP [&apos;..lp.number_of_merits..&apos;/&apos;..lp.maximum_merits..&apos;]   XP/hr:&apos;..string.format(&apos;%.1f&apos;,math.floor(xp.rate/100)/10)..&apos;k   &apos;..cp.current..&apos;/&apos;..cp.tnjp..&apos;CP [&apos;..cp.number_of_job_points..&apos;]   &apos;..dynamis.KIs..&apos;  &apos;..dynamis.time_remaining</dynamis>
-        </strings>
         <text_box_settings>
             <pos>
                 <x>340</x>
@@ -78,17 +84,12 @@
     <icydeath>
         <text_box_settings>
             <pos>
-                <x>267</x>
-                <y>1064</y>
+                <x>17</x>
+                <y>1063</y>
             </pos>
         </text_box_settings>
     </icydeath>
     <rythor>
-        <strings>
-            <abyssea>xp.current..&apos;/&apos;..xp.tnl..&apos;XP   &apos;..lp.current..&apos;/&apos;..lp.tnm..&apos;LP [&apos;..lp.number_of_merits..&apos;/&apos;..lp.maximum_merits..&apos;]   XP/hr:&apos;..string.format(&apos;%.1f&apos;,math.floor(xp.rate/100)/10)..&apos;k   Amber:&apos;..(abyssea.amber or 0)..&apos;/Azure:&apos;..(abyssea.azure or 0)..&apos;/Ruby:&apos;..(abyssea.ruby or 0)..&apos;/Pearlescent:&apos;..(abyssea.pearlescent or 0)..&apos;/Ebon:&apos;..(abyssea.ebon or 0)..&apos;/Silvery:&apos;..(abyssea.silvery or 0)..&apos;/Golden:&apos;..(abyssea.golden or 0)..&apos;/Time Remaining:&apos;..(abyssea.time_remaining or 0)</abyssea>
-            <default>xp.current..&apos;/&apos;..xp.tnl..&apos;XP   &apos;..lp.current..&apos;/&apos;..lp.tnm..&apos;LP [&apos;..lp.number_of_merits..&apos;/&apos;..lp.maximum_merits..&apos;]   XP/hr:&apos;..string.format(&apos;%.1f&apos;,math.floor(xp.rate/100)/10)..&apos;k   &apos;..cp.current..&apos;/&apos;..cp.tnjp..&apos;CP [&apos;..cp.number_of_job_points..&apos;]   CP/hr:&apos;..string.format(&apos;%.1f&apos;,math.floor(cp.rate/100)/10)..&apos;k&apos;</default>
-            <dynamis>xp.current..&apos;/&apos;..xp.tnl..&apos;XP   &apos;..lp.current..&apos;/&apos;..lp.tnm..&apos;LP [&apos;..lp.number_of_merits..&apos;/&apos;..lp.maximum_merits..&apos;]   XP/hr:&apos;..string.format(&apos;%.1f&apos;,math.floor(xp.rate/100)/10)..&apos;k   &apos;..cp.current..&apos;/&apos;..cp.tnjp..&apos;CP [&apos;..cp.number_of_job_points..&apos;]   &apos;..dynamis.KIs..&apos;  &apos;..dynamis.time_remaining</dynamis>
-        </strings>
         <text_box_settings>
             <pos>
                 <x>323</x>
