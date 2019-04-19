@@ -79,11 +79,27 @@
             </pos>
         </display>
     </combat>
+    <eldiablo>
+        <display>
+            <pos>
+                <x>754</x>
+                <y>805</y>
+            </pos>
+        </display>
+    </eldiablo>
+    <gorby>
+        <display>
+            <pos>
+                <x>754</x>
+                <y>795</y>
+            </pos>
+        </display>
+    </gorby>
     <icybreath>
         <display>
             <pos>
-                <x>1395</x>
-                <y>963</y>
+                <x>751</x>
+                <y>809</y>
             </pos>
         </display>
     </icybreath>
@@ -91,7 +107,7 @@
         <display>
             <pos>
                 <x>753</x>
-                <y>812</y>
+                <y>811</y>
             </pos>
         </display>
     </icydeath>

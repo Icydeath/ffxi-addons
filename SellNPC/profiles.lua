@@ -185,7 +185,8 @@ profiles['junk'] = S{
 	'Wivre Maul',
 	'Raptor Skin',
 	'Peiste Skin',
-	'Peiste Stinger',
+	'Slime Juice',
+	'Infinity Core',
 }
 
 return profiles

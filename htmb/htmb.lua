@@ -8,7 +8,7 @@ require('pack')
 bit = require('bit')
 
 --buy_list = {10,2,5,9,3} -- key items will be purchased in this order until you are unable to buy more
-buy_list = {10} -- key items will be purchased in this order until you are unable to buy more
+buy_list = {14} -- key items will be purchased in this order until you are unable to buy more
 
 htmb_map = {
      [0] = {name = 'Shadow Lord phantom gem',      cost = 10},

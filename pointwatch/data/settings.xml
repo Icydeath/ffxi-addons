@@ -73,6 +73,22 @@
             </pos>
         </text_box_settings>
     </combat>
+    <eldiablo>
+        <text_box_settings>
+            <pos>
+                <x>279</x>
+                <y>1062</y>
+            </pos>
+        </text_box_settings>
+    </eldiablo>
+    <gorby>
+        <text_box_settings>
+            <pos>
+                <x>213</x>
+                <y>1063</y>
+            </pos>
+        </text_box_settings>
+    </gorby>
     <icybreath>
         <text_box_settings>
             <pos>
@@ -92,7 +108,7 @@
     <rythor>
         <text_box_settings>
             <pos>
-                <x>323</x>
+                <x>14</x>
                 <y>1062</y>
             </pos>
         </text_box_settings>

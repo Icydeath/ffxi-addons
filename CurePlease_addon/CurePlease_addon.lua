@@ -8,13 +8,14 @@ _addon.commands = {'cpaddon'}
 -- UDP connection thanks to several online tutorials
 
 local socket = require("socket")
-require('strings')
 
 local port = 19769
 local ip = "127.0.0.1"
 
 if windower then
   packets = require("packets")
+  require('strings')
+
 
   windower.register_event('addon command', function(input, ...)
     local args = T{...}

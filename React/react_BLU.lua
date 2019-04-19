@@ -28,5 +28,11 @@ return {
             ["complete_reaction"]="", 
             ["ready_reaction"]="input /Blank Gaze"
         }
+    },
+	["Glassy Thinker"]={
+        ["Pain Sync"]={
+            ["complete_reaction"]="facemob", 
+            ["ready_reaction"]="turnaround"
+        }
     }
 }
