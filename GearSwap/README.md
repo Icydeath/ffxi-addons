@@ -1,40 +1,52 @@
-Author: Byrth
+PLEASE DO NOT MESSAGE ME ABOUT ANYTHING THIRD PARTY IN GAME, however feel free to send me a way to contact you outside of game,
+	through	the game, and I'm happy to help, my preferred way of being contact is Discord, my Stream discord is here:
+	https://discord.gg/ug6xtvQ
 
-Version: 0.930
+Setting up my Gearswaps and Github updating.
 
-Date: 06/13/2017
+1.) Create a Github account if you don't already have one: https://github.com/join
 
-GearSwap
+2.) Download Github Desktop if you don't already have it : https://desktop.github.com/
 
-Abbreviation: gs
+3.) Take your existing Gearswap folder from inside Windower\Addons and move it to your desktop.
+    If you're transitioning to my gearswaps from other gearswaps remove the Gearswap\Data folder
+    from the old folder, and place it somewhere you can find to help you edit my gearswaps later, if
+    you're setting up gearswap for the first time you can delete the old Gearswap\Data folder
+    altogether.
+    
+4.) Open Github Desktop. (As admin if your Gearswap Folder is located in Program Files)
 
-Commands (<> indicates a field. You do not actually have to use <>s):
-* gs c <string> : Passes the <string> to the self_command() user function.
-* gs equip <string> : Attempts to interpret the <string> as an index of the sets table and equip that set. Will ignore "sets" if the string starts with it.
-** gs equip naked : This equips the default set "naked," which is just a bunch of empty slots. If you remake sets (sets={}) in your get_sets(), this will not work.
-* gs debugmode : Activates GearSwap's Debug Mode, which prints out why specific gear equipping attempts failed, shows you when you're entering events, and enables the eval command.
-** gs eval <string> : This command evaluates the <string> as Lua code in the global gearswap environment (not the user environment, which is in the user_env table). It is only available when debugmode is on.
-* gs showswaps : Shows when your gear successfully changes and what it changes to.
-* gs load <string> : (or l <string>) Attempts to load the first version of <string> found, assuming it is a file path relative to 9 potential base directories, in this order:
-** ..GearSwap/libs-dev/<string>
-** ..GearSwap/libs/<string>
-** GearSwap/data/<character_name>/<string>
-** GearSwap/data/common/<string>
-** GearSwap/data/<string>
-** APPDATA/Windower/GearSwap/<character_name>/<string>
-** APPDATA/Windower/GearSwap/common/<string>
-** APPDATA/Windower/GearSwap/<string>
-** ..Windower/addons/libs/<string>
-* gs reload : Reloads the current user file.
-* gs export <options> : Exports your currently equipped gear, inventory, or all the items in your current Lua files' sets into GearSwap .lua or spellcast .xml format. Takes options "inventory", "sets", and "xml." Defaults to currently equipped gear and lua otherwise. Also exports appropriate advanced set tables with augments for currently equipped gear and inventory.
-* gs enable <slot> : Enables equip commands targeting a specified slot. "All" will allow all equip commands. Providing no slot argument will enable user GearSwap file execution, if it was disabled.
-* gs disable <slot> : Disables equip commands targeting a given slot. "All" will prevent all equip commands. Providing no second argument will disable user GearSwap file execution, although registered events will still run.
-* gs validate <sets|inv> <filter> : This command checks to see whether the equipment in the sets table also exists in your inventory (default), or (by passing "inv") whether the equipment in your inventory exists in your sets table. <filter> is an optional list of words that restricts the output to only those items that contain text from one of the filter's words.
+5.) Click File, Clone Repository, click the URL tab, in the Repository box put: Selindrile/GearSwap
+    in the Local Path box put the location your Gearswap directory was, for example
+    C:\Program Files\Windower\Addons\Gearswap           then click Clone.
+    
+6.) Move your old Gearswap folder to the same directory as the new one to merge them,
+    make sure not to overwrite any files, choose skip or "do not replace" for any common files.
 
-Purpose: To assist in the micromanaging of equipment!
+7.) If you don't have my style Character luas already, then Inside your Gearswap\Data\
+	folder, first copy, then rename the "Selindrile" folder once for each of your
+	characters' names, you can click Rename.bat and for the first sequence enter:
+	Selindrile, then enter your character's name for new sequence. (If it doesn't work
+	you will have to rename these files namually, then delete Rename.bat in all folders
+	except the Selindrile folder.
+	
 
-Settings Files:  
-There is no settings file for GearSwap.
+8.) To update my gearswaps in the future open up Github Desktop and click the third button (Fetch Origin, then
+    push the same button again.
+	
+9.) Optional: If you're new to editing files like this I highly reccomend Notepad++, https://notepad-plus-plus.org/
+    and using File: Open Folder as Workspace, and adding your Gearswap\Data folder there.
+  
+10.) Optional: Obtain Init file (Goes in Windower\Script folder) from:
+    https://www.dropbox.com/sh/20vy32liub3glxz/AAAiIVHAasFdwCK1SZdZz7d_a?dl=0
+	and place it in your Windower\Scripts folder (Rename and keep your
+	original just in case) I also run many unofficial addons, most of which can be found at:
+	https://www.dropbox.com/sh/8l6m0lfpgw59ycc/AABZn4T7gVphpX77wetsAx45a?dl=0
+    
+11.) Optional: For full functionality my gearswap and init files do depend on a few other addons that can
+    be found in your launcher, I'll list them here: Addons: Shortcuts, Cancel, Itemizer. Plugins: Timers, Run
 
-Additional Assistance:
-The Windower/addons/GearSwap/beta_examples_and_information folder has a file in it named Variables.xlsx that gives more specific information. If that is insufficient, you can go to BlueGartr's FFXI section or FFXIAH and ask for more assistance.
+12.) Semi Optional: For item usage commands to function, you'll likely need to set your time offset (Unless you happen to be in Central 	US time) instructions are found in charactername-globals.
+
+12.) Read the Cheat Sheet in your Data Folder, feel free to contact me if there's anything you don't understand but again
+	PLEASE DO NOT MESSAGE ME ABOUT ANYTHING THIRD PARTY IN GAME

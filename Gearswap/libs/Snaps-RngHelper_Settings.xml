@@ -1,0 +1,40 @@
+<?xml version="1.1" ?>
+<settings>
+    <global>
+        <default>default</default>
+        <profiles>
+            <default>
+                <cooldowns>
+                    <bstpet>0</bstpet>
+                    <item>1.1</item>
+                    <jobability>0</jobability>
+                    <magic>2.75</magic>
+                    <monsterskill>2.25</monsterskill>
+                    <ninjutsu>2.75</ninjutsu>
+                    <pet>0</pet>
+                    <range>1.15</range>
+                    <song>2.75</song>
+                    <weaponskill>2.45</weaponskill>
+                </cooldowns>
+                <mode>pummel</mode>
+                <weaponskill>Last Stand</weaponskill>
+            </default>
+            <ls>
+                <cooldowns>
+                    <bstpet>0</bstpet>
+                    <item>1.1</item>
+                    <jobability>0</jobability>
+                    <magic>2.75</magic>
+                    <monsterskill>2.25</monsterskill>
+                    <ninjutsu>2.75</ninjutsu>
+                    <pet>0</pet>
+                    <range>1.15</range>
+                    <song>2.75</song>
+                    <weaponskill>2.45</weaponskill>
+                </cooldowns>
+                <mode>pummel</mode>
+                <weaponskill>Last Stand</weaponskill>
+            </ls>
+        </profiles>
+    </global>
+</settings>
