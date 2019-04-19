@@ -1,24 +1,24 @@
 
 player = windower.ffxi.get_player()
 player.equipment = T{}
-player.stats = T{}
-player.stats = {STR = 0, DEX = 0, VIT = 0, AGI = 0, INT = 0, MND = 0, CHR = 0}
+player.stats = T{STR = 0, DEX = 0, VIT = 0, AGI = 0, INT = 0, MND = 0, CHR = 0}
 player.skill = player.skills
 player_base_skills = player.skills
 player.is_moving = false
-player.position = T{} 
-player.position = {x = 0, y = 0, x = 0} 
+player.position = T{x = 0, y = 0, x = 0} 
 buff = 0
 full_gear_table_from_file = T{}
-Buffs_inform = {['delay'] = 0,['DEF'] = 0,['HP'] = 0,['MP'] = 0,['STR'] = 0,['DEX'] = 0,['VIT'] = 0,['AGI'] = 0,['INT'] = 0,['MND'] = 0,['CHR'] = 0,
-								['Accuracy'] = 0,['Attack'] = 0,
-								['Ranged Accuracy'] = 0, ['Ranged Attack'] = 0,
-								['Evasion'] = 0,
+Buffs_inform = {		['delay'] = 0,['damage'] = 0,
+								['HP'] = 0,['MP'] = 0,
+								['STR'] = 0,['DEX'] = 0,['VIT'] = 0,['AGI'] = 0,['INT'] = 0,['MND'] = 0,['CHR'] = 0,
+								['Accuracy'] = 0, ['Ranged Accuracy'] = 0, 
+								['Attack'] = 0, ['Attack perc'] = 0,
+								['Evasion'] = 0,['DEF'] = 0,['Defence perc'] = 0,
 								['Magic Accuracy'] = 0, ['Magic Atk. Bonus'] = 0,
 								['Magic Evasion'] = 0,['Magic Def. Bonus'] = 0,
-								['ma_haste'] = 0,['ja_haste'] = 0,
+								['g_haste']=0,['ma_haste'] = 0,['ja_haste'] = 0,
 								['PDT'] = 0,['MDT'] = 0,['BDT'] = 0,['DT'] = 0,['MDT2'] = 0,['PDT2'] = 0,
-								['Store TP'] = 0,['Dual Wield'] = 0 ,['Fast Cast'] = 0 ,['Martial Arts'] = 0,['damage'] = 0,
+								['Store TP'] = 0,['Dual Wield'] = 0 ,['Fast Cast'] = 0 ,['Martial Arts'] = 0,
 								["Double Attack"] = 0,["Tripple Attack"] = 0,['Quadruple Attack'] = 0,["Critical hit rate"] = 0,["Critical hit damage"] = 0,["Subtle Blow"] = 0,
 								}
 Geo_buffs = {
@@ -89,21 +89,10 @@ __raw = {lower = string.lower, upper = string.upper,}
 function to_windower_api(str)
     return __raw.lower(str:gsub(' ','_'))
 end
-
-stat_names = L{'delay','DEF','HP','MP','STR','DEX','VIT','AGI','INT','MND','CHR',
-								'Accuracy','Attack',
-								'Ranged Accuracy', 'Ranged Attack',
-								'Evasion',
-								'Magic Accuracy', 'Magic Atk. Bonus',
-								'Magic Evasion','Magic Def. Bonus',
-								'ma_haste','ja_haste',
-								'PDT','MDT','BDT','DT','MDT2','PDT2',
-								'Store TP','Dual Wield' ,'Fast Cast' ,'Martial Arts','damage',
-								"Double Attack","Tripple Attack",'Quadruple Attack',"Critical hit rate","Critical hit damage","Subtle Blow",
-								}
 							
 defaults = {}
 defaults.player = {}
+defaults.player.show_logo = true
 defaults.player.show_total_haste = true
 defaults.player.show_tp_Stuff = true
 defaults.player.show_acc_Stuff = false
@@ -126,6 +115,8 @@ defaults.display = {}
 defaults.display.pos = {}
 defaults.display.pos.x = 0
 defaults.display.pos.y = 0
+defaults.image_folder_name = "default"
+
 defaults.Bards["joachim"] = {
 	['gjallarhorn'] = false,
 	['merits'] = {

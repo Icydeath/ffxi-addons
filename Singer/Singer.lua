@@ -16,28 +16,26 @@ song_timers = require('song_timers')
 
 default = {
     delay=5,
-    dummy=L{'Knight\'s Minne','Knight\'s Minne II'},
+    --dummy=L{'Knight\'s Minne','Knight\'s Minne II'},
+	dummy=L{'',''},
     buffs={['haste']=L{},['refresh']=L{}},
-    marcato='Sentinel\'s Scherzo',
-    clarion={aoe='minuet'},
+    marcato='',
+    clarion={aoe=''},
     actions=false,
     pianissimo=false,
-    recast={song={min=20,max=25},buff={min=5,max=10}},
+    recast={song={min=10,max=15},buff={min=5,max=10}},
     active=true,
     timers=true,
     ignore=L{},
     song={},
-    songs={march=2},
-    use_ws=true,
+    songs={},
+    use_ws=false,
     min_ws=20,
     max_ws=99,
     box={text={size=10}}
     }
 
 settings = config.load(default)
-
--- Set the gearswaps dummy song variable | info.ExtraSongSpell
-windower.send_command('gs c dummysong "'..settings.dummy[1]..'"')
 
 del = 0
 counter = 0
@@ -105,23 +103,13 @@ function do_stuff()
         local recast = math.random(settings.recast.song.min,settings.recast.song.max)+math.random()
         if is_moving or casting or buffs.stun or buffs.sleep or buffs.charm or buffs.terror or buffs.petrification then return end
         if buffs.amnesia or buffs.impairment then JA_WS_lock = true end
-        --[[if use_ws and not JA_WS_lock and play.status == 1 and equip('main') == 'Carnwenhan' then
-            local targ = windower.ffxi.get_mob_by_target('t')
-            if not AM_start and buffs['aftermath: lv.3'] then AM_start = os.clock() end
-            if buffs['aftermath: lv.3'] and AM_start and os.clock() - AM_start <= 140 then goal_tp = 1000 else goal_tp = 3000 end
-            if (get.eye_sight(windower.ffxi.get_mob_by_target('me'),targ) and play.vitals.tp >= goal_tp and 
-            targ and targ.valid_target and targ.is_npc and targ.hpp < settings.max_ws and targ.hpp > settings.min_ws and  
-            math.sqrt(targ.distance) <= 4) and ((goal_tp == 3000 and not buffs['aftermath: lv.3']) or goal_tp == 1000) then
-                if goal_tp == 3000 then AM_start = os.clock() end
-                windower.send_command('input /ws "Mordant Rime" <t>')
-                del = 4.2
-                return
-            end
-        end]]--
         if buffs.silence or buffs.mute or buffs.omerta then return end     
         if get.aoe_range() then
             local song = cast.check_song(settings.songs,'AoE',buffs,spell_recasts,recast) 
-            if song then cast.song(song,'<me>',buffs,ability_recasts,JA_WS_lock) return end
+            if song then
+				cast.song(song,'<me>',buffs,ability_recasts,JA_WS_lock)
+				return 
+			end
         end
         if settings.pianissimo then
             for targ,songs in pairs(settings.song) do
@@ -268,8 +256,6 @@ windower.register_event('addon command', function(...)
             local song = get.song(table.concat(commands, ' ',2))
             if song and ind <= 2 then
                 settings.dummy[ind] = song.enl
-				-- Set the gearswaps dummy song variable | info.ExtraSongSpell
-				windower.send_command('gs c dummysong "'..song.enl..'"')
                 addon_message('Dummy song #%d set to %s':format(ind,song.enl))
             else
                 addon_message('Invalid song name.')
@@ -348,6 +334,16 @@ function status_change(new,old)
     if new == 2 or new == 3 then
         event_change()
     end
+end
+
+function has_value (tab, val)
+    for index, value in ipairs(tab) do
+        if value == val then
+            return true
+        end
+    end
+
+    return false
 end
 
 windower.register_event('unload', song_timers.reset)

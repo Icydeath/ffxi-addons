@@ -68,7 +68,6 @@ ImageBlock = {
 			o.red = 0
 			o.green = 0 
 			o.blue = 0
-			o.image_path = ''
 			o.type = image_type
 			o.color = image_color
 			o.name = (_addon and _addon.name or 'image') .. '_gensym_' .. tostring(t):sub(8) .. '_%.8x':format(16^8 * math.random()):sub(3)
@@ -79,10 +78,11 @@ ImageBlock = {
 			o.height = 42
 			o.type = image_type
 			o.color = image_color
-			o.image_path = windower.addon_path..'textures/'.. image_type ..'.png'
+			o.image_path = windower.addon_path..'textures/'..settings.image_folder_name..'/'.. image_type ..'.png'
 			o.name = (_addon and _addon.name or 'image') .. '_gensym_' .. tostring(t):sub(8) .. '_%.8x':format(16^8 * math.random()):sub(3)
 			o.x = sections.background:position_x()
 			o.y = sections.background:position_y()
+			check_positions()
 			
 		elseif image_type == 'block' then
 			if imageColors:contains(image_color) then
@@ -90,7 +90,7 @@ ImageBlock = {
 				o.height = 42
 				o.type = image_type
 				o.color = image_color
-				o.image_path = windower.addon_path..'textures/'..image_color ..'.png'
+				o.image_path = windower.addon_path..'textures/'..settings.image_folder_name..'/'..image_color ..'.png'
 				o.name = (_addon and _addon.name or 'image') .. '_gensym_' .. tostring(t):sub(8) .. '_%.8x':format(16^8 * math.random()):sub(3)
 				o.x, o.y = get_position(o)
 				o.text = {}
@@ -414,7 +414,7 @@ function check_positions()
 			grid[i][j] = {}
 			grid[i][j]['empty'] = true
 			grid[i][j]['image'] = {}
-			if i == 1 and j < 5 then
+			if i == 1 and j < 5 and settings.player.show_logo == true then
 				grid[i][j]['empty'] = false
 				grid[i][j]['image'] = sections.logo
 			end
@@ -499,7 +499,7 @@ function get_position(this_image)
 			grid[i][j] = {}
 			grid[i][j]['empty'] = true
 			grid[i][j]['image'] = {}
-			if i == 1 and j < 5 then
+			if i == 1 and j < 5 and settings.player.show_logo == true then
 				grid[i][j]['empty'] = false
 				grid[i][j]['image'] = sections.logo
 			end

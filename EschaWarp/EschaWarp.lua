@@ -30,7 +30,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 _addon.name = 'EschaWarp'
 _addon.author = 'Wiener'
-_addon.version = '1.0'
+_addon.version = '1.1.1'
 _addon.command = 'ew'
 
 require('tables')
@@ -38,6 +38,7 @@ local packets = require('packets')
 local _portals = require('portals')
 
 local _targetPortal = nil
+local _entryPortal = nil
 local _packet = nil
 local _lastPacket = nil
 local _warping = false
@@ -48,6 +49,23 @@ windower.register_event('addon command', function(...)
 
     if cmd == "reset" then
         ResetDialogue()
+    elseif cmd == "z" or cmd == "zone" then
+        local info = windower.ffxi.get_info()
+        if info then
+            _entryPortal = _portals[info.zone]
+            if _entryPortal then
+                _packet = VerifyZone(info.zone)
+                if _packet then
+                    _warping = true
+                    _lastPacket = _packet
+                    EngageDialogue(_packet['Target'], _packet['Target Index'])
+                end
+            else
+                windower.add_to_chat(10, string.format("Zone #%d not setup!", info.zone))
+            end
+        else
+            windower.add_to_chat(10, "Windower info nil.")
+        end
     else
         local targetPortalNumber = tonumber(cmd)
         if type(targetPortalNumber) == 'number' then
@@ -97,60 +115,86 @@ end
 
 windower.register_event('incoming chunk',function(id,data,modified,injected,blocked)
     if id == 0x034 or id == 0x032 then
-        --print(_warping, _packet, _targetPortal)
-        if _warping and _packet and _targetPortal then
-            local p = packets.parse('incoming',data)
-		    if p['Menu ID'] == 9100 then
-                packets.inject(packets.new('outgoing', 0x114))
+        if _warping and _packet then
+            if _targetPortal then
+                local p = packets.parse('incoming',data)
+    		    if p['Menu ID'] == 9100 then
+                    packets.inject(packets.new('outgoing', 0x114))
 
-                local dpacket = packets.new('outgoing', 0x05B)
-                dpacket["Target"]=_packet['Target']
-                dpacket["Option Index"]=_targetPortal.doi
-                dpacket["_unknown1"]=_targetPortal.du1
-                dpacket["Target Index"]=_packet['Target Index']
-                dpacket["Automated Message"]=true
-                dpacket["_unknown2"]=0
-                dpacket["Zone"]=_packet['Zone']
-                dpacket["Menu ID"]=p['Menu ID']
-                packets.inject(dpacket)
+                    local dpacket = packets.new('outgoing', 0x05B)
+                    dpacket["Target"]=_packet['Target']
+                    dpacket["Option Index"]=_targetPortal.doi
+                    dpacket["_unknown1"]=_targetPortal.du1
+                    dpacket["Target Index"]=_packet['Target Index']
+                    dpacket["Automated Message"]=true
+                    dpacket["_unknown2"]=0
+                    dpacket["Zone"]=_packet['Zone']
+                    dpacket["Menu ID"]=p['Menu ID']
+                    packets.inject(dpacket)
 
-                local wpacket = packets.new('outgoing', 0x05C)
-                wpacket["X"]=_targetPortal.x
-                wpacket["Z"]=_targetPortal.z
-                wpacket["Y"]=_targetPortal.y
-                wpacket["Target ID"]=_packet['Target']
-                wpacket["_unknown1"]=_targetPortal.wu1
-                wpacket["Target Index"]=_packet['Target Index']
-                wpacket["_unknown3"]=_targetPortal.wu3
-                wpacket["Zone"]=_packet['Zone']
-                wpacket["Menu ID"]=p['Menu ID']
-                packets.inject(wpacket)
+                    local wpacket = packets.new('outgoing', 0x05C)
+                    wpacket["X"]=_targetPortal.x
+                    wpacket["Z"]=_targetPortal.z
+                    wpacket["Y"]=_targetPortal.y
+                    wpacket["Target ID"]=_packet['Target']
+                    wpacket["_unknown1"]=_targetPortal.wu1
+                    wpacket["Target Index"]=_packet['Target Index']
+                    wpacket["_unknown3"]=_targetPortal.wu3
+                    wpacket["Zone"]=_packet['Zone']
+                    wpacket["Menu ID"]=p['Menu ID']
+                    packets.inject(wpacket)
 
-                dpacket["Target"]=_packet['Target']
-                dpacket["Option Index"]=2
-                dpacket["_unknown1"]=0
-                dpacket["Target Index"]=_packet['Target Index']
-                dpacket["Automated Message"]=false
-                dpacket["_unknown2"]=0
-                dpacket["Zone"]=_packet['Zone']
-                dpacket["Menu ID"]=p['Menu ID']
-                packets.inject(dpacket)
+                    dpacket["Target"]=_packet['Target']
+                    dpacket["Option Index"]=2
+                    dpacket["_unknown1"]=0
+                    dpacket["Target Index"]=_packet['Target Index']
+                    dpacket["Automated Message"]=false
+                    dpacket["_unknown2"]=0
+                    dpacket["Zone"]=_packet['Zone']
+                    dpacket["Menu ID"]=p['Menu ID']
+                    packets.inject(dpacket)
 
-        		_packet = nil
-                _targetPortal = nil
-                _warping = false
-        		return true
+            		_packet = nil
+                    _targetPortal = nil
+                    _warping = false
+            		return true
+                end
+            elseif _entryPortal then
+                local p = packets.parse('incoming',data)
+                if p['Menu ID'] == _entryPortal.menuId then
+                    local dpacket = packets.new('outgoing', 0x05B)
+
+                    dpacket["Target"]=_packet['Target']
+                    dpacket["Option Index"]=0
+                    dpacket["_unknown1"]=0
+                    dpacket["Target Index"]=_packet['Target Index']
+                    dpacket["Automated Message"]=true
+                    dpacket["_unknown2"]=0
+                    dpacket["Zone"]=_packet['Zone']
+                    dpacket["Menu ID"]=p['Menu ID']
+                    packets.inject(dpacket)
+
+                    dpacket["Target"]=_packet['Target']
+                    dpacket["Option Index"]=_entryPortal.oi
+                    dpacket["_unknown1"]=0
+                    dpacket["Target Index"]=_packet['Target Index']
+                    dpacket["Automated Message"]=false
+                    dpacket["_unknown2"]=0
+                    dpacket["Zone"]=_packet['Zone']
+                    dpacket["Menu ID"]=p['Menu ID']
+                    packets.inject(dpacket)
+
+            		_packet = nil
+                    _entryPortal = nil
+                    _warping = false
+            		return true
+                end
             end
         end
 	end
 end)
 
-function VerifyWarp(zoneId)
-    local portalName = 'Eschan Portal'
-    if zoneId == 291 then
-        portalName = 'Ethereal Ingress'
-    end
-
+function GetBasePortalPacket(zoneId, portalName)
     local playerMob = windower.ffxi.get_mob_by_id(windower.ffxi.get_player().id)
     for i,v in pairs(windower.ffxi.get_mob_array()) do
         if string.find(v.name, portalName) then
@@ -159,18 +203,47 @@ function VerifyWarp(zoneId)
                 windower.add_to_chat(10,'Found: '..v.name..'  Distance:'..string.format("%.2f", distance))
                 local basePacket = {}
                 basePacket['me'] = windower.ffxi.get_player().index
-                --print("base packet: ", portalName, zoneId)
                 basePacket['Target'] = v['id']
                 basePacket['Target Index'] = i
                 basePacket['Zone'] = zoneId
-                basePacket['Menu ID'] = 9100
                 return basePacket
             end
         end
     end
-
-    windower.add_to_chat(10, "Not near a portal to warp!")
     return nil
+end
+
+function VerifyWarp(zoneId)
+    local portalName = 'Eschan Portal'
+    if zoneId == 291 then
+        portalName = 'Ethereal Ingress'
+    end
+
+    local basePacket = GetBasePortalPacket(zoneId, portalName)
+    if basePacket then
+        basePacket['Menu ID'] = 9100
+        return basePacket
+    else
+        windower.add_to_chat(10, "Not near a portal to warp!")
+        return nil
+    end
+end
+
+function VerifyZone(zoneId)
+    local portalName = 'Undulating Confluence'
+    if zoneId == 102 or zoneId == 108 or zoneId == 117 then
+        portalName = 'Dimensional Portal'
+    end
+
+    local basePacket = GetBasePortalPacket(zoneId, portalName)
+    if basePacket then
+        basePacket['Menu ID'] = _entryPortal.menuId
+        basePacket['_unknown1'] = 8
+        return basePacket
+    else
+        windower.add_to_chat(10, "Not near an Escha entry to warp!")
+        return nil
+    end
 end
 
 function GetDistance(x1, y1, z1, x2, y2, z2)

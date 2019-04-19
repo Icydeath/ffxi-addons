@@ -7,6 +7,6 @@ return {
 	{
 		['name'] = '4-step light',
 		['repeat'] = true,
-		['ws'] = L{'True Strike','Black Halo','Black Halo','Realmrazer'}
-	},
+		['ws'] = L{'True Strike','Black Halo','Black Halo','Hexa Strike'}
+	}
 }

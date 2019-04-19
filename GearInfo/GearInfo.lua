@@ -1,6 +1,6 @@
 _addon.name = 'GearInfo'
 _addon.author = 'Sebyg666'
-_addon.version = '1.7.2.7'
+_addon.version = '1.7.2.10'
 _addon.commands = {'gi','gearinfo'}
 
 
@@ -99,7 +99,7 @@ function options_load()
 		settings = config.load('data\\'..windower.ffxi.get_player().name..'_settings.xml',defaults)
 		settings:save('all')
 		sections.background = ImageBlock.New(0,'background','')
-		sections.logo = ImageBlock.New(1,'logo','')
+		--sections.logo = ImageBlock.New(1,'logo','')
 		player = windower.ffxi.get_player()
 		update_party()
 		local this_file = files.new('data\\'..player.name..'_data.lua',true)
@@ -185,6 +185,7 @@ windower.register_event('addon command', function(command, ...)
 				log('Misstype: use //gi delete wstp')
 			end	
 		elseif command:lower() == 'hide' then
+			settings.player.show_logo = false
 			settings.player.show_total_haste = false
 			settings.player.show_tp_Stuff = false
 			settings.player.show_acc_Stuff = false
@@ -270,6 +271,13 @@ windower.register_event('addon command', function(command, ...)
 					settings.player.show_total_haste = false
 				end
 				log('Show Haste = '..tostring(settings.player.show_total_haste))
+			elseif args[1]:lower() == 'logo' then
+				if settings.player.show_logo == false then
+					settings.player.show_logo = true
+				elseif settings.player.show_logo then
+					settings.player.show_logo = false
+				end
+				log('Show Logo = '..tostring(settings.player.show_logo))
 			elseif args[1]:lower() == 'eva' then
 				if settings.player.show_Evasion == false then
 					settings.player.show_Evasion = true
@@ -343,6 +351,7 @@ windower.register_event('addon command', function(command, ...)
 				end
 				log('Cor Chat log messages set to '..tostring(settings.player.show_COR_messages))
 			elseif args[1]:lower() == 'all' then
+				settings.player.show_logo = true
 				settings.player.show_total_haste = true
 				settings.player.show_tp_Stuff = true
 				settings.player.show_acc_Stuff = true
@@ -356,8 +365,51 @@ windower.register_event('addon command', function(command, ...)
 				log('All display settings set to true to shall all the display.')
 			end
 			settings:save('all')
+		elseif command:lower() == 'theme' then
+
+			if windower.dir_exists(windower.addon_path..'textures/'..args[1]:lower()) then
+				if not files.exists('textures\\'..args[1]:lower() ..'\\blue.png') then
+					error('textures\\'..args[1]:lower()..' is missing blue.png.')
+				elseif not files.exists('textures\\'..args[1]:lower() ..'\\dark-blue.png') then
+					error('textures\\'..args[1]:lower()..' is missing dark-blue.png.')
+				elseif not files.exists('textures\\'..args[1]:lower() ..'\\green.png') then
+					error('textures\\'..args[1]:lower()..' is missing green.png.')
+				elseif not files.exists('textures\\'..args[1]:lower() ..'\\red.png') then
+					error('textures\\'..args[1]:lower()..' is missing red.png.')
+				elseif not files.exists('textures\\'..args[1]:lower() ..'\\grey.png') then
+					error('textures\\'..args[1]:lower()..' is missing grey.png.')
+				elseif not files.exists('textures\\'..args[1]:lower() ..'\\light-green.png') then
+					error('textures\\'..args[1]:lower()..' is missing light-green.png.')
+				elseif not files.exists('textures\\'..args[1]:lower() ..'\\orange.png') then
+					error('textures\\'..args[1]:lower()..' is missing orange.png.')
+				elseif not files.exists('textures\\'..args[1]:lower() ..'\\pink.png') then
+					error('textures\\'..args[1]:lower()..' is missing pink.png.')
+				elseif not files.exists('textures\\'..args[1]:lower() ..'\\purple.png') then
+					error('textures\\'..args[1]:lower()..' is missing purple.png.')
+				elseif not files.exists('textures\\'..args[1]:lower() ..'\\yellow.png') then
+					error('textures\\'..args[1]:lower()..' is missing yellow.png.')
+				elseif not files.exists('textures\\'..args[1]:lower() ..'\\logo.png') then
+					error('textures\\'..args[1]:lower()..' is missing logo.png.')
+				else
+				
+					settings.image_folder_name = args[1]:lower()
+					settings:save('all')
+					log('Image folder path changed to  --> textures/'..args[1]:lower())
+					log('Refreshing display.')
+					
+					sections.logo:delete()
+					
+					for k, v in pairs(sections.block) do
+						sections.block[k]:delete()
+					end
+					
+				end
+			else
+				error('the folder '..args[1]:lower()..' does not exist.')
+			end
 		elseif command:lower() == 'test' then
-			table.vprint(player['merits']['aggressive_aim'])
+			
+			-- table.vprint(player['merits']['aggressive_aim'])
 			-- for skill_name, value in pairs(player_base_skills) do
 				-- if skill_name:contains('eva') then
 					-- print(skill_name, value)
@@ -365,9 +417,23 @@ windower.register_event('addon command', function(command, ...)
 			-- end
 			-- if player_base_skills['evasion'] then print(player_base_skills['evasion']) end
 			-- local current_equip = check_equipped()
+			 
+			 
+			 -- for k,v in pairs(current_equip) do
+			 -- --25613
+				-- if v.id == 25613 then
+					-- local ext = Extdata.decode(k)
+					-- print(ext.type)
+				-- end
+				-- if v.id == 25449 then
+					-- local ext = Extdata.decode(k)
+					-- print(ext.type)
+				-- end
+			 -- end
+			 
+			 
 			-- local Gear_info = get_equip_stats(current_equip)
 			-- print(Gear_info['Evasion skill'])
-			--check_equipped()
 			--settings.Cors['ewellina'] = nil
 			-- table.vprint(_ExtraData.player.buff_details)
 			--table.vprint(windower.ffxi.get_mob_by_target('t'))
@@ -561,7 +627,7 @@ function check_equipped()
 			local item_has_augment = Extdata.decode(v)
 			local no_match = true
 			local temp_item = new_gear_table[k]
-
+			
 			for x,y in pairs(full_gear_table_from_file) do
 				if v.id == y.id then
 					if type(item_has_augment.augments) == 'table' and table.length(item_has_augment.augments) > 0 then
@@ -658,6 +724,13 @@ function update()
 		----------------------------------------------------- Haste Stuff ------------------------------------------
 		local current_equip = check_equipped()
 		Gear_info = get_equip_stats(current_equip)
+		Total_haste = get_total_haste()
+		
+		if settings.player.show_logo == true then
+			if not sections.logo then sections.logo = ImageBlock.New(1,'logo','') end
+		else
+			if sections.logo then sections.logo:delete() end
+		end
 		
 		if settings.player.show_total_haste ==  true then
 			if not sections.block[1] then sections.block[1] = ImageBlock.New(2,'block','red', 'Gear.H', 00) end
@@ -685,8 +758,6 @@ function update()
 			else
 				windower.text.set_color(sections.block[3].text[2].name, 255, 255, 255, 255)
 			end
-			
-			Total_haste = get_total_haste()
 			
 			windower.text.set_text(sections.block[4].text[2].name,  Total_haste)
 			if Total_haste > 820 then

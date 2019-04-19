@@ -107,7 +107,8 @@ return {
         ['whm'] = 4
     },
     ['players'] = {
-        ['Lorand'] = 1
+        ['Icydeath'] = 0,
+		['Eldiablo'] = 1
     },
     ['status_removal'] = {
         ['addle'] = 2,

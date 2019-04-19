@@ -71,5 +71,8 @@ return {
     },
     ['Yawn'] = S{
         'sleep'
+    },
+	["Torment of Gu'Dha"] = S{
+        'petrification'
     }
 }

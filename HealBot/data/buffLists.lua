@@ -47,6 +47,12 @@ return {
         'Haste II',
         'Refresh II'
     },
+	['rdm/sch'] = {
+        ['self'] = {
+            'Light Arts',
+			'Addendum: White',
+        }
+    },
     ['whm'] = {
         ['melee'] = {
             'Haste'
@@ -80,13 +86,13 @@ return {
             'Haste'
         },
         ['self'] = {
-            'Haste',
             'Light Arts',
-            'Aquaveil',
             'Protectra V',
             'Shellra V',
             'Reraise IV',
-            'Afflatus Solace'
+            'Afflatus Solace',
+			'Addendum: White',
+			--'Sublimation'
         }
     }
 }

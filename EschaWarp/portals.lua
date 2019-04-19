@@ -40,5 +40,15 @@ return T{
         [8] = {doi=1, du1=30, x=-368.72, z=-113.3, y=212.45, wu1=1966084, wu3=16129},
         [9] = {doi=1, du1=31, x=-581, z=-417.4, y=-1065, wu1=2031618, wu3=1},
         [10] = {doi=1, du1=32, x=-390.22, z=-439.71, y=-835.13, wu1=2097156, wu3=1},
-    }
+    },
+    -- Qufim Island
+    [126] = {menuId=65, oi=1},
+    -- Misareaux Coast
+    [25] = {menuId=14, oi=1},
+    -- La Theine Plateau
+    [102] = {menuId=222, oi=2},
+    -- Konschtat Highlands
+    [108] = {menuId=926, oi=2},
+    -- Tahrongi Canyon
+    [117] = {menuId=926, oi=2},
 }

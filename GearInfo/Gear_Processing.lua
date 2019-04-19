@@ -282,8 +282,10 @@ function get_equip_stats(equipment_table)
 		return stat_table
 	else	
 		for equip_slot, equipped_item in pairs(equipment_table) do
+			--log(equip_slot)
 			for key, value in pairs(equipped_item) do
-				if stat_table[key] then
+				--if equip_slot == 'main' then log(key) end
+				if stat_table[key] or (key == 'skill' and stat_table[value..' skill']) then
 					if equipped_item["category"]=="Weapon" then
 						if equipped_item['skill'] then
 							stat_table[equip_slot]['skill'] =  equipped_item['skill']
@@ -291,7 +293,7 @@ function get_equip_stats(equipment_table)
 								stat_table[equip_slot].value =  equipped_item[equipped_item['skill'] ..' skill']
 							end
 						end
-						if not melee_skills:contains(key) and not ranged_skills:contains(key) then
+						if not melee_skills:contains(key) and not ranged_skills:contains(key) and not (key == 'skill' and stat_table[value..' skill']) then
 							if key == 'Haste' then
 								stat_table['Haste'] = stat_table['Haste'] + math.floor(value / 100 * 1024)
 							elseif key == 'Slow' then
@@ -370,6 +372,7 @@ function get_player_acc(stat_table)
 	local stat_table = stat_table
 	
 	for skill_name, value in pairs(player_base_skills) do
+		--log(stat_table['range'].skill:lower())
 		--notice(main_hand.skill)
 		--log(skill_name  .. ' | ' .. string.gsub(stat_table['main'].skill:lower(), ' ', '_'))
 		if skill_name == string.gsub(stat_table['main'].skill:lower(), ' ', '_') then
@@ -447,20 +450,20 @@ function get_player_att(stat_table)
 	
 	-- Attack (2H) 
 	if table.containskey(two_handers, stat_table['main']['skill']) then
-		local base_attack = 8 + stat_table['main'].value + math.floor(3 * (stat_table['STR'] + Buffs_inform['STR']) / 4) + stat_table['Attack'] + get_player_att_from_job() + Buffs_inform['Attack']
+		local base_attack = 8 + stat_table['main'].value + stat_table['STR'] + Buffs_inform['STR'] + stat_table['Attack'] + get_player_att_from_job() + Buffs_inform['Attack']
 		local multi = Buffs_inform['Attack perc'] / 1024
 		local BA_multi = math.floor(base_attack * (1 + get_smite() + multi))
 		Total_att.main = BA_multi
 		--print(base_attack, get_smite(), multi, Buffs_inform['Attack perc'])
 	-- Attack (H2H)
 	elseif stat_table['main']['skill'] == 'Hand-to-Hand' then
-		local base_attack = 8 + stat_table['main'].value + math.floor(5 * (stat_table['STR'] + Buffs_inform['STR']) / 8) + stat_table['Attack'] + get_player_att_from_job() + Buffs_inform['Attack']
+		local base_attack = 8 + stat_table['main'].value + stat_table['STR'] + Buffs_inform['STR'] + stat_table['Attack'] + get_player_att_from_job() + Buffs_inform['Attack']
 		local multi = Buffs_inform['Attack perc'] / 1024
 		local BA_multi = math.floor(base_attack * (1 + get_smite() + multi))
 		Total_att.main = BA_multi + Buffs_inform['Attack']
 	-- Attack (1H main)
 	else
-		local base_attack = 8 + stat_table['main'].value + math.floor(3 * (stat_table['STR'] + Buffs_inform['STR']) / 4) + stat_table['Attack'] + get_player_att_from_job() + Buffs_inform['Attack']
+		local base_attack = 8 + stat_table['main'].value + stat_table['STR'] + Buffs_inform['STR'] + stat_table['Attack'] + get_player_att_from_job() + Buffs_inform['Attack']
 		local multi = Buffs_inform['Attack perc'] / 1024
 		local BA_multi = math.floor(base_attack * (1 + multi))
 		Total_att.main = BA_multi
@@ -475,14 +478,14 @@ function get_player_att(stat_table)
 	end
 	-- Ranged Attack
 	if player.equipment.range.id ~= 0 and player.equipment.range.category == 'Weapon' and player.equipment.range['damage'] then
-		local base_attack = 8 + stat_table['range'].value + math.floor(3 * stat_table['STR'] / 4) + stat_table['Ranged Attack'] + get_player_att_from_job() + Buffs_inform['Attack']
+		local base_attack = 8 + stat_table['range'].value + stat_table['STR'] + stat_table['Ranged Attack'] + get_player_att_from_job() + Buffs_inform['Attack']
 		local multi = Buffs_inform['Attack perc'] / 1024
 		local BA_multi = math.floor(base_attack * (1 + multi))
 		Total_att.range = BA_multi
 	end
 	
 	if player.equipment.range.id == 0 and player.equipment.ammo.id ~= 0 and player.equipment.ammo.category == 'Weapon' and player.equipment.ammo['damage'] then
-		local base_attack = 8 + stat_table['ammo'].value + math.floor(3 * stat_table['STR'] / 4) + stat_table['Ranged Attack'] + get_player_att_from_job() + Buffs_inform['Attack']
+		local base_attack = 8 + stat_table['ammo'].value + stat_table['STR'] + stat_table['Ranged Attack'] + get_player_att_from_job() + Buffs_inform['Attack']
 		local multi = Buffs_inform['Attack perc'] / 1024
 		local BA_multi = math.floor(base_attack * (1 + multi))
 		Total_att.ammo = BA_multi
@@ -569,16 +572,17 @@ function get_player_defence(stat_table)
 	local defence = 0
 	--notice(stat_table['AGI'] .. ' | ' .. stat_table['Evasion skill'] .. ' | ' .. eva_from_skill(stat_table['Evasion skill'] ) .. ' | ' .. get_player_eva_from_job().. ' | ' .. stat_table['Evasion'])
 	if player.main_job_level < 51 then
-		defence = math.floor(3*stat_table['VIT']/2) + player.main_job_level + 8
+		defence = math.floor(3*(stat_table['VIT'] + Buffs_inform['VIT']) /2) + player.main_job_level + 8
 	elseif player.main_job_level > 50 and player.main_job_level < 61 then
-		defence = math.floor(3*stat_table['VIT']/2) + (2 * player.main_job_level ) - 48
+		defence = math.floor(3*(stat_table['VIT'] + Buffs_inform['VIT'])/2) + (2 * player.main_job_level ) - 42
 	elseif player.main_job_level > 60 and player.main_job_level < 90 then
-		defence = math.floor(3*stat_table['VIT']/2) + ( player.main_job_level ) + 18
+		defence = math.floor(3*(stat_table['VIT'] + Buffs_inform['VIT'])/2) + ( player.main_job_level ) + 18
 	else
-		defence = math.floor(3*stat_table['VIT']/2) + ( player.main_job_level ) + 18 + math.floor( (player.main_job_level - 89) / 2 )
+		defence = math.floor(3*(stat_table['VIT'] + Buffs_inform['VIT'])/2) + ( player.main_job_level ) + 18 + math.floor( (player.main_job_level - 89) / 2 )
 	end
-	defence = defence + stat_table['DEF'] + get_player_def_from_job()
-
+	defence = defence + stat_table['DEF'] + get_player_def_from_job() + Buffs_inform['DEF']
+	local multi = Buffs_inform['Defence perc'] / 1024
+	defence = math.floor(defence * (1 + multi))
 	return defence
 end
 
@@ -916,6 +920,7 @@ function get_player_eva_from_job()
 	end
 end
 
+-- copy pasta from get_player_acc_from_job but returns Attack
 function get_player_att_from_job()
 	
 	local sub_job_acc = 0

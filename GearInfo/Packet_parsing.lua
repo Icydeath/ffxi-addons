@@ -489,7 +489,7 @@ function update_party()
     for k = 1, 6 do
         local member = party[key_indices[k]]
         if member and member.mob then
-			new[member.mob.name] = {id = member.mob.id , name = member.mob.name, Last_Spell = '' , effect ='', value = 0, mob = member.mob, ['Main job']=0,['Sub job']=0,buffs={}, indi={}, geo={}, pet={incoming = false,},}
+			new[member.mob.name] = {id = member.mob.id , name = member.mob.name, Last_Spell = '' , effect ='', value = 0, mob = member.mob, ['Main job']=0,['Main job level']=0,['Sub job']=0,['Sub job level']=0,buffs={}, indi={}, geo={}, pet={incoming = false,},}
         end
 	end
 	
@@ -497,7 +497,8 @@ function update_party()
 		for old_name, old_member in pairs(old) do
 			if old_name == new_name then
 				new[old_name] = {id = old_member.id , name = old_member.name, Last_Spell = old_member.Last_Spell , effect = old_member.effect, value = old_member.value, 
-												mob = new_member.mob, ['Main job'] = old_member['Main job'], ['Sub job'] = old_member['Sub job'], buffs=old_member.buffs, indi=old_member.indi, geo=old_member.geo, pet=old_member.pet, }
+												mob = new_member.mob, ['Main job'] = old_member['Main job'], ['Main job level'] = old_member['Main job level'], ['Sub job'] = old_member['Sub job'], ['Sub job level'] = old_member['Sub job level'], 
+												buffs=old_member.buffs, indi=old_member.indi, geo=old_member.geo, pet=old_member.pet, }
 				if old[old_name].Marcato then new[old_name].Marcato = true end
 				if old[old_name].SV then new[old_name].SV = true end
 				if old[old_name].BoG then new[old_name].BoG = true end	
@@ -524,14 +525,18 @@ function update_party()
 	for new_name, new_member in pairs(new) do
 		if new_member.id == player.id then
 			new[new_name]['Main job'] = player.main_job
+			new[new_name]['Main job level'] = player.main_job_level
 			if new[new_name]['Sub job'] then
 				new[new_name]['Sub job'] = player.sub_job
+				new[new_name]['Sub job level'] = player.sub_job_level
 			else
 				new[new_name]['Sub job'] ='NON'
 			end
 		elseif party_from_packet[new_member.id] and new_member.id ~= player.id then
 			new[new_name]['Main job'] = res.jobs:with('id', party_from_packet[new_member.id]['Main job']).ens
+			new[new_name]['Main job level'] = party_from_packet[new_member.id]['Main job level']
 			new[new_name]['Sub job'] = res.jobs:with('id', party_from_packet[new_member.id]['Sub job']).ens
+			new[new_name]['Sub job level'] = party_from_packet[new_member.id]['Sub job level']
 			if new_name == 'Cornelia' and new[new_name]['mob'] and new[new_name]['mob']['charmed'] then
 				new[new_name].indi = {id=817, caster=party[key_indices[1]].mob.name, boost = 1}
 			elseif new_name == 'Kupofried' and new[new_name]['mob'] and new[new_name]['mob']['charmed'] then
@@ -578,7 +583,7 @@ parse.i[0x0DD] = function (data)
     -- {ctype='char*',             label='Name'},                                  -- 26
 	
 	local packet = packets.parse('incoming', data)
-	party_from_packet[packet['ID']] = {id = packet['ID'] , name = packet['Name'], ['Main job'] = packet['Main job'], ['Sub job'] = packet['Sub job'],} 
+	party_from_packet[packet['ID']] = {id = packet['ID'] , name = packet['Name'], ['Main job'] = packet['Main job'], ['Main job level'] = packet['Main job level'], ['Sub job'] = packet['Sub job'], ['Sub job level'] = packet['Sub job level'],} 
 	--table.vprint(packet)
 	-- ['Main job level'] = packet['Main job level'], ['Sub job level'] = packet['Sub job level']}
 end

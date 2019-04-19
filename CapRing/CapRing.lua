@@ -9,7 +9,7 @@ to use a cp ring do: //cp
 _addon.name = 'CapRing'
 _addon.author = 'from20020516|Modified by Icy'
 _addon.version = '1.0'
-_addon.commands = {'capring','cp'}
+_addon.commands = {'capring'}
 
 require('logger')
 res = require('resources')

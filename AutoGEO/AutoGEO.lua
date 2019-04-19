@@ -31,7 +31,7 @@
     
 --]]
 _addon.author = 'Ivaar'
-_addon.commands = {'AutoGEO','geo'}
+_addon.commands = {'AutoGEO','geo','ageo'}
 _addon.name = 'AutoGEO'
 _addon.version = '1.15.07.19'
 

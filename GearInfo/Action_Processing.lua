@@ -66,6 +66,7 @@ function on_action(action)
 		end
 	end
 	
+	-- Cor Job abilities
 	-- check for cor rolls
 	if action.category == 6 and (table.containskey(Cor_Rolls, action.param) or action.param == 123) and ((actor.is_npc and actor.charmed) or not actor.is_npc) then
 		--notice('Step 1: ' .. action.param .. ' ' .. res.job_abilities:with('id', action.param).en)
@@ -146,7 +147,9 @@ function on_action(action)
 							end
 							
 							member_table[index] = {id = member_table[index].id, name = member_table[index].name, mob = member_table[index].mob,  Last_Spell = Cor_Rolls[rollID].en, 
-																	effect = Cor_Rolls[rollID].effect, value = buff_potency, ['Main job']=member_table[index]['Main job'], ['Sub job']=member_table[index]['Sub job'], 
+																	effect = Cor_Rolls[rollID].effect, value = buff_potency, 
+																	['Main job']=member_table[index]['Main job'], ['Main job level']=member_table[index]['Main job level'],
+																	['Sub job']=member_table[index]['Sub job'], ['Sub job level']=member_table[index]['Sub job level'], 
 																	buffs=member_table[index].buffs, indi=member_table[index].indi, geo=member_table[index].geo, pet=member_table[index].pet}
 																	
 							for i, buff in pairs(_ExtraData.player.buff_details) do
@@ -225,19 +228,79 @@ function on_action(action)
 				end
 			end
 		end
+	-- Job ability use "General"
 	elseif action.category == 6 and ((actor.is_npc and actor.charmed) or not actor.is_npc) then
 		--notice('Step 1: ' .. action.param .. ' ' .. res.job_abilities:with('id', action.param).en)
 		for index, target in pairs(action.targets) do
 			if type(target) == "table" then
+				-- Crooked Cards
 				if action.param == 392 then
 					Crooked_cards = {name = '', bool = true}
 				end
-				if action.param == 347 then -- ecliptic atrition
+				-- Ecliptic Atrition
+				if action.param == 347 then 
 					for index, m_table in pairs(member_table) do
 						if m_table.mob.pet_index and windower.ffxi.get_mob_by_index(m_table.mob.pet_index).name == 'Luopan' and m_table.id == action.actor_id then
 							if member_table[index].geo.boost ~= 2 then
+								if member_table[index].geo.boost == nil then 
+									member_table[index].geo.boost = 1 
+								end
 								member_table[index].geo = {id = member_table[index].geo.id, caster = member_table[index].geo.caster, boost = (member_table[index].geo.boost + 0.25) }
 							end
+						end
+					end
+				end
+				
+				-- Aggressor
+				if action.param == 34 and action.actor_id == player.id  then
+					for index, m_table in pairs(member_table) do
+						-- check if actor is in the party
+						if member_table[index].id == action.actor_id and action.actor_id == player.id then
+					
+							
+							-- Warrior's Lorica +2, Agoge Lorica nq, +1, +2, +3
+							-- These chests boost AGI when agressor is activated on agressive aim merrits
+							local body_list = L{10670, 26800, 26801, 23130, 23465}
+							if body_list:contains(player.equipment['body'].id) then
+								if player.equipment['body']["augments"][3] == "Enhances \"Aggressive Aim\" effect" then
+									agi_boost = player['merits']['aggressive_aim'] * 3
+								end
+							end
+						
+									
+							member_table[index] = {id = member_table[index].id, name = member_table[index].name, mob = member_table[index].mob,  Last_Spell = 'Aggressor', 
+																	effect = "AGI", value = agi_boost, 
+																	['Main job']=member_table[index]['Main job'], ['Main job level']=member_table[index]['Main job level'],
+																	['Sub job']=member_table[index]['Sub job'], ['Sub job level']=member_table[index]['Sub job level'], 
+																	buffs=member_table[index].buffs, indi=member_table[index].indi, geo=member_table[index].geo, pet=member_table[index].pet}	
+							break
+						end
+					end
+				end
+					
+				
+				-- Warcry
+				if action.param == 32 then
+					for index, m_table in pairs(member_table) do
+						-- check if actor is in the party
+						if member_table[index].id == action.actor_id then
+							-- ['Main job']=0,['Sub job']=0
+							local level = 0
+							if member_table[index]['Main job'] == 'WAR' then
+								level = member_table[index]['Main job level']
+							elseif member_table[index]['Sub job'] == 'WAR' then
+								level = member_table[index]['Sub job level']
+							end
+							local att_boost = math.floor((level / 4) + 4.75) / 256
+							-- must make value as n/1024 for calculation later
+							att_boost = att_boost  * 1024
+							
+							member_table[index] = {id = member_table[index].id, name = member_table[index].name, mob = member_table[index].mob,  Last_Spell = 'Warcry', 
+																	effect = "Attack perc", value = att_boost, 
+																	['Main job']=member_table[index]['Main job'], ['Main job level']=member_table[index]['Main job level'],
+																	['Sub job']=member_table[index]['Sub job'], ['Sub job level']=member_table[index]['Sub job level'], 
+																	buffs=member_table[index].buffs, indi=member_table[index].indi, geo=member_table[index].geo, pet=member_table[index].pet}	
+							break			
 						end
 					end
 				end

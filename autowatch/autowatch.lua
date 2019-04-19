@@ -93,6 +93,7 @@ info.busy = false
 info.status = 'None'
 info.once = T{}
 info.limbo2_time = 0
+info.stones = 0
 
 info.settings = {}
 info.settings.target = 'None'
@@ -137,7 +138,7 @@ function initialize(text, settings)
 	infobox:append(' Position > X:  ${player_x|0}   Y:  ${player_y|0}   Z:  ${player_z|0}')
 	infobox:append(' Busy:  ${busy|false}     Target:  ${player_target|None}')
 	infobox:append(' -------------------------------------------------------------        ')
-	infobox:append(' AutoWatch:  ${switch|Off}           Use Displacers:  ${displacers|0}')
+	infobox:append(' AutoWatch:  ${switch|Off}   Use Displacers:  ${displacers|0}   Voidstones:  ${stones|0}')
 
   text_box:clear()
   text_box:append(infobox:concat('\n'))
@@ -159,6 +160,7 @@ windower.register_event('addon command', function (command, ...)
 		notice('	//aw start will engage the bot and begin work.')
 		notice('	//aw stop will disengage the bot and let you resume control.')
 		notice('	//aw slave will toggle the bot between active and passive behavior.')
+		notice('	//aw engage will engage the target.')
 		notice('	//aw action will add actions to your master/slave lists.')
 		notice('		//Example: //aw action "Tachi: Fudo" tp 1000')
 		notice('		//Example: //aw action "Erratic Flutter" absent Haste')
@@ -189,6 +191,11 @@ windower.register_event('addon command', function (command, ...)
 		else
             info.status = 'Trade Cells'
         end
+		
+		windower.add_to_chat(207, "Checking Voidstones...")
+		local packet = packets.new('outgoing', 0x10F)
+		packets.inject(packet)
+		
 		return
 	end
 	
@@ -334,7 +341,7 @@ windower.register_event('prerender', function()
 	
 	if switch == true and busy == false then
 		update_status_based_on_role()
-
+		
 		if info.status == 'Waiting for Pop' then
 			return
 		end
@@ -398,7 +405,8 @@ windower.register_event('prerender', function()
 				end
 			end
 			
-			if info.status == 'Attempting Pop' then
+			--if info.status == 'Attempting Pop' then
+			if info.status == 'Attempting Pop' and info.stones > 0 then
 				local rift = pick_nearest(get_marray('Planar Rift'))
 				if rift[1].valid_target then
 					face_target(rift[1].id)
@@ -455,6 +463,9 @@ windower.register_event('prerender', function()
 				face_target(pyxis[1].id)
 				if distance(pyxis[1].x,pyxis[1].y) < 6 then
 					notice('Injecting 0x01A on Pyxis after delay.')
+					if info.stones > 0 then
+						info.stones = info.stones - 1
+					end
 					info.status = 'Limbo2'
 					info.limbo2_time = os.time()
 					coroutine.schedule(poke_pyxis, determine_pyxis_delay())
@@ -469,6 +480,13 @@ end)
 
 windower.register_event('incoming chunk',function(id,data,modified,injected,blocked)
 if switch then
+		if id == 0x113 then -- 275 Currency Info
+			local packet = packets.parse("incoming", data)
+			local voidstones = packet['Voidstones']
+			windower.add_to_chat(207, 'Voidstones Remaining: '..voidstones)
+			info.stones = voidstones
+		end
+	
 		if id == 0x29 then	-- Mob died
 			local p = packets.parse('incoming',data)
 			local target_id = p['Target'] --data:unpack('I',0x09)
@@ -515,7 +533,7 @@ if switch then
 		end
 
 		if id == 0x034 then
-		local p = packets.parse('incoming',data)
+			local p = packets.parse('incoming',data)
 		
 			if windower.ffxi.get_mob_by_id(p.NPC).name == 'Planar Rift' and info.status == 'Limbo' then
 				local disp_option = {[0] = 0x01, [1] = 0x11, [2] = 0x21, [3] = 0x31, [4] = 0x41, [5] = 0x51}
@@ -552,7 +570,7 @@ if switch then
 						total_items = total_items + 1
 					end
 					if itm == 5910 then
-						send_cmd('input /p Woohoo~!')
+						send_cmd('input /echo Woohoo~!')
 					end
 				end
 				
@@ -1210,7 +1228,11 @@ function test_limbo2_time()
 	if info.status == 'Limbo2' then
 		local now_time = os.time()
 		if os.difftime(now_time, info.limbo2_time) >= 6 then
-			info.status = 'Pyxis'
+			if info.stones == 0 and info.settings.should_engage == true then
+				info.status = 'Waiting for Pop'
+			else
+				info.status = 'Pyxis'
+			end
 		end
 	end
 end

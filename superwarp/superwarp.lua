@@ -32,9 +32,9 @@ _addon.name = 'superwarp'
 
 _addon.author = 'Akaden'
 
-_addon.version = '0.9'
+_addon.version = '0.95'
 
-_addon.command = 'sw'
+_addon.commands = {'sw','superwarp'}
 
 require('tables')
 require('logger')
@@ -43,11 +43,12 @@ packets = require('packets')
 require('coroutine')
 config = require('config')
 
-maps = {
-	['hp'] = require('map/homepoints'),
-	['wp'] = require('map/waypoints'),
-	['sg'] = require('map/guides'),
-}
+maps = require('map/maps')
+
+warp_list = T{}
+for k, map in pairs(maps) do
+	warp_list:append(map.short_name)
+end
 
 sub_zone_aliases = {
 	['e'] = 'Entrance',
@@ -57,20 +58,15 @@ sub_zone_aliases = {
 	['mog'] = 'Mog House',
 	['house'] = 'Mog House',
 	['fs'] = 'Frontier Station',
+	['ed'] = 'Enigmatic Device',
 }
-
-sub_zone_targets = {
-	['hp'] = S{'entrance', 'mog house', 'auction house', '1', '2', '3', '4', '5', '6', '7', '8', '9', },
-	['wp'] = S{'frontier station', 'platea', 'triumphus', 'pioneers', 'mummers', 'inventors', 'auction house', 'mog house', 'bridge', 'airship', 'docks', 'waterfront', 'peacekeepers', 'scouts', 'statue', 'goddess', 'wharf', 'yahse', 'sverdhried', 'hillock', 'coronal', 'esplanade', 'castle', 'gates', '1', '2', '3', '4', '5', '6', '7', '8', '9', }	
-}
-
-warp_list = S{'hp','wp','sg'}
 
 local defaults = {
 	debug = false,
 	send_all_delay = 0.4,
 	max_retries = 6,
 	retry_delay = 2,
+	enable_same_zone_teleport = true,
 }
 
 local settings = config.load(defaults)
@@ -104,6 +100,7 @@ end
 --- resolve sub-zone target aliases (ah -> auction house, etc.)
 local function resolve_sub_zone_aliases(raw)
 	if raw == nil then return nil end
+	if type(raw) == 'number' then return raw end
 	local raw_lower = raw:lower()
 
 	if sub_zone_aliases[raw_lower] then return sub_zone_aliases[raw_lower] end
@@ -132,27 +129,64 @@ function get_closest_match(map, needle)
 	return key
 end
 
-local function resolve_warp_index(map, zone, sub_zone)
-	local closest_zone_name = get_closest_match(map, zone)
+local function resolve_warp(map_name, zone, sub_zone)
+	local closest_zone_name = get_closest_match(maps[map_name], zone)
 	if closest_zone_name then
-		local zone_map = map[closest_zone_name]
-		if type(zone_map) == 'table' then
+		local zone_map = maps[map_name][closest_zone_name]
+		if type(zone_map) == 'table' and not (zone_map.index or zone_map.shortcut) then
 			if sub_zone ~= nil then
-				local closest_sub_zone = get_closest_match(zone_map, sub_zone)
-				if closest_sub_zone then
-					debug('found warp index: '..closest_zone_name..'/'..closest_sub_zone..' ('..zone_map[closest_sub_zone]..')')
-					return zone_map[closest_sub_zone], closest_zone_name..' - '..closest_sub_zone
+				local closest_sub_zone_name = get_closest_match(zone_map, sub_zone)
+				local sub_zone_map = zone_map[closest_sub_zone_name]
+				if sub_zone_map then
+					if sub_zone_map.shortcut then
+						if zone_map[sub_zone_map.shortcut] and type(zone_map[sub_zone_map.shortcut]) == 'table' then
+							debug('found shortcut: '..sub_zone_map.shortcut)
+							sub_zone_map = zone_map[sub_zone_map.shortcut]
+						end
+					end
+					if sub_zone_map.index then
+						debug('found warp index: '..closest_zone_name..'/'..closest_sub_zone_name..' ('..sub_zone_map.index..')')
+						return sub_zone_map, closest_zone_name..' - '..closest_sub_zone_name
+					else
+						log("Found closest sub-zone, but index is not specified.")
+						return nil
+					end
 				else
 					log('Found zone ('..closest_zone_name..'), but not sub zone: "'..sub_zone..'"')
 					return nil
 				end
 			else
-				for sz, index in pairs(zone_map) do
+				if settings.favorites and settings.favorites[map_name] then
+					for fz, fsz in pairs(settings.favorites[map_name]) do
+						if get_fuzzy_name(fz) == get_fuzzy_name(closest_zone_name) then
+							for sz, sub_zone_map in pairs(zone_map) do
+								if sz == tostring(resolve_sub_zone_aliases(fsz)) then
+									if sub_zone_map.shortcut then
+										if zone_map[sub_zone_map.shortcut] and type(zone_map[sub_zone_map.shortcut]) == 'table' then
+											debug ('found shortcut: '..sub_zone_map.shortcut)
+											sub_zone_map = zone_map[sub_zone_map.shortcut]
+										end
+									end
+									debug('Found zone ('..closest_zone_name..'), but no sub-zone listed, using favorite ('..sz..')')
+									return sub_zone_map, closest_zone_name..' - '..sz.." (F)"
+								end
+							end
+						end
+					end
+				end
+				for sz, sub_zone_map in pairs(zone_map) do
+					if sub_zone_map.shortcut then
+						if zone_map[sub_zone_map.shortcut] and type(zone_map[sub_zone_map.shortcut]) == 'table' then
+							debug ('found shortcut: '..sub_zone_map.shortcut)
+							sub_zone_map = zone_map[sub_zone_map.shortcut]
+						end
+					end
 					debug('Found zone ('..closest_zone_name..'), but no sub-zone listed, using first ('..sz..')')
-					return index, closest_zone_name..' - '..sz
+					return sub_zone_map, closest_zone_name..' - '..sz
 				end
 			end
 		else
+			debug("Found zone settings. No sub-zones defined.")
 			return zone_map, closest_zone_name	
 		end
 	else
@@ -163,6 +197,7 @@ end
 
 function poke_npc(id, index)
 	if id and index then
+		debug("poke npc: "..tostring(id)..' '..tostring(index))
 		local packet = packets.new('outgoing', 0x01A, {
 			["Target"]=id,
 			["Target Index"]=index,
@@ -173,124 +208,100 @@ function poke_npc(id, index)
 	end
 end
 
-local function find_npc(search)
-	local target_id = nil
-	local target_index = nil
+local function distance_sqd(a, b)
+	local dx, dy = b.x-a.x, b.y-a.y
+	return dy*dy + dx*dx
+end
+
+local function find_npc(needles)
+	local target_npc = nil
 	local distance = nil
-	local name = nil
+	local p = windower.ffxi.get_mob_by_target("me")
 	for i, v in pairs(windower.ffxi.get_mob_array()) do
-		local d = windower.ffxi.get_mob_by_index(i).distance
-		if (not target_id or d < distance) and string.find(v.name, search) then
-			target_index = i
-			target_id = v.id
-			name = v.name
-			distance = d
+		local d = distance_sqd(windower.ffxi.get_mob_by_index(i), p)
+		for i, needle in ipairs(needles) do
+			if v.valid_target and (not target_npc or d < distance) and string.find(v.name, needle) then
+				target_npc = v
+				distance = d
+			end
 		end
 	end
-	return target_id, target_index, distance, name
+	return target_npc, distance
 end
 
 local function reset(quiet)
-	if current_activity and last_packet then
-		local packet = packets.new('outgoing', 0x05B)
-		packet["Target"]=last_packet['Target']
-		packet["Option Index"]="0"
-		packet["_unknown1"]="16384"
-		packet["Target Index"]=last_packet['Target Index']
-		packet["Automated Message"]=false
-		packet["_unknown2"]=0
-		packet["Zone"]=last_packet['Zone']
-		packet["Menu ID"]=last_packet['Menu ID']
-		packets.inject(packet)
-		last_activity = current_activity
+	local activity = current_activity or last_activity
+	if activity then
+		if last_packet then
+			local packet = packets.new('outgoing', 0x05B)
+			packet["Target"]=last_packet['Target']
+			packet["Option Index"]="0"
+			packet["_unknown1"]="16384"
+			packet["Target Index"]=last_packet['Target Index']
+			packet["Automated Message"]=false
+			packet["_unknown2"]=0
+			packet["Zone"]=last_packet['Zone']
+			packet["Menu ID"]=last_packet['Menu ID']
+			packets.inject(packet)
+		end
+		last_activity = activity
 		current_activity = nil
 		if not quiet then
 			log('Should be reset now. Please try again.')
 		end
 	else
+		current_activity = nil
 		if not quiet then
 			log('No warp scheduled.')
 		end
 	end
 end
 
-local function set_homepoint()
-	local id, index, dist, name = find_npc('Home Point')
-	if id and index and dist <= 6^2 then
-		current_activity = {type='sethp', id=id, index=index, name=name}
-		poke_npc(id, index)
-	elseif not id then
-		log('No homepoint found!')
-	elseif distance > 6^2 then
-		log('Homepoint found, but too far!')
+local function do_warp(map_name, zone, sub_zone)
+	local map = maps[map_name]
+
+	local warp_settings, display_name = resolve_warp(map_name, zone, sub_zone)
+	if warp_settings and warp_settings.index then
+		local npc, dist = find_npc(map.npc_names.warp)
+		if npc and npc.id and npc.index and dist <= 6^2 then
+			current_activity = {type=map_name, npc=npc, activity_settings=warp_settings}
+			poke_npc(npc.id, npc.index)
+			log('Warping via ' .. npc.name .. ' to '..display_name..'.')
+		elseif not npc then
+			log('No ' .. map.long_name .. ' found!')
+		elseif dist > 6^2 then
+			log(npc.name .. ' found, but too far!')
+		end
+	else
+		debug("something went wrong")
+		state.loop_count = 0
 	end
 end
 
-local function loop_warp(fn, ...)
+local function do_sub_cmd(map_name, sub_cmd)
+	local map = maps[map_name]
+
+	local npc, dist = find_npc(map.npc_names[sub_cmd])
+	if npc and npc.id and npc.index and dist <= 6^2 then
+		current_activity = {type=map_name, sub_cmd=sub_cmd, npc=npc}
+		poke_npc(npc.id, npc.index)
+	elseif not npc then
+		log('No '..map.long_name..' found!')
+	elseif distance > 6^2 then
+		log(npc.name..' found, but too far!')
+	end
+end
+
+local function loop_warp(map_name, ...)
 	if state.loop_count == nil then 
 		state.loop_count = settings.max_retries 
 	end
 
 	if state.loop_count > 0 then
-		fn(...)
+		do_warp(map_name, ...)
 		state.loop_count = state.loop_count - 1
 
-		loop_warp:schedule(settings.retry_delay, fn, ...)
-	end
-end
-
-local function do_homepoint_warp(zone, sub_zone)
-	local warp_index, display_name = resolve_warp_index(maps.hp, zone, sub_zone)
-	if warp_index then
-		local id, index, dist, name = find_npc('Home Point')
-		if id and index and dist <= 6^2 then
-			reset(true)
-			current_activity = {type='hp', id=id, index=index, name=name, hp_index=warp_index}
-			poke_npc(id, index)
-			log('Warping via Home Point to '..display_name..'.')
-		elseif not id then
-			log('No homepoint found!')
-		elseif dist > 6^2 then
-			log('Homepoint found, but too far!')
-		end
-	else
-		state.loop_count = 0
-	end
-end
-
-local function do_waypoint_warp(zone, sub_zone)
-	local warp_index, display_name = resolve_warp_index(maps.wp, zone, sub_zone)
-	if warp_index then
-		local id, index, dist, name = find_npc('Waypoint')
-		if id and index and dist <= 6^2 then
-			current_activity = {type='wp', id=id, index=index, name=name, wp_index=warp_index}
-			poke_npc(id, index)
-			log('Warping via Waypoint to '..display_name..'.')
-		elseif not id then
-			log('No homepoint found!')
-		elseif dist > 6^2 then
-			log('Homepoint found, but too far!')
-		end
-	else
-		state.loop_count = 0
-	end
-end
-
-local function do_guide_warp(zone)
-	local warp_index, display_name = resolve_warp_index(maps.sg, zone)
-	if warp_index then
-		local id, index, dist, name = find_npc('Survival Guide')
-		if id and index and dist <= 6^2 then
-			current_activity = {type='sg', id=id, index=index, name=name, sg_index=warp_index}
-			poke_npc(id, index)
-			log('Warping via Survival Guide to '..display_name..'.')
-		elseif not id then
-			log('No homepoint found!')
-		elseif dist > 6^2 then
-			log('Homepoint found, but too far!')
-		end
-	else
-		state.loop_count = 0
+		loop_warp:schedule(settings.retry_delay, map_name, ...)
 	end
 end
 
@@ -312,26 +323,42 @@ local function handle_warp(warp, args)
 		return
 	end
 
-	local sub_zone_target = nil
-	if sub_zone_targets[warp] then
-		local target_candidate = resolve_sub_zone_aliases(args:last())
-		if sub_zone_targets[warp]:contains(target_candidate:lower()) then
-			sub_zone_target = target_candidate
-			args:remove(args:length())
-		end
-	end
+	for key,map in pairs(maps) do
+		if map.short_name == warp then
+			local sub_cmd = nil
+			if map.sub_commands then
+				for sc, fn in pairs(map.sub_commands) do
+					if sc:lower() == args[1]:lower() then
+						sub_cmd = sc
+					end
+				end
+			end
 
-	state.loop_count = nil
-	if warp == 'hp' then
-		if args[1]:lower() == 'set' then
-			set_homepoint()
-		else
-			loop_warp(do_homepoint_warp, args:concat(' '), sub_zone_target)
+			if sub_cmd then
+				do_sub_cmd(key, sub_cmd)
+				return
+			else
+				local sub_zone_target = nil
+				if map.sub_zone_targets then
+					local target_candidate = resolve_sub_zone_aliases(args:last())
+					if map.sub_zone_targets:contains(target_candidate:lower()) then
+						sub_zone_target = target_candidate
+						args:remove(args:length())
+					end
+				end
+				state.loop_count = nil
+				local zone = windower.ffxi.get_info().zone
+				local zone_target = args:concat(' ')
+				if map.auto_select_zone and map.auto_select_zone(zone) then
+					zone_target = map.auto_select_zone(zone)
+				end
+				if map.auto_select_sub_zone and map.auto_select_sub_zone(zone) then
+					sub_zone_target = map.auto_select_sub_zone(zone)
+				end
+				loop_warp(key, zone_target, sub_zone_target)
+				return
+			end
 		end
-	elseif warp == 'wp' then
-		loop_warp(do_waypoint_warp, args:concat(' '), sub_zone_target)
-	elseif warp == 'sg' then
-		loop_warp(do_guide_warp, args:concat(' '))
 	end
 end
 
@@ -342,6 +369,7 @@ windower.register_event('addon command', function(...)
 	args:remove(1)
 	for i,v in pairs(args) do args[i]=windower.convert_auto_trans(args[i]) end
 	local item = table.concat(args," "):lower()
+
 	if warp_list:contains(cmd) then
 		handle_warp(cmd, args)
 	elseif cmd == 'reset' then
@@ -349,10 +377,14 @@ windower.register_event('addon command', function(...)
 		if args[1] and args[1]:lower() == 'all' then
 			windower.send_ipc_message('reset')
 		end
+	elseif cmd == 'debug' then
+		settings.debug = not settings.debug
+		log('Debug is now '..tostring(settings.debug))
+		settings:save()
 	else
-		log("[sw] hp [warp/w] [all/a/@all] zone name [homepoint_number] -- warp to a designated homepoint. \"all\" sends ipc to all local clients.")
-		log("[sw] wp [warp/w] [all/a/@all] zone name [waypoint_number] -- warp to a designated waypoint. \"all\" sends ipc to all local clients.")
-		log("[sw] sg [warp/w] [all/a/@all] zone name -- warp to a designated survival guide. \"all\" sends ipc to all local clients.")
+		for key, map in pairs(maps) do
+			log(map.help_text)
+		end
 	end
 end)
 
@@ -385,156 +417,24 @@ windower.register_event('incoming chunk',function(id,data,modified,injected,bloc
 		local p = packets.parse('incoming',data)
 		
 		if current_activity then
-			local packet = packets.new('outgoing', 0x05B)
+			local zone = windower.ffxi.get_info()['zone']
+			local map = maps[current_activity.type]
+			local built_packets = nil
+			if current_activity.sub_cmd then
+				debug("building "..current_activity.type.." sub_command packets: "..current_activity.sub_cmd)
+				built_packets = map.sub_commands[current_activity.sub_cmd](current_activity.npc, zone, p['Menu ID'], current_activity.activity_settings)
+			else
+				debug("building "..current_activity.type.." warp packets...")
+				built_packets = map.build_warp_packets(current_activity.npc, zone, p['Menu ID'], current_activity.activity_settings, map.move_in_zone and settings.enable_same_zone_teleport)
+			end
 
-			if current_activity.type == 'sethp' then
-				local zone = windower.ffxi.get_info()['zone']
+			if built_packets and type(built_packets) == 'table' then
+				for i, packet in ipairs(built_packets) do
+					debug("injecting packet "..tostring(i)..' '..(packet.debug_desc or ''))
+					packets.inject(packet)
+					last_packet = packet
+				end
 
-				-- menu change
-				packet["Target"] = current_activity.id
-				packet["Target Index"] = current_activity.index
-				packet["Zone"] = zone
-				packet["Menu ID"] = p['Menu ID']
-
-				packet["Option Index"] = 8
-				packet["_unknown1"] = 0
-				packet["Automated Message"] = true
-				packet["_unknown2"] = 0
-				packets.inject(packet)
-				
-				-- select "set HP"
-				packet["Target"] = current_activity.id
-				packet["Target Index"] = current_activity.index
-				packet["Zone"] = zone
-				packet["Menu ID"] = p['Menu ID']
-
-				packet["Option Index"] = 1
-				packet["_unknown1"] = 0
-				packet["Automated Message"] = false
-				packet["_unknown2"] = 0
-				packets.inject(packet)
-
-				last_packet = packet
-				last_activity = current_activity
-				state.loop_count = 0
-				current_activity = nil
-				return true
-			elseif current_activity.type == 'hp' then
-				local zone = windower.ffxi.get_info()['zone']
-
-				-- menu change
-				packet["Target"] = current_activity.id
-				packet["Target Index"] = current_activity.index
-				packet["Zone"] = zone
-				packet["Menu ID"] = p['Menu ID']
-
-				packet["Option Index"] = 8
-				packet["_unknown1"] = 0
-				packet["Automated Message"] = true
-				packet["_unknown2"] = 0
-				packets.inject(packet)
-
-				-- menu change
-				packet["Target"] = current_activity.id
-				packet["Target Index"] = current_activity.index
-				packet["Zone"] = zone
-				packet["Menu ID"] = p['Menu ID']
-
-				packet["Option Index"] = 2
-				packet["_unknown1"] = 0
-				packet["Automated Message"] = true
-				packet["_unknown2"] = 0
-				packets.inject(packet)
-			
-				-- request warp
-				packet["Target"] = current_activity.id
-				packet["Target Index"] = current_activity.index
-				packet["Zone"] = zone
-				packet["Menu ID"] = p['Menu ID']
-
-				packet["Option Index"] = 2
-				packet["_unknown1"] = current_activity.hp_index
-				packet["Automated Message"] = false
-				packet["_unknown2"] = 0
-				packets.inject(packet)
-
-				last_packet = packet
-				last_activity = current_activity
-				state.loop_count = 0
-				current_activity = nil
-				return true
-			elseif current_activity.type == 'wp' then
-				local zone = windower.ffxi.get_info()['zone']
-
-				-- menu change
-				packet["Target"] = current_activity.id
-				packet["Target Index"] = current_activity.index
-				packet["Zone"] = zone
-				packet["Menu ID"] = p['Menu ID']
-
-				packet["Option Index"] = current_activity.wp_index
-				packet["_unknown1"] = 0
-				packet["Automated Message"] = true
-				packet["_unknown2"] = 0
-				packets.inject(packet)
-			
-				-- request warp
-				packet["Target"] = current_activity.id
-				packet["Target Index"] = current_activity.index
-				packet["Zone"] = zone
-				packet["Menu ID"] = p['Menu ID']
-
-				packet["Option Index"] = current_activity.wp_index
-				packet["_unknown1"] = 0
-				packet["Automated Message"] = false
-				packet["_unknown2"] = 0
-				packets.inject(packet)
-
-				last_packet = packet
-				last_activity = current_activity
-				state.loop_count = 0
-				current_activity = nil
-				return true
-			elseif current_activity.type == 'sg' then
-				local zone = windower.ffxi.get_info()['zone']
-
-				-- menu change
-				packet["Target"] = current_activity.id
-				packet["Target Index"] = current_activity.index
-				packet["Zone"] = zone
-				packet["Menu ID"] = p['Menu ID']
-
-				packet["Option Index"] = 8
-				packet["_unknown1"] = 0
-				packet["Automated Message"] = true
-				packet["_unknown2"] = 0
-				packets.inject(packet)
-
-				-- menu change
-				packet["Target"] = current_activity.id
-				packet["Target Index"] = current_activity.index
-				packet["Zone"] = zone
-				packet["Menu ID"] = p['Menu ID']
-
-				packet["Option Index"] = 1
-				packet["_unknown1"] = current_activity.sg_index
-				packet["Automated Message"] = true
-				packet["_unknown2"] = 0
-				packets.inject(packet)
-			
-				-- request warp
-				packet["Target"] = current_activity.id
-				packet["Target Index"] = current_activity.index
-				packet["Zone"] = zone
-				packet["Menu ID"] = p['Menu ID']
-
-				packet["Option Index"] = 1
-				packet["_unknown1"] = current_activity.sg_index
-				packet["Automated Message"] = false
-				packet["_unknown2"] = 0
-				packets.inject(packet)
-
-				last_packet = packet
 				last_activity = current_activity
 				state.loop_count = 0
 				current_activity = nil

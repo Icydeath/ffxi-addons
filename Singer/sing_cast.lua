@@ -6,7 +6,12 @@ function cast.JA(str)
 end
 
 function cast.MA(str,ta)
-    windower.send_command('input /ma "%s" %s':format(str,ta))
+	if has_value(settings.dummy, str) then
+		windower.send_command('gs c set ExtraSongsMode FullLength')
+	end
+	windower.send_command('input /ma "%s" %s':format(str,ta))
+	
+	
     del = settings.delay
 end
 

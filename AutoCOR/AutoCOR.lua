@@ -213,6 +213,7 @@ function reset()
     actions = false
     is_casting = false
     buffs = {}
+	cor_status:text(display_box())
 end
 
 function status_change(new,old)

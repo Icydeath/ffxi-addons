@@ -54,7 +54,6 @@ function check_incoming_chunk(id, original, modified, injected, blocked)
     if id == 0x28 then
         local category = math.floor((original:byte(11) % 64) / 4)
         if category == 11 then
-			--windower.add_to_chat(10,'Anchor Proc')
             local new = original
             local position = 150
             for target = 1,original:byte(10) do

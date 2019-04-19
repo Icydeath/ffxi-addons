@@ -18,8 +18,8 @@ return {
     ['textBoxes'] = {
         ['actionInfo'] = {
             ['visible'] = true,
-            ['x'] = 0,
-            ['y'] = 0
+            ['x'] = 1000,
+            ['y'] = 800
         },
         ['actionQueue'] = {
             ['font'] = 'Arial',

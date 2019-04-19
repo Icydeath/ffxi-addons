@@ -1,0 +1,261 @@
+input \/\/tr drop add Absorb-Attri
+wait .2
+input \/\/tr drop add Aeroja
+wait .2
+input \/\/tr drop add Agility Potion
+wait .2
+input \/\/tr drop add Anc. Beast Horn
+wait .2
+input \/\/tr drop add Aqua Geode
+wait .2
+input \/\/tr drop add Aquamarine
+wait .2
+input \/\/tr drop add Beech Log
+wait .2
+input \/\/tr drop add Behemoth Hide
+wait .2
+input \/\/tr drop add Behemoth Horn
+wait .2
+input \/\/tr drop add Belinda's Hide
+wait .2
+input \/\/tr drop add Black Rock
+wait .2
+input \/\/tr drop add Blizzard V
+wait .2
+input \/\/tr drop add Blue Rock
+wait .2
+input \/\/tr drop add Boost-AGI
+wait .2
+input \/\/tr drop add Boost-CHR
+wait .2
+input \/\/tr drop add Boost-DEX
+wait .2
+input \/\/tr drop add Boost-INT
+wait .2
+input \/\/tr drop add Boost-MND
+wait .2
+input \/\/tr drop add Boost-STR
+wait .2
+input \/\/tr drop add Breakga
+wait .2
+input \/\/tr drop add Breeze Geode
+wait .2
+input \/\/tr drop add Carbite
+wait .2
+input \/\/tr drop add Cerberus Meat
+wait .2
+input \/\/tr drop add Charisma Potion
+wait .2
+input \/\/tr drop add Chrysoberyl
+wait .2
+input \/\/tr drop add Comet
+wait .2
+input \/\/tr drop add Coral Fragment
+wait .2
+input \/\/tr drop add Crystal Petrifact
+wait .2
+input \/\/tr drop add Dark Crystal
+wait .2
+input \/\/tr drop add Darksteel Ingot
+wait .2
+input \/\/tr drop add Darksteel Ore
+wait .2
+input \/\/tr drop add Demon Horn
+wait .2
+input \/\/tr drop add Dexterity Potion
+wait .2
+input \/\/tr drop add Dragon Meat
+wait .2
+input \/\/tr drop add Durium Ore
+wait .2
+input \/\/tr drop add Earth Crystal
+wait .2
+input \/\/tr drop add Ebony Log
+wait .2
+input \/\/tr drop add Elixir
+wait .2
+input \/\/tr drop add Emperor Fish
+wait .2
+input \/\/tr drop add Fajin Boots
+wait .2
+input \/\/tr drop add Fenrite
+wait .2
+input \/\/tr drop add Firaja
+wait .2
+input \/\/tr drop add Fire Crystal
+wait .2
+input \/\/tr drop add Fire V
+wait .2
+input \/\/tr drop add Flame Geode
+wait .2
+input \/\/tr drop add Flocon-de-mer
+wait .2
+input \/\/tr drop add Fluorite
+wait .2
+input \/\/tr drop add Gain-AGI
+wait .2
+input \/\/tr drop add Gain-CHR
+wait .2
+input \/\/tr drop add Gain-DEX
+wait .2
+input \/\/tr drop add Gain-INT
+wait .2
+input \/\/tr drop add Gain-MND
+wait .2
+input \/\/tr drop add Gain-STR
+wait .2
+input \/\/tr drop add Garudite
+wait .2
+input \/\/tr drop add Gold Ore
+wait .2
+input \/\/tr drop add Gold Thread
+wait .2
+input \/\/tr drop add Granite
+wait .2
+input \/\/tr drop add Green Rock
+wait .2
+input \/\/tr drop add Hi-Elixir
+wait .2
+input \/\/tr drop add Hi-Potion +2
+wait .2
+input \/\/tr drop add Hi-Potion +3
+wait .2
+input \/\/tr drop add Horde Lullaby II
+wait .2
+input \/\/tr drop add Houyi's Gorget
+wait .2
+input \/\/tr drop add Hydra Fang
+wait .2
+input \/\/tr drop add Icarus Wing
+wait .2
+input \/\/tr drop add Ice Crystal
+wait .2
+input \/\/tr drop add Ifritite
+wait .2
+input \/\/tr drop add Imperial Cermet
+wait .2
+input \/\/tr drop add Int. Potion
+wait .2
+input \/\/tr drop add Jacaranda Log
+wait .2
+input \/\/tr drop add Jadeite
+wait .2
+input \/\/tr drop add Kejusu Satin
+wait .2
+input \/\/tr drop add Khimaira Mane
+wait .2
+input \/\/tr drop add King Truffle
+wait .2
+input \/\/tr drop add Kitron
+wait .2
+input \/\/tr drop add Leviatite
+wait .2
+input \/\/tr drop add Light Crystal
+wait .2
+input \/\/tr drop add Light Geode
+wait .2
+input \/\/tr drop add Lightng. Crystal
+wait .2
+input \/\/tr drop add Lux Pugio
+wait .2
+input \/\/tr drop add Mahogany Log
+wait .2
+input \/\/tr drop add Manticore Hide
+wait .2
+input \/\/tr drop add Migawari: Ichi
+wait .2
+input \/\/tr drop add Mind Potion
+wait .2
+input \/\/tr drop add Moonstone
+wait .2
+input \/\/tr drop add Mythril Ingot
+wait .2
+input \/\/tr drop add Mythril Ore
+wait .2
+input \/\/tr drop add Painite
+wait .2
+input \/\/tr drop add Persikos
+wait .2
+input \/\/tr drop add Petrified Log
+wait .2
+input \/\/tr drop add Phrygian Ore
+wait .2
+input \/\/tr drop add Pining Nocturne
+wait .2
+input \/\/tr drop add Platinum Ore
+wait .2
+input \/\/tr drop add Pro-Ether
+wait .2
+input \/\/tr drop add Pro-Ether +1
+wait .2
+input \/\/tr drop add Purple Rock
+wait .2
+input \/\/tr drop add Ram Horn
+wait .2
+input \/\/tr drop add Ram Skin
+wait .2
+input \/\/tr drop add Ramuite
+wait .2
+input \/\/tr drop add Red Rock
+wait .2
+input \/\/tr drop add Regen IV
+wait .2
+input \/\/tr drop add Ruszor Meat
+wait .2
+input \/\/tr drop add Shadow Geode
+wait .2
+input \/\/tr drop add Shivite
+wait .2
+input \/\/tr drop add Snow Geode
+wait .2
+input \/\/tr drop add Soil Geode
+wait .2
+input \/\/tr drop add Strength Potion
+wait .2
+input \/\/tr drop add Sunstone
+wait .2
+input \/\/tr drop add Teak Log
+wait .2
+input \/\/tr drop add Temper
+wait .2
+input \/\/tr drop add Thunder Geode
+wait .2
+input \/\/tr drop add Titanite
+wait .2
+input \/\/tr drop add Translucent Rock
+wait .2
+input \/\/tr drop add Vitality Potion
+wait .2
+input \/\/tr drop add W. Spider's Web
+wait .2
+input \/\/tr drop add Water Crystal
+wait .2
+input \/\/tr drop add White Rock
+wait .2
+input \/\/tr drop add Wind Crystal
+wait .2
+input \/\/tr drop add Wyvern Scales
+wait .2
+input \/\/tr drop add Wyvern Tailskin
+wait .2
+input \/\/tr drop add X-Potion +2
+wait .2
+input \/\/tr drop add X-Potion +3
+wait .2
+input \/\/tr drop add Yellow Rock
+wait .2
+input \/\/tr drop add Zircon
+wait .2
+input \/\/tr drop add Coruscanti
+wait .2
+input \/\/tr drop add Thunder V
+wait .2
+input \/\/tr drop add Kakka: Ichi
+wait .2
+input \/\/tr drop add Fire Carol II
+wait .2
+input \/\/tr drop add Adloquium
+wait .2
+input \/\/tr drop add Hydra Scale
+wait .2
+input \/echo Done!

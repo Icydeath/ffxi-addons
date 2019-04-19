@@ -54,9 +54,11 @@ function actions.get_defensive_action()
 		local buffq = buffs.getBuffQueue()
 		while (not buffq:empty()) do
 			local bact = buffq:pop()
-            local_queue_insert(bact.action.en, bact.name)
-			if (action.buff == nil) and healer:in_casting_range(bact.name) and healer:ready_to_use(bact.action) then
-				action.buff = bact
+			if bact.action ~= nil then			
+				local_queue_insert(bact.action.en, bact.name)
+				if (action.buff == nil) and healer:in_casting_range(bact.name) and healer:ready_to_use(bact.action) then
+					action.buff = bact
+				end
 			end
 		end
 	end
