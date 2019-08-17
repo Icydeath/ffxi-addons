@@ -79,6 +79,14 @@
             </pos>
         </display>
     </combat>
+    <cometpunches>
+        <display>
+            <pos>
+                <x>812</x>
+                <y>807</y>
+            </pos>
+        </display>
+    </cometpunches>
     <eldiablo>
         <display>
             <pos>
@@ -87,6 +95,14 @@
             </pos>
         </display>
     </eldiablo>
+    <gab>
+        <display>
+            <pos>
+                <x>766</x>
+                <y>803</y>
+            </pos>
+        </display>
+    </gab>
     <gorby>
         <display>
             <pos>
@@ -103,14 +119,30 @@
             </pos>
         </display>
     </icybreath>
+    <icybst>
+        <display>
+            <pos>
+                <x>750</x>
+                <y>805</y>
+            </pos>
+        </display>
+    </icybst>
     <icydeath>
         <display>
             <pos>
-                <x>753</x>
+                <x>752</x>
                 <y>811</y>
             </pos>
         </display>
     </icydeath>
+    <icylife>
+        <display>
+            <pos>
+                <x>823</x>
+                <y>858</y>
+            </pos>
+        </display>
+    </icylife>
     <rythor>
         <display>
             <pos>

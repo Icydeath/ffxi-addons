@@ -40,16 +40,28 @@
             </stroke>
         </text>
     </global>
+    <clubfoot>
+        <pos>
+            <x>1408.6666259766</x>
+            <y>853</y>
+        </pos>
+    </clubfoot>
+    <gorby>
+        <pos>
+            <x>1417.6666259766</x>
+            <y>795</y>
+        </pos>
+    </gorby>
     <icydeath>
         <pos>
-            <x>1501.6663818359</x>
-            <y>671</y>
+            <x>1333.6663818359</x>
+            <y>730</y>
         </pos>
     </icydeath>
     <rythor>
         <pos>
-            <x>1035.6665039063</x>
-            <y>801</y>
+            <x>1482.6665039063</x>
+            <y>806</y>
         </pos>
     </rythor>
 </settings>

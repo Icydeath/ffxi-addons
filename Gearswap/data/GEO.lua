@@ -460,7 +460,7 @@ end
 
 function check_geo()
 	if state.AutoBuffMode.value and not areas.Cities:contains(world.area) then
-		if not player.indi and autoindi ~= 'None' then
+		if autoindi ~= 'None' and ((not player.indi) or last_indi ~= autoindi) then
 			windower.chat.input('/ma "Indi-'..autoindi..'" <me>')
 			tickdelay = os.clock() + 2.1
 			return true

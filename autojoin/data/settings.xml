@@ -4,7 +4,7 @@
         <autodecline>false</autodecline>
         <blacklist />
         <mode>whitelist</mode>
-        <whitelist>Rythor,Combat,Icybreath,Gorby,Moonstalker,Gorbytron,Icydeath,Clubfoot,Eldiablo</whitelist>
+        <whitelist>Rythor,Combat,Icybreath,Gorby,Moonstalker,Gorbytron,Icydeath,Clubfoot,Eldiablo,Sarmatian</whitelist>
     </global>
     <eldiablo>
         <mode>blacklist</mode>

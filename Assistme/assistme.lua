@@ -36,7 +36,7 @@ windower.register_event('addon command', function(command, ...)
 end)
 
 windower.register_event('chat message', function(message, player, mode, is_gm)
-    if player == "Enuri" and message:contains('New Assist = ') then
+    if player == "Icydeath" and message:contains('New Assist = ') then
         for i,v in pairs(windower.ffxi.get_party()) do
             if type(v) == 'table' then
                 if message:contains("= "..v.name) then
@@ -90,8 +90,8 @@ windower.register_event('incoming chunk', function(id, data)
 end)
 
 function engage(id)
-
-	packets.inject(packet)
+	windower.send_command("attack")
+	--packets.inject(packet)
 end
 
 function can_engage()

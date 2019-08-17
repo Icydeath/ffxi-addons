@@ -962,7 +962,7 @@ function silent_check_disable()
 
 end
 
--- Checks doom, returns true if we're going to cancel and use an item.
+-- Checks doom, returns true if we're going to cancel and use an or cursna.
 function check_doom(spell, spellMap, eventArgs)
 	if buffactive.doom and state.AutoRemoveDoomMode.value and not cursna_exceptions:contains(spell.english) then
 	
@@ -1405,6 +1405,7 @@ function check_cleanup()
 		
 		if not state.Capacity.value then
 			if player.inventory['Mecisto. Mantle'] then send_command('put "Mecisto. Mantle" satchel') moveditem = true end
+      if player.inventory['Endorsement Ring'] then send_command('put "Endorsement Ring" satchel')  moveditem = true end
 			if player.inventory['Trizek Ring'] then send_command('put "Trizek Ring" satchel')  moveditem = true end
 			if player.inventory['Capacity Ring'] then send_command('put "Capacity Ring" satchel') moveditem = true end
 			if player.inventory['Vocation Ring'] then send_command('put "Vocation Ring" satchel')  moveditem = true end
@@ -1766,6 +1767,11 @@ function check_cpring()
 		disable("head")
 		cp_delay = 10
 		return true
+  
+  elseif item_available('Endorsement Ring') and ((get_item_next_use('Endorsement Ring').next_use_time) - CurrentTime) < 15 then
+		cp_ring_equip('Endorsement Ring')
+		cp_delay = 10
+		return true
 		
 	elseif item_available('Trizek Ring') and ((get_item_next_use('Trizek Ring').next_use_time) - CurrentTime) < 15 then
 		cp_ring_equip('Trizek Ring')
@@ -1816,6 +1822,7 @@ function check_cpring_buff()-- returs true if you do not have the buff from xp c
 	if state.Capacity.value and cp_delay > 20 and not moving and not areas.Cities:contains(world.area) then
 	
 		if player.satchel['Mecisto. Mantle'] then send_command('get "Mecisto. Mantle" satchel;wait 2;gs c update') end
+    if player.satchel['Endorsement Ring'] then send_command('get "Endorsement Ring" satchel') end
 		if player.satchel['Trizek Ring'] then send_command('get "Trizek Ring" satchel') end
 		if player.satchel['Capacity Ring'] then send_command('get "Capacity Ring" satchel') end
 		if player.satchel['Vocation Ring'] then send_command('get "Vocation Ring" satchel') end
@@ -2304,18 +2311,24 @@ function get_effective_player_tp(spell, WSset)
 end
 
 function standardize_set(set)
-	local standardized_set = table.copy(set)
-	standardized_set.ear1 = standardized_set.ear1 or standardized_set.left_ear or standardized_set.lear or ''
-	standardized_set.ear2 = standardized_set.ear2 or standardized_set.right_ear or standardized_set.rear or ''
-	standardized_set.ring1 = standardized_set.ring1 or standardized_set.left_ring or standardized_set.rring or ''
-	standardized_set.ring2 = standardized_set.ring2 or standardized_set.right_ring or standardized_set.lring or ''
+	local standardized_set = {}
 	
-    for slot, inner in pairs(standardized_set) do
-        if type(inner) == 'table' then
-            standardized_set[slot] = inner.name
-        end
+    for slot, inner in pairs(set) do
+		if slot_names:contains(slot) then
+			if type(inner) == 'table' then
+				standardized_set[slot] = inner.name
+			else
+				standardized_set[slot] = inner
+			end
+		end
     end
 
+	standardized_set.ear1 = standardized_set.ear1 or standardized_set.left_ear or standardized_set.lear or nil
+	standardized_set.ear2 = standardized_set.ear2 or standardized_set.right_ear or standardized_set.rear or nil
+	standardized_set.ring1 = standardized_set.ring1 or standardized_set.left_ring or standardized_set.rring or nil
+	standardized_set.ring2 = standardized_set.ring2 or standardized_set.right_ring or standardized_set.lring or nil
+	standardized_set.range = standardized_set.range or standardized_set.ranged or nil
+	
 	return standardized_set
 end
 

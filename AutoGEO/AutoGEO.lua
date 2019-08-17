@@ -45,6 +45,7 @@ default = {
     active = true,
     geo = 'Geo\-Precision',
     indi = 'Indi\-Precision',
+	blaze = false,
     entrust = {},
     min_ws_hp = 20,
     max_ws_hp = 99,
@@ -150,6 +151,11 @@ display_box = function()
         if settings.entrust.target then
             str = str..'\n Entrust: %s: \n  [%s] ':format(settings.entrust.target:ucfirst(),settings.entrust.ma)
         end
+		if settings.blaze then
+			str = str..'\n Blaze: On'
+		else
+			str = str..'\n Blaze: Off'
+		end
         for k,v in ipairs(settings.buffs.haste) do
            str = str..'\n Haste:[%s]':format(v:ucfirst())
         end
@@ -190,7 +196,11 @@ function prerender()
 
         local geo = settings.geo and geo_spells:with('en', settings.geo)
         if geo and not luopan and spell_recasts[geo.id] <= 0 and play.vitals.mp >= geo.mp_cost and (geo.targets == 5 or target and target.hpp > 0) then
-            use_MA(geo.en, geo.targets == 5 and '<me>' or '<bt>')
+            if settings.blaze and abil_recasts[247] and abil_recasts[247] <= 0 then -- use blaze
+				use_JA('Blaze of Glory','<me>')
+			else
+				use_MA(geo.en, geo.targets == 5 and '<me>' or '<bt>')
+			end
             return
         end
 
@@ -259,6 +269,12 @@ function addon_command(...)
             settings.actions = true
         elseif commands[1] == 'off' then
             settings.actions = false
+		elseif commands[1] == 'blaze' and commands[2] then
+			if commands[2] == 'on' then
+				settings.blaze = true
+			elseif commands[2] == 'off' then
+				settings.blaze = false
+			end
         elseif commands[1] == 'entrust' and commands[2] then
             if commands[3] then
                 local spell = geo_spells:with('en','Indi\-'..commands[3]:ucfirst())

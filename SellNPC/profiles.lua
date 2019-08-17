@@ -2,6 +2,26 @@
 local profiles = {}
 
 profiles['junk'] = S{
+	'Kazham Peppers',
+	'Mhaura Garlic',
+	'Vanilla',
+	'Sage',
+	'Deathball',
+	'Voay Sword -1',
+	'Black Pepper',
+	'Habaneros',
+	'Bay Leaves',
+	'Akaso',
+	'Kapor Log',
+	'Bismuth Ore',
+	'Fire Fewell',
+	'Earth Fewell',
+	'Water Fewell',
+	'Wind Fewell',
+	'Ice Fewell',
+	'Lightning Fewell',
+	'Dark Fewell',
+	'Light Fewell',
 	'Wind Crystal', 
 	'Ice Crystal', 
 	'Dark Crystal', 
@@ -9,7 +29,7 @@ profiles['junk'] = S{
 	'Fire Crystal', 
 	'Water Crystal', 
 	'Earth Crystal', 
-	'Lightng. Crystal', 
+	'Lightng. Crystal',	
 	'Potion', 
 	'Gugru Tuna', 
 	'Cobalt Jellyfish', 
@@ -187,6 +207,7 @@ profiles['junk'] = S{
 	'Peiste Skin',
 	'Slime Juice',
 	'Infinity Core',
+	'Acheron Shield',
 }
 
 return profiles

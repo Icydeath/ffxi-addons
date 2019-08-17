@@ -1,4 +1,4 @@
---Copyright (c) 2013~2016, Byrthnoth
+--Copyright (c) 2013~2016, tinyn
 --All rights reserved.
 
 --Redistribution and use in source and binary forms, with or without
@@ -24,8 +24,11 @@
 --(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 --SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+-- largely ripped from gearswap\export.lua and checkparam.lua
+
 --[[
 
+install to your "windower\addons\GearSwap\data" directory
 lua reload gearswap
 gs load export_best
 gs c export_best all
@@ -37,8 +40,10 @@ require 'logger'
 res = require 'resources'
 extdata = require 'extdata'
 
+local DEBUG=false
+
 local stat_list = L{
-'dmg', 'str', 'dex', 'vit', 'int', 'mnd', 'chr', 'def', 'hp', 'mp',
+'dmg', 'str', 'dex', 'vit', 'agi', 'int', 'mnd', 'chr', 'def', 'hp', 'mp',
 
 'accuracy', 
 'attack', 
@@ -82,12 +87,16 @@ local stat_list = L{
 'fast cast',
 'spell interruption rate down',
 
+'conserve mp',
 'cure potency',
 'cure potency ii',
+'potency of cure effects received',
 'cure spellcasting time',
 'healing magic casting time',
 'elemental magic casting time',
 'enhancing magic effect duration',
+'enfeebling magic effect',
+'spikes spell damage',
 'divine benison',
 
 'song effect duration',
@@ -98,12 +107,16 @@ local stat_list = L{
 'blood pact damage',
 'avatar perpetuation cost',
 
+
+'hp recovered while healing',
 'mp recovered while healing',
 'refresh',
 'regen',
 'regain',
 
 'gilfinder',
+'mug',
+'steal',
 'treasure hunter',
 
 'hand-to-hand skill',
@@ -127,26 +140,25 @@ local stat_list = L{
 'parrying skill',
 
 
-'dark skill',
-'divine skill',
-'healing skill',
-'enhancing skill',
-'enfeebling skill',
-'elemental skill',
+'dark magic skill',
+'divine magic skill',
+'healing magic skill',
+'enhancing magic skill',
+'enfeebling magic skill',
+'elemental magic skill',
 'summoning skill',
 'blue magic skill',
-'singing',
-'string instrument',
-'wind instrument',
+'singing skill',
+'string instrument skill',
+'wind instrument skill',
 'ninjutsu',
 'geomancy skill',
 'handbell skill',
 
-}
+'experience point bonus',
+'capacity point bonus',
 
---send_command('input /echo lua reload gearswap;wait .5;input /echo gs load export_best;wait .5;input /echo gs c export_best all')
---send_command('input /echo gs load export_best;wait .5;input /echo gs c export_best all')
-send_command('input /echo gs c export_best all')
+}
 
 function self_command(command)
 	--print('export_best: self_command: '..command)
@@ -154,7 +166,11 @@ function self_command(command)
     if #commandArgs:split(' ') >= 2 then
         commandArgs = T(commandArgs:split(' '))
     end
-	export_best(commandArgs)
+	if commandArgs[1] ~= 'export_best' then
+		return
+	end
+	--print('export_best: self_command: '..command)
+    export_best(commandArgs)
 end
 
 function export_best(options)
@@ -297,6 +313,42 @@ function export_best(options)
 		stat_list_set_name:append(c)
 	end
 
+	for it,v in pairs(item_list) do
+		if v.name ~= empty and v.slot ~= 'item' and v.desc then
+		
+			local t = windower.regex.split(v.desc, '(Reives|Assault|Set|latent effect|weather|in dynamis): ') -- not supported yet				
+			local stat_chunks = windower.regex.split(t[1],'(Pet|Avatar|Automaton|Wyvern|Luopan): ')
+			local stat_map = T{}
+
+			local stat_prefix = L{nil, 'pet_'}
+			for i,v in ipairs(stat_chunks) do
+				local tbl = split_text(stat_chunks[i], stat_prefix[i])
+				stat_map = stat_map:update(tbl)
+				--print(stat_chunks[i])
+				--print(tbl)
+			end
+			seen_stats = seen_stats:update(stat_map)
+			if not stat_map:empty() then
+				v.base_stats = stat_map
+			else
+				v.base_stats = nil
+			end
+					
+			if v.augments then 
+				stat_map = split_text(v.augments)
+				--print(v.augments)
+				--print(stat_map)
+				if not stat_map:empty() then
+					v.aug_stats = stat_map
+				else
+					v.aug_stats = nil
+				end				
+				seen_stats = seen_stats:update(stat_map)
+			end
+		
+		end
+	end
+
 	for i,v in pairs(stat_list) do
 		local orig_stat_name = tostring(v)
 		local curr_stat_name = tostring(v)
@@ -331,34 +383,24 @@ function export_best(options)
 					can_use = can_dw
 				end
 				
-				if can_use and v.name ~= empty and v.slot ~= 'item' and v.desc and v.jobs[curr_job.id] and v.slots[slot_id] and not v.in_use then
-					--print(v.name..' : '..v.slot)
-					
-					local t = windower.regex.split(v.desc, '(Reives|Assault|Set|latent effect|weather): ') -- not supported yet				
-					local stat_chunks = windower.regex.split(t[1],'(Pet|Avatar|Automaton|Wyvern|Luopan): ')
-					local stat_map = T{}
-
-					local stat_prefix = L{nil, 'pet_'}
-					for i,v in ipairs(stat_chunks) do
-						local tbl = split_text(stat_chunks[i], stat_prefix[i])
-						stat_map = stat_map:update(tbl)
+				if can_use and v.name ~= empty and v.slot ~= 'item' and v.desc and v.jobs[curr_job.id] and v.slots[slot_id] and not v.in_use and v.name ~= 'Chocobo Shirt' then
+					if DEBUG then
+						print(v.name..' : '..v.slot)
 					end
-					seen_stats = seen_stats:update(stat_map)
-					
+						
 					local curr_value = 0
 					
-					if stat_map[curr_stat_name] then
-						curr_value = curr_value + tonumber(stat_map[curr_stat_name])
+					if v.base_stats ~= nil and v.base_stats[curr_stat_name] then
+						curr_value = curr_value + tonumber(v.base_stats[curr_stat_name])
 						--print(curr_value)
 					end	
 							
 					if v.augments then 
-						stat_map = split_text(v.augments)
-						if stat_map[curr_stat_name] then
-							curr_value = curr_value + tonumber(stat_map[curr_stat_name])
+						--print(v.augments)
+						if v.aug_stats ~= nil and v.aug_stats[curr_stat_name] then
+							curr_value = curr_value + tonumber(v.aug_stats[curr_stat_name])
 							--print(curr_value)
 						end		
-						seen_stats = seen_stats:update(stat_map)
 					end
 						
 					if (curr_value > 0 and negative_stat == false) or (curr_value < 0 and negative_stat == true) then
@@ -392,11 +434,14 @@ function export_best(options)
 	end 
 	-----------------
 	
-	--seen_stats = seen_stats:keyset():sort()
-	--for i,v in pairs(seen_stats) do
-	--	print(v)
-	--end
-
+	if DEBUG then
+		seen_stats = seen_stats:keyset():sort()
+		for i,v in pairs(seen_stats) do
+			if not stat_list:contains(v) then
+				print(v)
+			end
+		end
+	end
     
 
 	-- Default to exporting in .lua
@@ -419,7 +464,7 @@ function export_best(options)
 				if best_for_slots:containskey(slot_id) then
 					local v = best_for_slots[slot_id].item
 					if v.name ~= empty and v.slot ~= 'item' then
-						if false and v.desc then 
+						if DEBUG and v.desc then 
 							if v.augments then
 								f:write('    '..curr_slot..'={ name="'..v.name..'", augments={'..v.augments..'}, desc="'..v.desc..'"},\n')
 							else
@@ -495,7 +540,9 @@ integrate = {
 function split_text(text,arg)
     local tbl = T{}
 	for key,value in string.gmatch(text,'/?([%D]-):?([%+%-]?[0-9]+)%%?%s?') do
-        local key = windower.regex.replace(string.lower(string.trim(key)), '(\\"|\\.|\\s$)','')
+		--print(key)
+		--print(value)
+        local key = windower.regex.replace(string.lower(string.trim(key)), '(\\"|\\\'|\\\,|\\\:|\\.|\\s$)','')
         local key = integrate[key] or key
         local key = arg and arg..key or key
         tbl[key] = tonumber(value)+(tbl[key] or 0)

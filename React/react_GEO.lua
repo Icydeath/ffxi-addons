@@ -1,8 +1,8 @@
 return {
-	["Glassy Craver"]={
-        ["Material Fend"]={
-            ["complete_reaction"]="input /ma Magic Finale", 
-            ["ready_reaction"]=""
+	["Kei"]={
+        ["Dancing Fullers"]={
+            ["complete_reaction"]="", 
+            ["ready_reaction"]="runaway 12"
         }
     },
     ["Bozzetto Breadwinner"]={

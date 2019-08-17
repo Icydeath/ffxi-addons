@@ -1,4 +1,5 @@
 -- Universal items that are the same for all characters, and logic to determine which item choices from quests have been made.
+sets.EndorsementRing = {ring2="Endorsement Ring"}
 sets.TrizekRing = {ring2="Trizek Ring"}
 sets.EchadRing = {ring2="Echad Ring"}
 sets.FacilityRing = {ring2="Facility Ring"}

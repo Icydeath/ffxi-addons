@@ -45,10 +45,11 @@
         </text>
     </global>
     <clubfoot>
+        <roll>Chaos Roll,Samurai Roll</roll>
         <text>
             <pos>
-                <x>1000</x>
-                <y>854</y>
+                <x>1035</x>
+                <y>750</y>
             </pos>
         </text>
     </clubfoot>

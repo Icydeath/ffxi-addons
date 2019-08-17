@@ -1,0 +1,29 @@
+==============
+SOME PUP INFO
+==============
+If you have frailty up in party, you can swap your attuner for something else.
+
+
+
+Trip report on soloing escha gods:
+==================================
+Suzaku = defeated. Mana Jammer/Steam Jacket flex slots. Was very easy to solo.
+
+Byakko = defeated. Armorplate4/Steam Jacket flex slots. 
+Turns out I worried for nothing as the Gravitation part of the 4-step skillchain not only deals a huge chunk of damage but keeps his level ups in check. 
+
+Seiryu = defeated. Armorplate4/Galvanizer flex slots. 
+Galvanizer was key -- my first attempt (without galvanizer) was a failure as the additional effect from Hundred Fist damage was really chunking my Automaton 
+down forcing me to sit in tank set which was slow, but Galvanizer hard-countered him.
+
+Genbu = undefeated. so much health and defense, as well as so much stalling with invincible. 
+tortoise stomp and head butt also dealt significant damage to the automaton... need to think of an attachment setup to really increase my damage output within the overdrive window to kill it in time. Any suggestions?
+
+
+
+FORCING PUPPET WS's
+===================
+Shatterer/Piercer: Light/Wind/Fire
+Arcuballista: 2x Fire/Wind
+
+Howling Fist or Light/Thunder/Fire Daze > Arcuballista

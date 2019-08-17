@@ -1,0 +1,63 @@
+- RANGE
+
+- cta(false) after a reaction is picked will stop the player from taking
+  any further action if it attempts the reaction on someone that is out
+  of range; no attempt to cast the spell is made, so the success/interupt
+  packet never comes to set cta to true.
+  Also for command errors. Probably for /ITEM when don't have item as well.
+
+- READYING may not respond if the ID sent by XI for a move isn't
+  the one gambits expects. In resources, there are multiple IDs
+  associated with Bubble Curtain, but the resource table only
+  has a single entry (443) with the other entries commented out.
+  If it's 1590, 3473, or 3862 (other IDs associated with Bubble Curtain),
+  Gambits will not trigger "ENEMY","READYING","Bubble Curtain"
+  Note: I have yet to actually see this happen.
+
+- Selectors for specific players (PLAYER_NAME "Jacki")
+
+- local gambits_to_check, num_gambits for every single check_gambit_list() call.
+  Need to make it so gambits_to_check and num_gambits are global; updated when
+  the current target changes. Then can just make all calls check_gambit_list().
+
+- Freaks the hell out in alliance situations
+
+- Specific job selectors. {"MAGE","NOT_STATUS","Hailstorm"} gives the BLU hailstorm.
+
+- Come up with something to distinguish Melees from Ranged
+
+- Maybe redo the way checks work, do all checks for all gambits at once (so we only
+  step through everyone once), then select the highest priority condition. At the
+  moment, checks are #G^2 * #P, when they could be #G * #P.
+
+- I may have broken AND at some point in time?
+  {"AND",{{"PARTY","STATUS","Sleep"},{"PARTY","NOT_STATUS","Charm"}},"","MA","Cure"}
+  Throws errors.
+
+- WS properties for certain Trust NPCs
+
+- When Trust NPCs have their WS properties fleshed out, re-enable CAN_SC
+
+- Waiting on action packet is starting to be limiting, will need to implement sleep cycles
+
+- Job selection does not work for Trusts.
+
+- "PET HP <" (Automatic Full Circle when luopan is low)
+
+- NOT_ASSISTING, ASSIST: Safety check to make sure provided player is in zone, party, alive
+
+- "BEHIND" (for "AND: {"BEHIND", "TP >= 1000", "JA_READY Sneak Attack"}" >> Sneak Attack -> Rudra's)
+
+- Trying to cast on dead pt members and killed trusts
+
+- Somehow hung gambits when moving the buff bitmask stuff to the
+  beginning of the player_i loop instead of at the bottom.
+
+- Bug with running out of player_i (and hence buffs and buff bitmask)
+  once our player_id is greater than 5 (since the assignments happen
+  at the end of the loop after increasing player_i by one). Occurs
+  when party is full of real people, and won't be noticed with
+  less than 6 people (because trusts aren't in the party buff packet,
+  and the loop terminiates when it gets to an empty slot (before 5))
+  (Note: Temporarily fixed with an if check which shouldn't
+         be neccessary.)

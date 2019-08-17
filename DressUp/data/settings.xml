@@ -29,6 +29,9 @@
                 <target>true</target>
             </self>
         </blinking>
+        <clubfoot>
+            <race>8</race>
+        </clubfoot>
         <eldiablo>
             <race>8</race>
         </eldiablo>
@@ -43,7 +46,7 @@
         </others>
         <profiles>
             <>
-
+                <race>8</race>
             </>
             <default>
 

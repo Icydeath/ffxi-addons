@@ -1,0 +1,35 @@
+/con gs c cycle PetModeCycle
+/con gs c cycle PetStyleCycle
+
+/con gs c cycle HybridMode
+/echo HybridMode: Used when you are Engaged with Pet
+
+/con gs c cycle OffenseMode
+/echo OffenseMode: Mode for when you are fighting with or without Pet
+
+/con gs c cycle PhysicalDefenseMode
+/echo PhysicalDefenseMode: Mode for when you are fighting with or without Pet
+
+/con gs c cycle MagicalDefenseMode
+/echo MagicalDefenseMode: Mode for when you are fighting with or without Pet
+
+/con gs c cycle IdleMode
+/echo IdleMode: Mode for when you are fighting with or without Pet
+
+/con gs c toggle AutoMan
+/con gs c toggle LockPetDT
+/con gs c toggle LockWeapon
+/con gs c toggle setftp
+
+/con gs c hide hub
+/con gs c hide mode
+/con gs c hide state
+/con gs c hide options
+/con gs c hide keybinds
+
+
+
+
+
+
+

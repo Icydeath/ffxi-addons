@@ -1,0 +1,122 @@
+gambits = {}
+
+gambits["RDM"] = {
+  {"SELF","STATUS","Paralyzed","JA","Healing Waltz"},
+  {"SELF","STATUS","Paralyzed","ITEM","Remedy"},
+  {"AND",{{"SELF","STATUS","Silence"},{"SELF","NOT_STATUS","Amnesia"}},"","JA","Healing Waltz"},
+  {"SELF","STATUS","Silence","ITEM","Echo Drops"},
+  {"PARTY","HPP <=",75,"MA","Cure IV"},
+  {"SELF","HPP <=",75,"JA","Curing Waltz III"},
+  {"PARTY","HPP <=",75,"MA","Cure III"},
+  {"SELF","NOT_STATUS","Composure","JA","Composure"},
+  {"SELF","NOT_STATUS","Refresh","MA","Refresh II"},
+  {"SELF","NOT_STATUS","Refresh","MA","Refresh"},
+  {"SELF","NOT_STATUS","Protect","MA","Protect V"},
+  {"SELF","NOT_STATUS","Haste","MA","Haste II"},
+  {"SELF","NOT_STATUS","Multi Strikes","MA","Temper"},
+  {"SELF","NOT_STATUS","Enwater","MA","Enwater"},
+  {"SELF","NOT_STATUS","Shell","MA","Shell V"},
+  {"AND",{{"SELF","TP >=",1000},{"SELF","HPP >",75}},"","WS","Savage Blade"}
+}
+gambits["WHM"] = {
+  --{"SELF","MA_READY","Cure","MA","Cure"},
+  {"SELF","STATUS","Silence","ITEM","Echo Drops"}, 
+  {"SELF","STATUS","Paralysis","MA","Paralyna"},
+  {"CLUSTER","HPP <=",55,"MA","Curaga V"}, -- Oh my god, everyone is dying.
+  {"CLUSTER","HPP <=",75,"MA","Curaga IV"},
+  {"CLUSTER","HPP <=",85,"MA","Curaga III"},
+  {"TANK","STATUS","Doom","MA","Cursna"}, -- Need to keep the tank up.
+  {"SELF","STATUS","Doom","MA","Cursna"}, -- Need to keep us up so we can keep tank up.
+  {"TANK","HPP <=",45,"MA","Cure V"},
+  {"TANK","HPP <=",55,"MA","Cure IV"},
+  {"TANK","HPP <=",55,"MA","Cure III"},
+  {"MELEE","STATUS","Doom","MA","Cursna"}, -- Weakened melees hurts our DPS moreso than weak mages.
+  {"PARTY","STATUS","Doom","MA","Cursna"}, -- Everyone else is expendable.
+  {"MELEE","HPP <=",40,"MA","Cure V"},
+  {"MELEE","HPP <=",50,"MA","Cure IV"},
+  {"MELEE","HPP <=",50,"MA","Cure III"},
+  {"PARTY","HPP <=",40,"MA","Cure V"},
+  {"PARTY","HPP <=",50,"MA","Cure IV"},
+  {"PARTY","HPP <=",50,"MA","Cure III"},
+  {"SELF","NOT_STATUS","Reraise","MA","Reraise IV"},
+  {"SELF","NOT_STATUS","Reraise","MA","Reraise III"},
+  {"SELF","NOT_STATUS","Afflatus Solace","JA","Afflatus Solace"},
+  {"SELF","NOT_STATUS","Light Arts","JA","Light Arts"},
+  {"CLUSTER","STATUS","Sleep","MA","Curaga"},
+  {"AND",{{"PARTY","STATUS","Sleep"},{"PARTY","NOT_STATUS","Charm"}},"","MA","Cure"},
+  {"PARTY","STATUS","Petrification","MA","Stona"},
+  {"MAGE","STATUS","Silence","MA","Silena"},
+  {"TANK","STATUS","Curse","MA","Cursna"},
+  {"TANK","STATUS","Bane","MA","Cursna"},
+  {"TANK","STATUS","Max HP Down","MA","Erase"},
+  {"MELEE","STATUS","Curse","MA","Cursna"},
+  {"MELEE","STATUS","Bane","MA","Cursna"},
+  {"MELEE","STATUS","Max HP Down","MA","Erase"},
+  {"PARTY","HPP <=",75,"MA","Cure IV"},
+  {"PARTY","STATUS","Curse","MA","Cursna"},
+  {"PARTY","STATUS","Bane","MA","Cursna"},
+  {"PARTY","STATUS","Max HP Down","MA","Erase"},
+  {"PARTY","STATUS","Sleep","MA","Cure"},
+  {"SELF","NOT_STATUS","Haste","MA","Haste"},
+  {"SELF","STATUS","Slow","MA","Erase"}, -- Slow on us will slow down removal on everyone.
+  {"SELF","STATUS","Addle","MA","Erase"}, -- Same for Addle
+  {"TANK","STATUS","Silence","MA","Silena"},
+  {"TANK","STATUS","Slow","MA","Erase"},
+  {"MELEE","STATUS","Slow","MA","Erase"},
+  {"PARTY","STATUS","Slow","MA","Erase"},
+  {"TANK","STATUS","Paralysis","MA","Paralyna"},
+  {"MELEE","STATUS","Paralysis","MA","Paralyna"},
+  {"PARTY","STATUS","Paralysis","MA","Paralyna"},
+  {"SELF","STATUS","Bind","MA","Erase"}, -- We may need to move into/out of range. Us first.
+  {"MELEE","STATUS","Bind","MA","Erase"},
+  {"TANK","STATUS","Bind","MA","Erase"},
+  {"PARTY","STATUS","Bind","MA","Erase"},
+  {"TANK","STATUS","Magic Def. Down","MA","Erase"},
+  {"MELEE","STATUS","Magic Def. Down","MA","Erase"},
+  {"TANK","STATUS","Magic Evasion Down","MA","Erase"},
+  {"MELEE","STATUS","Magic Evasion Down","MA","Erase"},  
+  {"TANK","STATUS","Defense Down","MA","Erase"},
+  {"MELEE","STATUS","Defense Down","MA","Erase"},
+  {"PARTY","STATUS","Magic Def. Down","MA","Erase"},
+  {"PARTY","STATUS","Defense Down","MA","Erase"},
+  {"PARTY","STATUS","Magic Evasion Down","MA","Erase"},
+  {"MAGE","STATUS","Addle","MA","Erase"},
+  {"MELEE","STATUS","Weight","MA","Erase"},
+  {"TANK","STATUS","Weight","MA","Erase"},
+  {"PARTY","STATUS","Weight","MA","Erase"},
+  {"MELEE","STATUS","Blindness","MA","Blindna"},
+  {"RANGED","STATUS","Blindness","MA","Blindna"},
+  {"TANK","STATUS","Blindness","MA","Blindna"},
+  {"MELEE","STATUS","Plague","MA","Viruna"},
+  {"TANK","STATUS","Plague","MA","Viruna"},
+  {"MELEE","STATUS","Accuracy Down","MA","Erase"},
+  {"TANK","STATUS","Accuracy Down","MA","Erase"},
+  {"RANGED","STATUS","Accuracy Down","MA","Erase"},
+  {"MAGE","STATUS","Magic Acc. Down","MA","Erase"},
+  {"MELEE","STATUS","Attack Down","MA","Erase"},
+  {"MAGE","STATUS","Magic Atk. Down","MA","Erase"},
+  {"RANGED","STATUS","Attack Down","MA","Erase"},
+  {"PARTY","STATUS","Poison","MA","Poisona"},
+  {"MELEE","STATUS","Blindness","MA","Blindna"},
+  {"SELF","STATUS","Plague","MA","Viruna"},
+  {"PARTY","STATUS","Plague","MA","Viruna"},
+  {"TANK","STATUS","Blindness","MA","Blindna"},
+  {"PARTY","HPP <=",80,"MA","Cure III"},
+  --{"CLUSTER","NOT_STATUS","Regen","CHAIN",{
+                                        --{"JA","Accession"},
+                                        --{"MA","Regen IV"}}}
+  --{"MAGE","NOT_STATUS","Haste","MA","Haste"},
+  {"TANK","NOT_STATUS","Haste","MA","Haste"},
+  --{"MELEE","NOT_STATUS","Regen","MA","Regen IV"},
+  {"PARTY","NOT_STATUS","Regen","MA","Regen IV"},
+  {"PARTY","STATUS","Poison","MA","Poisona"}
+  --{"MAGE","NOT_STATUS","Hailstorm","MA","Hailstorm"},
+}
+
+gambits["COR"] = {
+  {"MAGE","STATUS","Sleep","MA","Cure"},
+  {"PARTY","HPP <=",75,"MA","Cure IV"},
+  {"SELF","NOT_STATUS","Haste","MA","Haste"},
+}
+
+return gambits

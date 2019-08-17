@@ -1,11 +1,12 @@
 _addon.name = 'AutoWS'
-_addon.author = 'Lorand'
+_addon.author = 'Lorand, Icydeath'
 _addon.commands = {'autows','aws'}
-_addon.version = '0.3.1'
+_addon.version = '0.3.2'
 _addon.lastUpdate = '2016.08.01'
 
 --[[
     TODO: Add per-mob WS settings
+	Modified by icy so you can specify a TP argument.
 --]]
 
 require('luau')
@@ -16,13 +17,13 @@ _libs.lor.debug = false
 local rarr = string.char(129,168)
 local bags = {[0]='inventory',[8]='wardrobe',[10]='wardrobe2',[11]='wardrobe3',[12]='wardrobe4'}
 
-local hps, mobs
+local hps, mobs, tpgt
 local enabled = false
 local useAutoRA = false
 local araDelayed = 0
 local ws_cmd = ''
 local autowsDelay = 0.8
-local defaults = {hps = {['<']=100, ['>']=5}}
+local defaults = {hps = {['<']=100, ['>']=5}, tpgt = {tp=999} }
 settings = _libs.lor.settings.load('data/settings.lua', defaults)
 local settings_loaded = false
 
@@ -48,6 +49,7 @@ function save_settings()
     settings[name][job] = settings[name][job] or {}
     settings[name][job][skill] = settings[name][job][skill] or {}
     settings[name][job][skill].hps = hps
+	settings[name][job][skill].tpgt = tpgt
     settings[name][job][skill].mobs = mobs
     settings[name][job][skill].ws_cmd = ws_cmd
     settings:save()
@@ -59,6 +61,7 @@ function load_settings()
     if p == nil then return end
     local s = settings:get_nested_value(p.name, p.main_job, weap_type()) or {}
     hps = s.hps or defaults.hps
+	tpgt = s.tpgt or defaults.tpgt
     mobs = s.mobs or {}
     ws_cmd = s.ws_cmd or ''
     settings_loaded = true
@@ -129,6 +132,13 @@ windower.register_event('addon command', function (command,...)
         hps['>'] = parsed['>'] or hps['>']
 		save_settings()
         print_status()
+	elseif command == 'tpgt' then
+		local parsed = tonumber(arg_str)
+		if not parsed then return end
+		if parsed < 999 then return end
+		tpgt.tp = parsed
+		save_settings()
+		print_status()
 	elseif command == 'mob' then
         local mob_name = arg_str:match('[<>%d%s]*([^<>%d]+)[<>%d%s]*'):trim()
         if mob_name == nil or #mob_name < 1 then
@@ -227,7 +237,7 @@ windower.register_event('prerender', function()
 			if (player ~= nil) and (player.status == 1) and (mob ~= nil) then
                 local hp_lt = table.get_nested_value(mobs, mob.name, '<') or hps['<']
                 local hp_gt = table.get_nested_value(mobs, mob.name, '>') or hps['>']
-                if player.vitals.tp > 999 then
+                if player.vitals.tp > tpgt.tp then
                     if useAutoRA and (araDelayed < 2) then
                         araDelayed = araDelayed + 1
                     else
@@ -250,7 +260,7 @@ end)
 function print_status()
 	local power = enabled and 'ON' or 'OFF'
     local ws_msg = #ws_cmd > 1 and ws_cmd or '(no ws specified)'
-    atcf('[AutoWS: %s] %s %s mobs @ %d < HP%% < %s', power, ws_msg, rarr, hps['>'], hps['<'])
+    atcf('[AutoWS: %s] %s %s mobs @ %d < HP%% < %s [TP > %s]', power, ws_msg, rarr, hps['>'], hps['<'], tpgt.tp)
 end
 
 
@@ -259,6 +269,7 @@ function print_help()
         ['[on|off|toggle]'] = 'Enable / disable autoWS',
         ['mob (>|<) (hp%) name'] = 'Set a different HP value for a specific mob name',
         ['hp (>|<) (hp%)'] = 'Set the default HP value for when weaponskills should be executed',
+		['tpgt #'] = 'Set the min. tp amount when weaponskills should be executed',
         ['use weaponskill_name'] = 'Set the weaponskill that should be used',
         ['autora (on|off)'] = 'Enable / disable the AutoRA addon',
     }

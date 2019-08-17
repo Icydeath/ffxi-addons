@@ -71,6 +71,37 @@ _List of custom addons. Some have been modified by me to suit my own needs, full
 	A Darkness skillchain will send: MAABurst DarkEarthWaterIce
 	A Scission skillchain will sent: MAABurst Earth
 
+**tonic** - use a set list of escha temp items
+
+**gilledger** - displays gil amounts across all toons
+
+**empyreantracker** - helps track various tasks/nm requirements during the empy process
+
+**banker** - tracks Coalition Imprimaturs, Bayld, Escha Silt and Escha Beads. Also includes an alert function (Imprims only for now)
+
+**ringuse** - identify what useable rings you have on you, creates a clickable gui to activate a ring.
+
+**rangermaster** - multiboxing rangers and corsairs
+
+**positions** - positioning mules
+
+**jroller** - GUI version of AutoCOR. Seems to work just as good if not better.
+
+**autoburst** - Auto magic burst
+
+**extramacros** - Allows you to set your win key and app key to activate a custom GUI macrobar/macros
+
+**gambits** - Create actions, reactions, and more based off job and area (and more I'm sure).
+
+**myomen** - quick way to use your tele ring to get to omen.
+
+**multictrl** - Use this to initialze your addons for alts or main and just execute with 1 command.
+
+**drone** - Allow other players to send your toon commands to do something.
+
+**canteen** - Win in Omen this will run your toon to the goblin and grab a canteen. (within 50 yalms)
+
+**quetz** - Updated quetz script
 	
 Most addons include a readme file if you need further information, otherwise you can skim the addons file to get an idea of how it works.
 

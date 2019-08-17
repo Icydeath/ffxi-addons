@@ -94,5 +94,15 @@ return {
 			'Addendum: White',
 			--'Sublimation'
         }
-    }
+    },
+	['smn/rdm'] = {
+		['melee'] = {
+            'Haste'
+        },
+		['self'] = {
+			'Haste',
+            'Refresh',
+            'Aquaveil',
+        }
+	}
 }

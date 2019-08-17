@@ -70,8 +70,7 @@
 
         </song>
         <songs>
-            <madrigal>1</madrigal>
-            <march>1</march>
+            <march>2</march>
         </songs>
         <timers>false</timers>
         <use_ws>false</use_ws>
@@ -79,17 +78,11 @@
     <rythor>
         <box>
             <pos>
-                <x>999</x>
-                <y>825</y>
+                <x>865</x>
+                <y>588</y>
             </pos>
         </box>
-        <clarion>
-            <aoe>ballad</aoe>
-        </clarion>
         <dummy>Valor Minuet V,</dummy>
         <marcato>Valor Minuet V</marcato>
-        <songs>
-            <march>2</march>
-        </songs>
     </rythor>
 </settings>

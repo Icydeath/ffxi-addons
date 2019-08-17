@@ -104,13 +104,13 @@ function do_stuff()
         if is_moving or casting or buffs.stun or buffs.sleep or buffs.charm or buffs.terror or buffs.petrification then return end
         if buffs.amnesia or buffs.impairment then JA_WS_lock = true end
         if buffs.silence or buffs.mute or buffs.omerta then return end     
-        if get.aoe_range() then
+        --if get.aoe_range() then
             local song = cast.check_song(settings.songs,'AoE',buffs,spell_recasts,recast) 
             if song then
 				cast.song(song,'<me>',buffs,ability_recasts,JA_WS_lock)
 				return 
 			end
-        end
+        --end
         if settings.pianissimo then
             for targ,songs in pairs(settings.song) do
                 if get.valid_target(targ,20) then

@@ -1,0 +1,6 @@
+return {
+  _all = {},
+  default = {
+    ROOT = {"spec"},
+    verbose = true
+  }

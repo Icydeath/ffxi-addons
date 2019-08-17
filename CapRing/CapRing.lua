@@ -2,8 +2,8 @@
 Modified the addon MyHome created by from20020516 to use CP rings instead.
 All credit goes to from20020516
 1/4/19 Extended this addon to handle XP rings
-to use an exp ring do: //cp xp
-to use a cp ring do: //cp
+to use an exp ring do: //capring xp
+to use a cp ring do: //capring
 ]]
 
 _addon.name = 'CapRing'
@@ -17,10 +17,11 @@ extdata = require('extdata')
 
 lang = string.lower(windower.ffxi.get_info().language)
 item_info = {
-    [1]={id=27557,japanese='',english='"Trizek Ring"',slot=13},
-    [2]={id=26165,japanese='',english='"Facility Ring"',slot=13},
-	[3]={id=28563,japanese='',english='"Vocation Ring"',slot=13},
-    [4]={id=28546,japanese='',english='"Capacity Ring"',slot=13}}
+	[1]={id=28469,japanese='',english='"Endorsement Ring"',slot=13},
+    [2]={id=27557,japanese='',english='"Trizek Ring"',slot=13},
+    [3]={id=26165,japanese='',english='"Facility Ring"',slot=13},
+	[4]={id=28563,japanese='',english='"Vocation Ring"',slot=13},
+    [5]={id=28546,japanese='',english='"Capacity Ring"',slot=13}}
 
 xp_item_info = {
     [1]={id=27556,japanese='',english='"Echad Ring"',slot=13}, -- 150%, 120min

@@ -1,58 +1,323 @@
 <?xml version="1.1" ?>
 <settings>
-	<global>
-		<autosets>
-			<default />
-			<healer>
-				<frame>Stormwaker Frame</frame>
-				<head>Soulsoother Head</head>
-				<slot01>Disruptor</slot01>
-				<slot02>Economizer</slot02>
-				<slot03>Mana Conserver</slot03>
-				<slot04>Vivi-Valve</slot04>
-				<slot05>Percolator</slot05>
-				<slot06>Damage Gauge</slot06>
-				<slot07>Eraser</slot07>
-				<slot08>Optic Fiber</slot08>
-				<slot09>Steam Jacket</slot09>
-				<slot10>Condenser</slot10>
-				<slot11>Mana Channeler</slot11>
-				<slot12>Stealth Screen</slot12>
-			</healer>
-			<melrng>
-				<frame>Sharpshot Frame</frame>
-				<head>Valoredge Head</head>
-				<slot01>Tension Spring</slot01>
-				<slot02>Turbo Charger</slot02>
-				<slot03>Equalizer</slot03>
-				<slot04>Dynamo</slot04>
-				<slot05>Tension Spring II</slot05>
-				<slot06>Scope</slot06>
-				<slot07>Auto-Repair Kit II</slot07>
-				<slot08>Coiler</slot08>
-				<slot09>Tactical Processor</slot09>
-				<slot10>Armor Plate II</slot10>
-				<slot11>Optic Fiber</slot11>
-				<slot12>Volt Gun</slot12>
-			</melrng>
-		</autosets>
-		<bg>
-			<blue>0</blue>
-			<green>0</green>
-			<red>0</red>
-		</bg>
-		<padding>0</padding>
-		<pos>
-			<x>1600</x>
-			<y>920</y>
-		</pos>
-		<text>
-			<blue>255</blue>
-			<font>Consolas</font>
-			<green>255</green>
-			<red>255</red>
-			<size>10</size>
-		</text>
-		<visible>false</visible>
-	</global>
+    <global>
+        <AutoActivate>true</AutoActivate>
+        <AutoDeusExAutomata>true</AutoDeusExAutomata>
+        <autosets>
+            <blm>
+                <frame>stormwaker frame</frame>
+                <head>spiritreaver head</head>
+                <slot01>loudspeaker iv</slot01>
+                <slot02>ice maker</slot02>
+                <slot03>amplifier</slot03>
+                <slot04>amplifier ii</slot04>
+                <slot05>arcanoclutch</slot05>
+                <slot06>optic fiber</slot06>
+                <slot07>optic fiber ii</slot07>
+                <slot08>arcanic cell</slot08>
+                <slot09>arcanic cell ii</slot09>
+                <slot10>mana tank iii</slot10>
+                <slot11>mana tank iv</slot11>
+                <slot12>mana conserver</slot12>
+            </blm>
+            <boneslayer>
+                <frame>valoredge frame</frame>
+                <head>valoredge head</head>
+                <slot01>turbo charger</slot01>
+                <slot02>turbo charger ii</slot02>
+                <slot03>speedloader</slot03>
+                <slot04>coiler ii</slot04>
+                <slot05>auto-repair kit iv</slot05>
+                <slot06>magniplug ii</slot06>
+                <slot07>inhibitor</slot07>
+                <slot08>inhibitor ii</slot08>
+                <slot09>attuner</slot09>
+                <slot10>optic fiber</slot10>
+                <slot11>optic fiber ii</slot11>
+                <slot12>speedloader ii</slot12>
+            </boneslayer>
+            <bruisertank>
+                <frame>valoredge frame</frame>
+                <head>soulsoother head</head>
+                <slot01>strobe</slot01>
+                <slot02>strobe ii</slot02>
+                <slot03>armor plate iv</slot03>
+                <slot04>magniplug</slot04>
+                <slot05>magniplug ii</slot05>
+                <slot06>coiler ii</slot06>
+                <slot07>turbo charger</slot07>
+                <slot08>turbo charger ii</slot08>
+                <slot09>flashbulb</slot09>
+                <slot10>optic fiber</slot10>
+                <slot11>optic fiber ii</slot11>
+                <slot12>auto-repair kit iv</slot12>
+            </bruisertank>
+            <caitdd>
+                <frame>valoredge frame</frame>
+                <head>valoredge head</head>
+                <slot01>attuner</slot01>
+                <slot02>magniplug</slot02>
+                <slot03>magniplug ii</slot03>
+                <slot04>disruptor</slot04>
+                <slot05>auto-repair kit iv</slot05>
+                <slot06>optic fiber ii</slot06>
+                <slot07>optic fiber</slot07>
+                <slot08>steam jacket</slot08>
+                <slot09>coiler</slot09>
+                <slot10>coiler ii</slot10>
+                <slot11>armor plate iv</slot11>
+                <slot12>regulator</slot12>
+            </caitdd>
+            <caittank>
+                <frame>valoredge frame</frame>
+                <head>valoredge head</head>
+                <slot01>attuner</slot01>
+                <slot02>magniplug</slot02>
+                <slot03>magniplug ii</slot03>
+                <slot04>strobe ii</slot04>
+                <slot05>auto-repair kit iv</slot05>
+                <slot06>optic fiber ii</slot06>
+                <slot07>optic fiber</slot07>
+                <slot08>steam jacket</slot08>
+                <slot09>coiler</slot09>
+                <slot10>coiler ii</slot10>
+                <slot11>armor plate iv</slot11>
+                <slot12>galvanizer</slot12>
+            </caittank>
+            <dd>
+                <frame>sharpshot frame</frame>
+                <head>valoredge head</head>
+                <slot01>inhibitor</slot01>
+                <slot02>inhibitor ii</slot02>
+                <slot03>attuner</slot03>
+                <slot04>magniplug</slot04>
+                <slot05>magniplug ii</slot05>
+                <slot06>speedloader ii</slot06>
+                <slot07>truesights</slot07>
+                <slot08>turbo charger</slot08>
+                <slot09>turbo charger ii</slot09>
+                <slot10>optic fiber</slot10>
+                <slot11>optic fiber ii</slot11>
+                <slot12>coiler ii</slot12>
+            </dd>
+            <default>
+
+            </default>
+            <healer>
+                <frame>Stormwaker Frame</frame>
+                <head>Soulsoother Head</head>
+                <slot01>Disruptor</slot01>
+                <slot02>Economizer</slot02>
+                <slot03>Mana Conserver</slot03>
+                <slot04>Vivi-Valve</slot04>
+                <slot05>Percolator</slot05>
+                <slot06>Damage Gauge</slot06>
+                <slot07>Eraser</slot07>
+                <slot08>Optic Fiber</slot08>
+                <slot09>Steam Jacket</slot09>
+                <slot10>Condenser</slot10>
+                <slot11>Mana Channeler</slot11>
+                <slot12>Stealth Screen</slot12>
+            </healer>
+            <mdttank>
+                <frame>harlequin frame</frame>
+                <head>soulsoother head</head>
+                <slot01>strobe</slot01>
+                <slot02>strobe ii</slot02>
+                <slot03>armor plate iv</slot03>
+                <slot04>magniplug</slot04>
+                <slot05>magniplug ii</slot05>
+                <slot06>mana jammer iv</slot06>
+                <slot07>turbo charger</slot07>
+                <slot08>turbo charger ii</slot08>
+                <slot09>flashbulb</slot09>
+                <slot10>optic fiber</slot10>
+                <slot11>optic fiber ii</slot11>
+                <slot12>auto-repair kit iv</slot12>
+            </mdttank>
+            <melrng>
+                <frame>Sharpshot Frame</frame>
+                <head>Valoredge Head</head>
+                <slot01>Tension Spring</slot01>
+                <slot02>Turbo Charger</slot02>
+                <slot03>Equalizer</slot03>
+                <slot04>Dynamo</slot04>
+                <slot05>Tension Spring II</slot05>
+                <slot06>Scope</slot06>
+                <slot07>Auto-Repair Kit II</slot07>
+                <slot08>Coiler</slot08>
+                <slot09>Tactical Processor</slot09>
+                <slot10>Armor Plate II</slot10>
+                <slot11>Optic Fiber</slot11>
+                <slot12>Volt Gun</slot12>
+            </melrng>
+            <overdrive>
+                <frame>sharpshot frame</frame>
+                <head>valoredge head</head>
+                <slot01>auto-repair kit iv</slot01>
+                <slot02>optic fiber</slot02>
+                <slot03>optic fiber ii</slot03>
+                <slot04>coiler ii</slot04>
+                <slot05>inhibitor</slot05>
+                <slot06>inhibitor ii</slot06>
+                <slot07>attuner</slot07>
+                <slot08>magniplug ii</slot08>
+                <slot09>speedloader ii</slot09>
+                <slot10>turbo charger ii</slot10>
+                <slot11>magniplug</slot11>
+                <slot12>mana jammer iv</slot12>
+            </overdrive>
+            <ranger>
+                <frame>sharpshot frame</frame>
+                <head>sharpshot head</head>
+                <slot01>inhibitor</slot01>
+                <slot02>inhibitor ii</slot02>
+                <slot03>attuner</slot03>
+                <slot04>magniplug</slot04>
+                <slot05>magniplug ii</slot05>
+                <slot06>truesights</slot06>
+                <slot07>barrage turbine</slot07>
+                <slot08>repeater</slot08>
+                <slot09>drum magazine</slot09>
+                <slot10>optic fiber</slot10>
+                <slot11>optic fiber ii</slot11>
+                <slot12>scope iv</slot12>
+            </ranger>
+            <rdm>
+                <frame>stormwaker frame</frame>
+                <head>stormwaker head</head>
+                <slot01>mana booster</slot01>
+                <slot02>tactical processor</slot02>
+                <slot03>tranquilizer iv</slot03>
+                <slot04>loudspeaker iv</slot04>
+                <slot05>vivi-valve ii</slot05>
+                <slot06>damage gauge</slot06>
+                <slot07>optic fiber</slot07>
+                <slot08>optic fiber ii</slot08>
+                <slot09>mana conserver</slot09>
+                <slot10>economizer</slot10>
+                <slot11>mana tank iv</slot11>
+                <slot12>regulator</slot12>
+            </rdm>
+            <sharpshottank>
+                <frame>sharpshot frame</frame>
+                <head>sharpshot head</head>
+                <slot01>strobe</slot01>
+                <slot02>strobe ii</slot02>
+                <slot03>armor plate iv</slot03>
+                <slot04>magniplug</slot04>
+                <slot05>magniplug ii</slot05>
+                <slot06>truesights</slot06>
+                <slot07>turbo charger</slot07>
+                <slot08>turbo charger ii</slot08>
+                <slot09>flashbulb</slot09>
+                <slot10>optic fiber</slot10>
+                <slot11>optic fiber ii</slot11>
+                <slot12>auto-repair kit iii</slot12>
+            </sharpshottank>
+            <spamdd>
+                <frame>sharpshot frame</frame>
+                <head>sharpshot head</head>
+                <slot01>inhibitor</slot01>
+                <slot02>inhibitor ii</slot02>
+                <slot03>attuner</slot03>
+                <slot04>magniplug</slot04>
+                <slot05>magniplug ii</slot05>
+                <slot06>truesights</slot06>
+                <slot07>barrage turbine</slot07>
+                <slot08>repeater</slot08>
+                <slot09>drum magazine</slot09>
+                <slot10>optic fiber</slot10>
+                <slot11>optic fiber ii</slot11>
+                <slot12>scope iv</slot12>
+            </spamdd>
+            <sstank>
+                <frame>sharpshot frame</frame>
+                <head>valoredge head</head>
+                <slot01>strobe</slot01>
+                <slot02>strobe ii</slot02>
+                <slot03>magniplug</slot03>
+                <slot04>magniplug ii</slot04>
+                <slot05>turbo charger</slot05>
+                <slot06>turbo charger ii</slot06>
+                <slot07>truesights</slot07>
+                <slot08>armor plate iv</slot08>
+                <slot09>auto-repair kit iii</slot09>
+                <slot10>optic fiber</slot10>
+                <slot11>optic fiber ii</slot11>
+                <slot12>flashbulb</slot12>
+            </sstank>
+            <turtletank>
+                <frame>valoredge frame</frame>
+                <head>soulsoother head</head>
+                <slot01>strobe</slot01>
+                <slot02>strobe ii</slot02>
+                <slot03>armor plate iv</slot03>
+                <slot04>analyzer</slot04>
+                <slot05>mana jammer iv</slot05>
+                <slot06>mana jammer iii</slot06>
+                <slot07>steam jacket</slot07>
+                <slot08>galvanizer</slot08>
+                <slot09>flashbulb</slot09>
+                <slot10>optic fiber</slot10>
+                <slot11>optic fiber ii</slot11>
+                <slot12>auto-repair kit iv</slot12>
+            </turtletank>
+            <whm>
+                <frame>stormwaker frame</frame>
+                <head>soulsoother head</head>
+                <slot01>mana booster</slot01>
+                <slot02>tactical processor</slot02>
+                <slot03>mana tank ii</slot03>
+                <slot04>mana tank iv</slot04>
+                <slot05>vivi-valve ii</slot05>
+                <slot06>damage gauge ii</slot06>
+                <slot07>damage gauge</slot07>
+                <slot08>optic fiber</slot08>
+                <slot09>optic fiber ii</slot09>
+                <slot10>resister</slot10>
+                <slot11>resister ii</slot11>
+                <slot12>scanner</slot12>
+            </whm>
+        </autosets>
+        <bg>
+            <alpha>255</alpha>
+            <blue>0</blue>
+            <green>0</green>
+            <red>0</red>
+            <visible>true</visible>
+        </bg>
+        <flags>
+            <bold>false</bold>
+            <bottom>false</bottom>
+            <draggable>true</draggable>
+            <italic>false</italic>
+            <right>false</right>
+        </flags>
+        <maneuvertimers>true</maneuvertimers>
+        <padding>0</padding>
+        <pos>
+            <x>1440</x>
+            <y>875</y>
+        </pos>
+        <text>
+            <alpha>255</alpha>
+            <blue>255</blue>
+            <font>Consolas</font>
+            <fonts>
+
+            </fonts>
+            <green>255</green>
+            <red>255</red>
+            <size>10</size>
+            <stroke>
+                <alpha>255</alpha>
+                <blue>0</blue>
+                <green>0</green>
+                <red>0</red>
+                <width>0</width>
+            </stroke>
+        </text>
+        <visible>false</visible>
+    </global>
 </settings>

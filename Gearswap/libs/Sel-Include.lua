@@ -174,6 +174,7 @@ function init_include()
 	useItem = false
 	useItemName = ''
 	useItemSlot = ''
+	petWillAct = false
 	
 	autonuke = 'Fire'
 	autows = ''
@@ -410,7 +411,7 @@ function init_include()
 		
 		if lastincombat == true and not player.in_combat and being_attacked then
 			being_attacked = false
-			if player.status == 'Idle' and not midaction() and not pet_midaction() then
+			if player.status == 'Idle' and not midaction() and not (pet_midaction() or (petWillAct and petWillAct < (os.clock() + 2))) then
 				handle_equipping_gear(player.status)
 			end
 		end			
@@ -426,6 +427,10 @@ end
 -- versions of this function.
 if not file_unload then
     file_unload = function()
+        if user_job_unload then
+            user_job_unload()
+		end
+		
         if user_unload then
             user_unload()
 		end
@@ -871,6 +876,7 @@ function default_precast(spell, spellMap, eventArgs)
 
 	if eventArgs.cancel then
 		cancel_spell()
+		return
 	else
 		equip(get_precast_set(spell, spellMap))
 	end
@@ -1157,6 +1163,7 @@ end
 
 function default_pet_aftercast(spell, spellMap, eventArgs)
     if not midaction() then handle_equipping_gear(player.status) end
+	petWillAct = false
 end
 
 --------------------------------------
@@ -1239,7 +1246,7 @@ end
 function cleanup_aftercast(spell, spellMap, eventArgs)
     -- Reset custom classes after all possible precast/midcast/aftercast/job-specific usage of the value.
     -- If we're in the middle of a pet action, pet_aftercast will handle clearing it.
-    if not pet_midaction() then
+    if not pet_midaction() or (petWillAct and petWillAct < (os.clock() + 2)) then
         reset_transitory_classes()
     end
 end
@@ -2091,7 +2098,7 @@ function status_change(newStatus, oldStatus)
     end
 
     -- Handle equipping default gear if the job didn't mark this as handled.
-    if not eventArgs.handled and not midaction() and not pet_midaction() then
+    if not eventArgs.handled and not midaction() and not (pet_midaction() or (petWillAct and petWillAct < (os.clock() + 2))) then
         handle_equipping_gear(newStatus)
         display_breadcrumbs()
     end
@@ -2240,6 +2247,7 @@ end
 -- pet == pet gained or lost
 -- gain == true if the pet was gained, false if it was lost.
 function pet_change(pet, gain)
+	petWillAct = false
     -- Init a new eventArgs
     local eventArgs = {handled = false}
 

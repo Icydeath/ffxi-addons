@@ -43,13 +43,19 @@ default = {
     active = true,
     text = {text = {size=10}},
 	sets = T{
+		['caitdd'] = {'Light Maneuver', 'Fire Maneuver', 'Dark Maneuver'},
+		['caitdd_overdrive'] = {'Light Maneuver', 'Fire Maneuver', 'Dark Maneuver'},
+		
+		['caittank'] = {'Light Maneuver', 'Fire Maneuver', 'Light Maneuver'},
+		['caittank_overdrive'] = {'Light Maneuver', 'Fire Maneuver', 'Thunder Maneuver'},
+		
 		['default'] = {'Light Maneuver', 'Fire Maneuver', 'Fire Maneuver'},
 		['default_overdrive'] = {'Light Maneuver', 'Fire Maneuver', 'Thunder Maneuver'},
 		
-		['dd'] = {'Light Maneuver', 'Fire Maneuver', 'Fire Maneuver'},
+		['dd'] = {'Light Maneuver', 'Fire Maneuver', 'Wind Maneuver'},
 		['dd_overdrive'] = {'Light Maneuver','Fire Maneuver', 'Thunder Maneuver'},
 		
-		['ddtank'] = {'Light Maneuver', 'Fire Maneuver', 'Fire Maneuver'},
+		['ddtank'] = {'Light Maneuver', 'Fire Maneuver', 'Wind Maneuver'},
 		['ddtank_overdrive'] = {'Light Maneuver','Fire Maneuver', 'Thunder Maneuver'},
 		
 		['turtle'] = {'Light Maneuver', 'Fire Maneuver', 'Water Maneuver'},
@@ -61,8 +67,11 @@ default = {
 		['sstank'] = {'Light Maneuver', 'Fire Maneuver', 'Wind Maneuver'},
 		['sstank_overdrive'] = {'Light Maneuver', 'Fire Maneuver', 'Thunder Maneuver'},
 		
-		['spamdd'] = {'Light Maneuver', 'Fire Maneuver', 'Fire Maneuver'},
-		['spamdd_overdrive'] = {'Light Maneuver', 'Fire Maneuver', 'Fire Maneuver'},
+		['spamdd'] = {'Wind Maneuver', 'Wind Maneuver', 'Wind Maneuver'},
+		['spamdd_overdrive'] = {'Wind Maneuver', 'Fire Maneuver', 'Wind Maneuver'},
+		
+		['ranger'] = {'Wind Maneuver', 'Wind Maneuver', 'Wind Maneuver'},
+		['ranger_overdrive'] = {'Wind Maneuver', 'Fire Maneuver', 'Fire Maneuver'},
 		
 		['boneslayer'] = {'Light Maneuver', 'Fire Maneuver', 'Wind Maneuver'},
 		['boneslayer_overdrive'] = {'Light Maneuver', 'Fire Maneuver', 'Thunder Maneuver'},
@@ -75,6 +84,9 @@ default = {
 		
 		['blm'] = {'Light Maneuver', 'Dark Maneuver', 'Ice Maneuver'},
 		['blm_overdrive'] = {'Light Maneuver', 'Dark Maneuver', 'Ice Maneuver'},
+		
+		['od'] = {'Light Maneuver', 'Fire Maneuver', 'Thunder Maneuver'},
+		['od_overdrive'] = {'Light Maneuver', 'Fire Maneuver', 'Thunder Maneuver'},
 	},
 	repair = true,
 	repairhpp = 40,

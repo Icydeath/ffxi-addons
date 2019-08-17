@@ -39,9 +39,6 @@ function job_setup()
 	state.Buff['Nightingale'] = buffactive['Nightingale'] or false
 	state.RecoverMode = M('35%', '60%', 'Always', 'Never')
 
-	--List of which WS you plan to use TP bonus WS with.
-	moonshade_ws = S{'Rudra\'s Storm'}
-
 	autows = "Rudra's Storm"
 	autofood = 'Pear Crepe'
 

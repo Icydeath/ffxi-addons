@@ -1,7 +1,7 @@
 return {
     ["Apex Crab"]={
         ["Shell Guard"]={
-            ["complete_reaction"]="/ma Magic Finale <bt>", 
+            ["complete_reaction"]="input /ma Magic Finale", 
             ["ready_reaction"]=""
         }
     }, 
@@ -35,6 +35,12 @@ return {
         ["Water Meeble Warble"]={
             ["complete_reaction"]="", 
             ["ready_reaction"]="input /ma \"Barwatera\" <me>"
+        }
+    },
+	["Kei"]={
+        ["Dancing Fullers"]={
+            ["complete_reaction"]="", 
+            ["ready_reaction"]="runaway 12"
         }
     }
 }

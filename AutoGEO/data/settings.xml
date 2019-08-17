@@ -6,19 +6,20 @@
         <aug>
             <lifestream>20</lifestream>
         </aug>
+        <blaze>false</blaze>
         <buffs>
             <haste />
-            <refresh>Icybreath</refresh>
+            <refresh />
         </buffs>
         <delay>4.2</delay>
         <entrust>
-            <ma>Indi-Refresh</ma>
-            <target>combat</target>
+            <ma>Indi-Precision</ma>
+            <target>icydeath</target>
         </entrust>
         <geo>Geo-Frailty</geo>
         <indi>Indi-Precision</indi>
-        <max_ws_hp>99</max_ws_hp>
-        <min_ws_hp>20</min_ws_hp>
+        <max_ws_hp>0</max_ws_hp>
+        <min_ws_hp>0</min_ws_hp>
         <recast>
             <buff>
                 <max>10</max>
@@ -69,37 +70,21 @@
             </text>
         </text>
     </global>
-    <icybreath>
-        <buffs>
-            <refresh />
-        </buffs>
-        <entrust>
-            <target>rythor</target>
-        </entrust>
-        <indi>Indi-Fend</indi>
-        <text>
-            <pos>
-                <x>1000</x>
-                <y>852</y>
-            </pos>
-        </text>
-    </icybreath>
     <rythor>
         <aug>
             <lifestream>13</lifestream>
         </aug>
-        <buffs>
-            <refresh>Rythor</refresh>
-        </buffs>
+        <blaze>true</blaze>
         <entrust>
-            <target>rythor</target>
+            <ma>Indi-Refresh</ma>
+            <target>gorby</target>
         </entrust>
-        <geo>Geo-Precision</geo>
+        <geo>Geo-Fend</geo>
         <indi>Indi-Haste</indi>
         <text>
             <pos>
-                <x>1001</x>
-                <y>828</y>
+                <x>1487</x>
+                <y>834</y>
             </pos>
         </text>
     </rythor>

@@ -6,6 +6,11 @@ return {
     ["Bozzetto Berserker"] = S{
         2
     },
+    ["Bozzetto Breadwinner"] = S{
+        2,
+        10,
+        28
+    },
     ["Bozzetto Devout"] = S{
         2,
         28
@@ -23,6 +28,9 @@ return {
     ["Bozzetto Rascal"] = S{
         2
     },
+    ["Bozzetto Songstress"] = S{
+        2
+    },
     ["Broadleaf Palm"] = S{
         2,
         194
@@ -33,8 +41,13 @@ return {
     ["Cloud of Darkness"] = S{
         7
     },
+    ["Conqueror Bakgodek"] = S{
+        4,
+        6
+    },
     ["Corporal Tombstone"] = S{
-        2
+        2,
+        28
     },
     ["Despot"] = S{
         194
@@ -46,22 +59,37 @@ return {
         194
     },
     ["Fu"] = S{
+        2,
         6,
-        10
+        10,
+        28
     },
     ["Glassy Craver"] = S{
-        10
+        2,
+        10,
+        28
     },
     ["Glassy Gorger"] = S{
-        10
+        2,
+        10,
+        28
     },
     ["Glassy Thinker"] = S{
-        6
+        2,
+        6,
+        28
     },
     ["Gnarled Rampart"] = S{
         194
     },
+    ["Grimy Boulders"] = S{
+        194
+    },
     ["Incarnation Icon"] = S{
+        2,
+        28
+    },
+    ["Kei"] = S{
         2,
         28
     },
@@ -73,10 +101,13 @@ return {
     },
     ["Knotted Root"] = S{
         2,
+        3,
+        5,
         194
     },
     ["Lithicthrower Image"] = S{
-        2
+        2,
+        6
     },
     ["Sere Stump"] = S{
         194

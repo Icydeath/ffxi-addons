@@ -1,0 +1,372 @@
+0.15.3 - (2019/06/10)
+======================
+- Added capability to have custom gambits defined per character
+  If character.lua is defined in the /my_gambits/ folder, it will
+  check that lua for your current job. If gambits are found it will
+  use those, if not, Gambits will use the gambits in the my_gambits.lua
+  as per usual
+
+- Added in some movement checks, so that gambits finally stops trying
+  to constantly cast spells when you're moving, even when engaged_only
+  is off
+
+0.15.2 - (2017/09/17)
+======================
+- Added the capability to toggle claim checks with //g cc.
+  Only use this to disable claim checks in special situations you
+  know you need to, and remember to renable them when you're done!
+
+0.15.1 - (2017/09/16)
+======================
+- Stopped Gambits from trying to cast on untargettable sphere trusts
+
+- Added the new Indicolure buff to resources, allowing Gambits
+  to use enfeebling bubbles (!)
+
+0.15.0 - (2016/10/05)
+======================
+- Added various PUP maneuver related SELF triggers:
+  {"SELF", "FIRE_MANEUVERS <", 2, "JA", "Fire Maneuver"}
+  {"SELF", "MANEUVERS <", 3, "JA", "Wind Maneuver"}
+
+- Added PET_HPP <=
+  {"SELF", "PET_HPP <=", 50, "JA", "Light Maneuver"}
+
+- Added PET_IDLE, which fires if a pet isn't engaged
+  when the gambit list is checked
+  {"SELF", "PET_IDLE", "", "JA", "Deploy"}
+
+
+0.14.1 - (2016/04/12)
+======================
+- Added a command to toggle engaged_only on/off.
+  Command: //g eo
+
+- Buffs/debuffs now work correctly when you have
+  more than 16 status effects.
+
+- Added a cta ticket system. If for some reason cta
+  is still false after the maximum casting time for
+  a spell, and that spell was the last action gambits
+  tried to perform, cta will be set to true. This
+  gets around any weird cases where an action fails
+  without any existing indication that it did
+  (Ie: Your target dying midcast; XI doesn't send
+       out a message that your spellcasting failed
+       in this case.)
+
+- NOT_STATUS now ignores trusts. No more spamming
+  Haste on a Trust we can't see buff information for!
+
+- Prevented gambits from analyzing dead party members.
+  No more getting stuck trying to cure dead people!
+
+0.14.0 - (2016/04/08)
+======================
+- Added CHAIN reaction. This a complex reaction
+  type which allows you to link multiple actions
+  in a row in response to a single trigger activation.
+  Useful for using SCH abilities to make sure everyone
+  has a certain buff!
+
+  To use, have the reaction be "CHAIN", while the r_arg
+  as an ARRAY of reactions you want to link.
+
+  Example:
+  {"SELF","NOT_STATUS","Hailstorm","CHAIN",{
+                                            {"JA","Perpetuance"},
+                                            {"JA","Accession"},
+                                            {"MA","Hailstorm"}
+                                           }}
+
+  Works with Clusters too:
+  {"CLUSTER","NOT_STATUS","Regen","CHAIN",{
+                                           {"JA","Accession"},
+                                           {"MA","Regen IV"}
+                                          }}
+
+  Just remember Gambit's inherent fall-through nature and try
+  to use that first if possible. For example, SA + WS could
+  already be achieved by using two consecutive gambits like so:
+  {"AND",
+         {{"SELF","TP >=", 1000},
+         {"SELF","NOT_STATUS", "Sneak Attack"}},"JA","Sneak Attack"}
+  {"SELF","TP >=",1000,"WS","Rudra's Storm"}
+
+- Added NOT_TAGGED. Can be used to make sure you
+  have hate on the enemy at the start of a fight!
+  Ex: {"ENEMY","NOT_TAGGED","","MA","Dia II"}
+
+- Fixed ENEMY READYING and CASTING, which had
+  apparently been broken since version 0.11.0 when
+  distance checks were added.
+
+- Fixed ability_ready() not properly recognizing
+  that a stratagem charge was available if one had
+  already been used when another was available.
+
+0.13.3 - (2016/04/07)
+======================
+- Fixed ATTACK and ASSIST flagging cta(true) when
+  the character is actually able to take actions
+
+- Fixed automatically running off after killing a mob
+  that had been ATTACKed and was being /followed.
+
+0.13.2 - (2016/04/02)
+======================
+- Gambits should no longer attempt to react when
+  the character is unable to act, which should
+  prevent cta(false) bugs.
+
+- Gambits now makes sure the player isn't suffering
+  from Mute when checking to see if a spell is available.
+  Hat Tip: Jacki for pointing this out.
+
+0.13.1 - (2016/03/12)
+======================
+- Gambits now checks the gambit list when a spell
+  or job ability becomes available for recast, 
+  even if no new action packets have come in.
+
+0.13.0 - (2016/03/04)
+======================
+- Added "MPP <=" trigger. Fires when the target has
+  less than the stated percentage of MP remaining.
+
+- Added "NO_PET" trigger. Works with SELF. No trigger_arg.
+  Fires when the player doesn't currently have a pet.
+  Example: {"SELF","NO_PET","","MA","Geo-Regen"}
+
+- Gambits now has its own english-name-keyed resource
+  tables, and now longer has to flip the base Windower
+  tables on load. This has changed Gambits from temporarily
+  freezing the window (lots of item IDs) on load/reload,
+  to loading nigh-instaneously!
+
+  Hat Tip: tkm256 for making a key-flipper for me to use!
+
+- Because Gambits now has its own resource tables, it can
+  have its own keys for buffs that would normally not be
+  included in the key-flipped table. This means that all
+  Geomancy-related buffs now have their own keys, and
+  Gambits can finally be used for Geo Buffs!
+  Example: {"SELF","NOT_STATUS","Geo Haste","MA","Indi-Haste"}
+ 
+
+0.12.0  - (2016/02/27)
+======================
+- Added "TANK", "MELEE", "RANGED", and "MAGE" selectors.
+  Targets party members whose current job qualifies as
+  the selecting type.
+  Note 1: Does not work for Trusts.
+
+- No longer attempts to cast on party members who
+  are out of spellcasting range.
+
+- Now refreshes party list as the party changes without
+  needing to hard reload when someone joins or a Trust
+  is summoned.
+
+- No longer remembers trusts who were released or died.
+
+0.11.1  - (2016/02/26)
+======================
+- can_take_action is now action packet based instead
+  of being on a calculated timer. Results in quickest
+  possible spellcasting spam, regardless of casting
+  faster than the base default spellcasting time.
+
+0.11.0  - (2016/02/16)
+======================
+- Added "CLUSTER" selector. Will return the party member
+  who is within beneficial AoE range (9.9') of the most 
+  party members satisfying the condition.
+  Ex: {"CLUSTER","HPP <=",80,"MA","Curaga III"}
+  Note: At least 3 people in a given cluster must
+        satisfy the condition for the cluster to be
+        eligible for selection.
+
+0.10.0  - (2016/01/29)
+======================
+- Gambits now has perfect knowledge of the statuses of
+  party members (who are currently in the same zone).
+  NOTE: This only applies to real party members that
+        FFXI sends out a party_buff packet for. Since
+        the server does not send out said packet for
+        Trusts in the party, Gambits has NO knowledge
+        of the statuses of Trust members other than
+        their HP, MP, and TP. This will probably result
+        in endless buffing loops if you use 
+        ("PARTY","NOT_STATUS") while a Trust is summoned.
+
+0.9.0   - (2015/10/13)
+======================
+- Added a engaged_only flag. This is hard-set in g.lua
+  itself. Will cause Gambits to only perform actions
+  while you yourself are engaged in combat. This prevents
+  you from trying to buff yourself while you're running
+  around inside Salvage, for example.
+
+- Fixed attempting to cast a spell you lack the MP for.
+
+0.8.0   - (2015/08/09)
+======================
+- Added "ENEMY" selector.
+
+- Added "READYING" and "CASTING" triggers. These can be
+  used with the ENEMY selector to trigger a reaction
+  if the mob is trying to use a given TP move or spell.
+  Or: Added stunning.
+
+- Added "CAN_SC" trigger. Combines with SELF. Fires when
+  the enemy has a current skillchain property applied to it 
+  that can be used to make the given trigger_arg. Does /not/
+  determine a weaponskill (if you have any) that can be used
+  to actually make the skillchain. The reaction will be
+  whatever you give it ("WS","Shark Bite") regardless of
+  whether or not it can make the SC ("SELF","CAN_SC","Light").
+
+- Fixed not being able to load gambits unless the current
+  Main Job had special mob tactics defined in all tactics files.
+
+0.7.0   - (2015/06/28)
+======================
+- Added "AND" 'selector'. This is a complex selector that
+  can be used to check against multiple triggers at once.
+  The syntax is slightly different: the selector value is
+  "AND", while the trigger is an array of triggers. The
+  (base) trigger argument isn't used, and can/should be
+  left blank. Each child trigger inside the combined 
+  triggers array must consist of a valid selector, trigger, 
+  and trigger_arg.
+
+  Example: {"AND",{
+                   {"SELF","TP >=",1000},
+                   {"SELF","HPP >","65"}
+                  },
+                  "",
+                  "WS",
+                  "Rudra's Storm"}
+  Would use Rudra's Storm, but only when you have more than
+  65% of your HP.
+
+  Note: YOU DO NOT NEED TO - AND SHOULDN'T - USE THIS TO MAKE
+  SURE YOU MEET CONDITIONS TO USE YOUR STATED REACTION.
+  Gambits automatically checks to see if you can use the
+  given reaction. In other words,
+  
+  Bad: {"AND",{
+               {"SELF","HPP <=",70},
+               {"SELF","TP >=",500}
+              },
+              "",
+              "JA",
+              "Curing Waltz III"}
+  Good: {"SELF","HPP <=",70,"JA","Curing Waltz III"}
+
+  The check to see if you have enough TP is implicitly
+  performed by the "JA" reaction. AND is meant for use
+  with unrelated child triggers.
+
+- Added the ability to use special gambits for a specific
+  enemy you're fighting. These work almost exactly like
+  regular gambits, but are instead placed within the
+  'tactics' folder, and given the name of the mob you
+  want them used for. See "tactics/Blanched Mandragora.lua"
+  for an example.
+
+  IMPORTANT: When you create a new set of tactics for
+  a mob, you must edit "tactics/tactics_list.txt" and 
+  insert the mob's name in it on its own line. The only 
+  special tactics that get loaded/checked are those whose 
+  names are lised in the text document!
+
+- Added "ITEM" reaction. Attempts to use an item
+  provided the trigger is satisfied, and the item is
+  either in the player's inventory or temp items.
+  Example: {"SELF","STATUS","Silenced","ITEM","Echo Drops"}
+  Note: Will always do /item 'name' <me>. Can't attempt to
+  use items on other entities at this time.
+
+- Added "SHADOWs <", "MOVES <", and "MOVES >=". Triggers
+  when you have less than X shadows, less than X finishing
+  moves, and greater than/equal to X finishing moves.
+
+- Added "HPP >" trigger. Fires when the target has
+  more than reaction_arg percentage of HP.
+
+- Fixed attempting to use job abilities that require TP
+  when the player didn't have the requisite amount.
+
+- Added functionality for english->id translation to use
+  either en or enl for buff names/ids. So now you can use
+  either "Paralysis" or "Paralyzed" for the Paralyze status 
+  effect.
+
+0.6.0   - (2015/06/17)
+======================
+
+- Gambits can/must now be written in mostly plain-english.
+  Example: {"PARTY","STATUS","Poison","MA","Poisona"}
+  No more having to look up buff/spell/ja IDs! On load, they'll
+  be processed and convert into their "true" form. You'll be
+  yelled at if you enter in a buff/ability name that it was
+  unable to look up.
+  [Note: Geomancy spells are now broken until I come up with some
+  way to work around them bestowing the same buff name as
+  generic boosts. (Ie: "Refresh" refers to both ID 43, and
+  the ID 541 that a Indi-Refresh check would require.)]
+
+- Added "NOT_ENGAGED" trigger. Fires when the player is
+  not currently in the engaged status (weapon out).
+
+- Added "ATTACK" reaction. If you're targetting a monster when
+  the trigger is fired, will lock on to target, /follow, and /a.
+
+- Added "NOT_ASSISTING" trigger. Fires when the player is not
+  currently targetting the same mob as the provided player name.
+
+- Added "ASSIST" reaction. /assists a player who's "NOT_ASSISTING"
+  check you just failed against.
+
+- Enemy-only abilities/spells will no longer try to fire
+  when player isn't targetting an enemy. Additionally, they'll
+  only fire when the mob has been claimed by the pt. No more
+  auto-firing Thunder IVs at innocent crabs while trying to
+  tab around to target the mean pugil.
+
+0.5.0   - (2015/06/03)
+======================
+
+- Now automatically selects gambits for the current main_job
+
+- Keybind for Ctrl+G to quickly disable/reenable
+
+- Added "PARTY" selector. Returns the first party member that
+  satisfies the given trigger.
+
+- Added trigger "MA_READY". Can be used to auto-nuke.
+  Note: Only works with "SELF" selector.
+
+- Added trigger "JA_READY".
+  Note 1: Only works with "SELF" selector.
+  Note 2: For buff-bestowing abilities, you should continue to 
+  use {NOT_STATUS, BUFF_ID, JA}. Using "JA_READY" by itself will 
+  result in using the ability the second it's up, even if you already 
+  possess the buff. JA_READY is meant for enemy-targeting abilities 
+  like Provoke, not Haste Samba.
+
+- Added trigger "STATUS".
+  Note 1: While I make my best attempt at tracking statues for other
+  party members, do not rely on this to be accurate for anyone other
+  than the player character ("SELF").
+  Note 2: Many TP moves don't send out any sort of message that a given 
+  status effect has been applied. The server will send out notices for 
+  some of the statuses the move inflicts, but not necessarily all of them.
+  The gambiteer will be oblivious to such unreported ailments.
+
+- Reactions are now blocked for the full duration of a spell's casting.
+  (Ie: Not trying to cast Spell B before you're finished with Spell A)
+  Note: This blocking time is for the default casting time of a spell. Gear
+  or abilities that reduce spell-casting time are /not/ taken into account.

@@ -5,6 +5,11 @@ return {
 		['ws'] = L{'Tachi: Fudo','Tachi: Kasha','Tachi: Shoha','Tachi: Fudo'}
 	},
 	{
+		['name'] = '3step',
+		['repeat'] = true,
+		['ws'] = L{'Tachi: Shoha','Tachi: Kasha','Tachi: Fudo'}
+	},
+	{
 		['name'] = 'long radiance',
 		['repeat'] = true,
 		['ws'] = L{'Tachi: Shoha','Tachi: Gekko','Tachi: Kasha','Tachi: Shoha','Tachi: Fudo'}

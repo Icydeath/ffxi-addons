@@ -14,6 +14,9 @@ elements.list = S{'Light','Dark','Fire','Ice','Wind','Earth','Lightning','Water'
 elements.nuke = {['Fire']='Fire', ['Ice']='Blizzard', ['Wind']='Aero', ['Earth']='Stone',
         ['Lightning']='Thunder', ['Water']='Water', ['Light']='Banish', ['Dark']='Bio',}
 		
+elements.quickdraw = {['Fire']='Fire', ['Ice']='Ice', ['Wind']='Wind', ['Earth']='Earth',
+        ['Lightning']='Thunder', ['Water']='Water', ['Light']='Light', ['Dark']='Dark',}
+		
 elements.enspell = {['Fire']='Fire', ['Ice']='Blizzard', ['Wind']='Aero', ['Earth']='Stone',
         ['Lightning']='Thunder', ['Water']='Water', ['Light']='Light', ['Dark']='Dark',}
 		
@@ -78,6 +81,8 @@ elements.recast_staff_of = {['Light']='Arka II', ['Dark']='Xsaeta II', ['Fire']=
 elements.perpetuance_staff_of = {['Light']='Arka III', ['Dark']='Xsaeta III', ['Fire']='Atar III', ['Ice']='Vourukasha III',
     ['Wind']='Vayuvata III', ['Earth']='Vishrava III', ['Lightning']='Apamajas III', ['Water']='Haoma III', ['Thunder']='Apamajas III'}
 
+--Cursna actions
+cursna_exceptions = S{'Cursna','Accession','Divine Caress','Hallowed Water','Holy Water'}
 
 -- Elements for skillchain names
 skillchain_elements = {}
@@ -116,7 +121,7 @@ data.weaponskills.relic = {
     ["Kikoku"] = "Blade: Metsu",
     ["Amanomurakumo"] = "Tachi: Kaiten",
     ["Mjollnir"] = "Randgrith",
-    ["Claustrum"] = "Gates of Tartarus",
+    ["Claustrum"] = "Gate of Tartarus",
     ["Annihilator"] = "Coronach",
     ["Yoichinoyumi"] = "Namas Arrow"}
 data.weaponskills.mythic = {
@@ -314,6 +319,8 @@ dualWieldJobs = S{'THF','BLU','NIN','DNC'}
 -- Item related Mappings.
 bayld_items = {}
 
+slot_names = S{'main','sub','range','ranged','ammo','head','neck','ear1','lear','left_ear','ear2','rear','right_ear','ring1','lring','left_ring','ring2','rring','right_ring','back','waist','legs','feet'}
+
 --[[
 bayld_items = {'Tlalpoloani','Macoquetza','Camatlatia','Icoyoca','Tlamini','Suijingiri Kanemitsu','Zoquittihuitz',
 'Quauhpilli Helm','Chocaliztli Mask','Xux Hat','Quauhpilli Gloves','Xux Trousers','Chocaliztli Boots','Maochinoli',
@@ -322,7 +329,7 @@ bayld_items = {'Tlalpoloani','Macoquetza','Camatlatia','Icoyoca','Tlamini','Suij
 'Uk\'uxkaj Cap'}
 ]]
 	
-cprings = L{"Trizek Ring","Vocation Ring","Capacity Ring","Facility Ring"}
+cprings = L{"Endorsement Ring","Trizek Ring","Vocation Ring","Capacity Ring","Facility Ring"}
 xprings = L{"Echad Ring","Calibur Ring","Emperor Band","Empress Band","Resolution Ring"}
 cprings_count = 1
 

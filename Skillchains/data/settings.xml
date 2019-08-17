@@ -2,13 +2,13 @@
 <settings>
     <global>
         <Show>
-            <burst>BST,GEO,WHM,DRG,NIN,COR,SCH,DRK,DNC,BLM,RDM,RNG,PUP,SAM,RUN,MNK,WAR,THF,SMN,BRD,PLD,BLU</burst>
+            <burst>BST,GEO,WHM,DRG,NIN,COR,BLU,DRK,DNC,MNK,RDM,RNG,PUP,SCH,RUN,BLM,WAR,THF,SMN,BRD,PLD,SAM</burst>
             <pet>BST,SMN</pet>
-            <props>BST,GEO,WHM,DRG,NIN,COR,SCH,DRK,DNC,BLM,RDM,RNG,PUP,SAM,RUN,MNK,WAR,THF,SMN,BRD,PLD,BLU</props>
+            <props>BST,GEO,WHM,DRG,NIN,COR,BLU,DRK,DNC,MNK,RDM,RNG,PUP,SCH,RUN,BLM,WAR,THF,SMN,BRD,PLD,SAM</props>
             <spell>SCH,BLU</spell>
-            <step>BST,GEO,WHM,DRG,NIN,COR,SCH,DRK,DNC,BLM,RDM,RNG,PUP,SAM,RUN,MNK,WAR,THF,SMN,BRD,PLD,BLU</step>
-            <timer>BST,GEO,WHM,DRG,NIN,COR,SCH,DRK,DNC,BLM,RDM,RNG,PUP,SAM,RUN,MNK,WAR,THF,SMN,BRD,PLD,BLU</timer>
-            <weapon>BST,GEO,WHM,DRG,NIN,COR,SCH,DRK,DNC,BLM,RDM,RNG,PUP,SAM,RUN,MNK,WAR,THF,SMN,BRD,PLD,BLU</weapon>
+            <step>BST,GEO,WHM,DRG,NIN,COR,BLU,DRK,DNC,MNK,RDM,RNG,PUP,SCH,RUN,BLM,WAR,THF,SMN,BRD,PLD,SAM</step>
+            <timer>BST,GEO,WHM,DRG,NIN,COR,BLU,DRK,DNC,MNK,RDM,RNG,PUP,SCH,RUN,BLM,WAR,THF,SMN,BRD,PLD,SAM</timer>
+            <weapon>BST,GEO,WHM,DRG,NIN,COR,BLU,DRK,DNC,MNK,RDM,RNG,PUP,SCH,RUN,BLM,WAR,THF,SMN,BRD,PLD,SAM</weapon>
         </Show>
         <UpdateFrequency>0.2</UpdateFrequency>
         <aeonic>false</aeonic>
@@ -53,6 +53,14 @@
             </text>
         </display>
     </global>
+    <clubfoot>
+        <display>
+            <pos>
+                <x>532</x>
+                <y>420</y>
+            </pos>
+        </display>
+    </clubfoot>
     <icydeath>
         <display>
             <pos>
@@ -61,4 +69,12 @@
             </pos>
         </display>
     </icydeath>
+    <rythor>
+        <display>
+            <pos>
+                <x>482</x>
+                <y>444</y>
+            </pos>
+        </display>
+    </rythor>
 </settings>
