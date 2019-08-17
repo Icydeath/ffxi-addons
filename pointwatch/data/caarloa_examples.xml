@@ -1,0 +1,158 @@
+<!-- Some examples requested by Caarloa -->
+
+<!-- NEW DISCOVERY
+ Best way found to get the settings to stick for all toons is to modify the pointwatch\statics.lua file directly by changing
+  the default_settings list's "default" varible.
+  Here is an example with the same changes to the default variable in the statics.lua file:
+    default = "xp.current..'/'..xp.tnl..'XP   '..lp.current..'/'..lp.tnm..'LP ['..lp.number_of_merits..'/'..lp.maximum_merits..']   '..cp.current..'/'..cp.tnjp..'CP ['..cp.number_of_job_points..']   CP/hr:'..string.format('%.1f',math.floor(cp.rate/100)/10)..'k   [Sparks:'..sparks.current..'/'..sparks.maximum..']'",
+  Which looks like:
+    0/0XP 0/10000LP [0/30] 0/30000CP [0] CP/hr:0.0k [Sparks:0/99999]
+
+  I've uploaded the statics.lua file with the original default unchanged but have a commented line below with the above change so
+   you can see what i'm talking about.
+-->
+
+<!-- Below is to modify the settings.xml file, although with multiple toons this seems to not function as expected for some reason. -->
+<!-- this default contains everything (minus the dynamis/abyssea stuff) -->
+<default>
+	xp.current..&apos;/&apos;..xp.tnl..&apos;XP &apos;..
+	lp.current..&apos;/&apos;..lp.tnm..&apos;LP [&apos;..lp.number_of_merits..&apos;/&apos;..lp.maximum_merits..
+	&apos;] XP/hr:&apos;..string.format(&apos;%.1f&apos;,math.floor(xp.rate/100)/10)..&apos;k &apos;..
+	cp.current..&apos;/&apos;..cp.tnjp..&apos;CP [&apos;..cp.number_of_job_points..
+	&apos;] CP/hr:&apos;..string.format(&apos;%.1f&apos;,math.floor(cp.rate/100)/10)..
+	&apos;k [Sparks:&apos;..sparks.current..&apos;/&apos;..sparks.maximum..&apos;]&apos;
+</default>
+
+
+<!--
+
+ Tip: Remember the custom text (none variable stuff) must be wrapped in single quotes (aka &apos;)
+      so if you remove a section, don't forget to check if you are missing a trailing single quote for any custom text.
+
+
+ This is the same as above, but might make it easier to read/understand. I replaced the .. with + and &apos; with '
+ 
+	xp.current + '/' + xp.tnl + 'XP' + 
+	lp.current + '/' + lp.tnl + 'LP [' + lp.number_of_merits + '/' + lp.maximum_merits + 
+	'] XP/hr:' + string.format('%.1f',math.floor(xp.rate/100)/10) + 'k ' + 
+	cp.current + '/' + cp.tnjp + 'CP [' + cp.number_of_job_points + 
+	'] CP/hr:' + string.format('%.1f',math.floor(cp.rate/100)/10) + 
+	'k [Sparks:' + sparks.current + '/' + sparks.maximum + ']'
+-->
+
+<!-- Adding a section 1 at a time examples | remember in the actual settings file it has to be a single line of text, i break it down so its easier to visually understand -->
+
+<!-- 00000/56000XP -->
+<default>
+	xp.current..&apos;/&apos;..xp.tnl..&apos;XP &apos;
+</default>
+
+<!-- 
+	00000/56000XP 
+	00000/56000LP [0/75] 
+ -->
+<default>
+	xp.current..&apos;/&apos;..xp.tnl..&apos;XP &apos;..
+	lp.current..&apos;/&apos;..lp.tnm..&apos;LP [&apos;..lp.number_of_merits..&apos;/&apos;..lp.maximum_merits..&apos;] &apos;
+</default>
+
+<!-- 
+	00000/56000XP 
+	00000/56000LP [0/75] 
+	XP/hr: 0/0k
+ -->
+<default>
+	xp.current..&apos;/&apos;..xp.tnl..&apos;XP &apos;..
+	lp.current..&apos;/&apos;..lp.tnm..&apos;LP [&apos;..lp.number_of_merits..&apos;/&apos;..lp.maximum_merits..&apos;] XP/hr:&apos;..
+	string.format(&apos;%.1f&apos;,math.floor(xp.rate/100)/10)..&apos;k &apos;
+</default>
+
+<!-- 
+	00000/56000XP 
+	00000/56000LP [0/75] 
+	XP/hr: 0/0k
+	00000/30000CP [0]
+ -->
+<default>
+	xp.current..&apos;/&apos;..xp.tnl..&apos;XP &apos;..
+	lp.current..&apos;/&apos;..lp.tnm..&apos;LP [&apos;..lp.number_of_merits..&apos;/&apos;..lp.maximum_merits..
+	&apos;] XP/hr:&apos;..string.format(&apos;%.1f&apos;,math.floor(xp.rate/100)/10)..&apos;k &apos;..
+	cp.current..&apos;/&apos;..cp.tnjp..&apos;CP [&apos;..cp.number_of_job_points..&apos;] &apos;
+</default>
+
+
+<!-- 
+	00000/56000XP 
+	00000/56000LP [0/75] 
+	XP/hr: 0/0k
+	00000/30000CP [0]
+	CP/hr: 0/0k
+ -->
+<default>
+	xp.current..&apos;/&apos;..xp.tnl..&apos;XP &apos;..
+	lp.current..&apos;/&apos;..lp.tnm..&apos;LP [&apos;..lp.number_of_merits..&apos;/&apos;..lp.maximum_merits..
+	&apos;] XP/hr:&apos;..string.format(&apos;%.1f&apos;,math.floor(xp.rate/100)/10)..&apos;k &apos;..
+	cp.current..&apos;/&apos;..cp.tnjp..&apos;CP [&apos;..cp.number_of_job_points..&apos;] CP/hr:&apos;..
+	string.format(&apos;%.1f&apos;,math.floor(cp.rate/100)/10)
+</default>
+
+<!-- 
+	00000/56000XP 
+	00000/56000LP [0/75] 
+	XP/hr: 0/0k
+	00000/30000CP [0]
+	CP/hr: 0/0k
+	[Sparks: 0/99999]
+ -->
+<default>
+	xp.current..&apos;/&apos;..xp.tnl..&apos;XP &apos;..
+	lp.current..&apos;/&apos;..lp.tnm..&apos;LP [&apos;..lp.number_of_merits..&apos;/&apos;..lp.maximum_merits..
+	&apos;] XP/hr:&apos;..string.format(&apos;%.1f&apos;,math.floor(xp.rate/100)/10)..&apos;k &apos;..
+	cp.current..&apos;/&apos;..cp.tnjp..&apos;CP [&apos;..cp.number_of_job_points..
+	&apos;] CP/hr:&apos;..string.format(&apos;%.1f&apos;,math.floor(cp.rate/100)/10)..
+	&apos;k [Sparks:&apos;..sparks.current..&apos;/&apos;..sparks.maximum..&apos;]&apos;
+</default>
+
+
+
+<!------------------------------------------------------------
+ 		Examples with various sections removed 			
+ ------------------------------------------------------------->
+
+<!-- XP section removed -->
+<default>
+	
+	lp.current..&apos;/&apos;..lp.tnm..&apos;LP [&apos;..lp.number_of_merits..&apos;/&apos;..lp.maximum_merits..
+	&apos;] XP/hr:&apos;..string.format(&apos;%.1f&apos;,math.floor(xp.rate/100)/10)..&apos;k &apos;..
+	cp.current..&apos;/&apos;..cp.tnjp..&apos;CP [&apos;..cp.number_of_job_points..
+	&apos;] CP/hr:&apos;..string.format(&apos;%.1f&apos;,math.floor(cp.rate/100)/10)..
+	&apos;k [Sparks:&apos;..sparks.current..&apos;/&apos;..sparks.maximum..&apos;]&apos;
+</default>
+
+
+<!-- LP section removed -->
+<default>
+	xp.current..&apos;/&apos;..xp.tnl..&apos;XP XP/hr:&apos;..string.format(&apos;%.1f&apos;,math.floor(xp.rate/100)/10)..&apos;k &apos;..
+	cp.current..&apos;/&apos;..cp.tnjp..&apos;CP [&apos;..cp.number_of_job_points..
+	&apos;] CP/hr:&apos;..string.format(&apos;%.1f&apos;,math.floor(cp.rate/100)/10)..
+	&apos;k [Sparks:&apos;..sparks.current..&apos;/&apos;..sparks.maximum..&apos;]&apos;
+</default>
+
+
+<!-- CP section removed -->
+<default>
+	xp.current..&apos;/&apos;..xp.tnl..&apos;XP &apos;..
+	lp.current..&apos;/&apos;..lp.tnm..&apos;LP [&apos;..lp.number_of_merits..&apos;/&apos;..lp.maximum_merits..
+	&apos;] XP/hr:&apos;..string.format(&apos;%.1f&apos;,math.floor(xp.rate/100)/10)..&apos;k CP/hr:&apos;..string.format(&apos;%.1f&apos;,math.floor(cp.rate/100)/10)..
+	&apos;k [Sparks:&apos;..sparks.current..&apos;/&apos;..sparks.maximum..&apos;]&apos;
+</default>
+
+
+<!-- XP & CP per hour sections removed -->
+<default>
+	xp.current..&apos;/&apos;..xp.tnl..&apos;XP &apos;..
+	lp.current..&apos;/&apos;..lp.tnm..&apos;LP [&apos;..lp.number_of_merits..&apos;/&apos;..lp.maximum_merits..
+	&apos;] &apos;.. <!-- Notice how I left the trailing &apos; to keep the closing ] wrapped in quotes -->
+	cp.current..&apos;/&apos;..cp.tnjp..&apos;CP [&apos;..cp.number_of_job_points..
+	&apos;] [Sparks:&apos;..sparks.current..&apos;/&apos;..sparks.maximum..&apos;]&apos;
+</default>
