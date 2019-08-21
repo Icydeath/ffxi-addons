@@ -71,6 +71,8 @@ _List of custom addons. Some have been modified by me to suit my own needs, full
 	A Darkness skillchain will send: MAABurst DarkEarthWaterIce
 	A Scission skillchain will sent: MAABurst Earth
 
+... some new additions below ...
+
 **tonic** - use a set list of escha temp items
 
 **gilledger** - displays gil amounts across all toons
@@ -99,10 +101,10 @@ _List of custom addons. Some have been modified by me to suit my own needs, full
 
 **drone** - Allow other players to send your toon commands to do something.
 
-**canteen** - Win in Omen this will run your toon to the goblin and grab a canteen. (within 50 yalms)
+**canteen** - When in Omen this will run your toon to the goblin and grab a canteen. (within 50 yalms)
 
 **quetz** - Updated quetz script
 	
-Most addons include a readme file if you need further information, otherwise you can skim the addons file to get an idea of how it works.
+If you need further information be sure to check out the addons readme file, otherwise you can skim the addons .lua to get an idea of how it works.
 
 I will try to keep this list updated, but no promises :smiley:
