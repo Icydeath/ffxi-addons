@@ -1,3 +1,9 @@
+- Modified by Icydeath to allow a 2nd argument.
+You can now supply the number of furrows you have after the start, plant, and harvest commands.
+Example: furrow start 2
+
+----
+
 Furrow Readme
 
 Disclaimer: 

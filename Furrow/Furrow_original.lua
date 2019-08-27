@@ -1,22 +1,20 @@
 _addon.name = 'Furrow'
-_addon.author = 'Algar modded by Icydeath'
-_addon.version = '1.1'
+_addon.author = 'Algar'
+_addon.version = '1.0'
 _addon.language = 'english'
 _addon.commands = {'furrow'}
 
 require('logger')
 require('coroutine')
 
---notice('Please note that Furrow requires all three Garden Furrows to be unlocked for proper operation. Refer to the readme for more information.')
+notice('Please note that Furrow requires all three Garden Furrows to be unlocked for proper operation. Refer to the readme for more information.')
 
 running = false
-nFurrows = 3
 
-function loop(num)
-	nFurrows = num
+function loop()
 	if running == true then
 		windower.add_to_chat(200, 'Furrow: Starting the planting cycle.')
-		plantcycle(nFurrows)
+		plantcycle()
 		coroutine.sleep (2)
 		running = true
 		windower.add_to_chat(200, 'Furrow: Sleeping for an hour before the harvest.')
@@ -32,15 +30,15 @@ function loop(num)
 		windower.add_to_chat(200, 'Reminder: Furrow will commence harvest in ten minutes. Use //furrow abort to cancel.')
 		coroutine.sleep (600)
 		windower.add_to_chat(200, 'Furrow: Starting the harvesting cycle.')
-		harvestcycle(nFurrows)
+		harvestcycle()
 		coroutine.sleep (2)
 		windower.add_to_chat(200, 'Furrow: Cycle complete! Restarting the loop shortly...')
 		running = true
 		coroutine.sleep(5)
-		loop(nFurrows)
+		loop()
 	else
 		windower.add_to_chat(200, 'Something went wrong! Please try your command again after reloading Furrow.')
-	end
+		end
 end
 
 function target1()
@@ -153,138 +151,95 @@ function harvest()
 		coroutine.sleep(0.5)
 end
 
-function harvestcycle(num)
-	nFurrows = num
+function harvestcycle()
 	if running == true then
 		windower.add_to_chat(200, 'Furrow: Searching for the first furrow.')
 		target1()
 		coroutine.sleep(2)
 		harvest()
 		coroutine.sleep(2)
-		
-		if num > 1 then
-			windower.add_to_chat(200, 'Furrow: Searching for the second furrow.')
-			target2()
-			coroutine.sleep(2)
-			harvest()
-			coroutine.sleep(2)
-		end 
-		
-		if num > 2 then
-			windower.add_to_chat(200, 'Furrow: Searching for the third furrow.')
-			target3()
-			coroutine.sleep(2)
-			harvest()
-			coroutine.sleep(2)
-		end
-		
+		windower.add_to_chat(200, 'Furrow: Searching for the second furrow.')
+		target2()
+		coroutine.sleep(2)
+		harvest()
+		coroutine.sleep(2)
+		windower.add_to_chat(200, 'Furrow: Searching for the third furrow.')
+		target3()
+		coroutine.sleep(2)
+		harvest()
+		coroutine.sleep(2)
 		running = false
 		windower.add_to_chat(200, 'Furrow: Harvesting Complete!')
 	else
 		windower.add_to_chat(200, 'Furrow: Something went wrong! Please try your command again after reloading Furrow.')
-	end
+		end
 end
 
-function plantcycle(num)
-	nFurrows = num
+function plantcycle()
 	if running == true then
 		windower.add_to_chat(200, 'Furrow: Searching for the first furrow.')
 		target1()
 		coroutine.sleep(2)
 		plant()
 		coroutine.sleep(2)
-		
-		if num > 1 then
-			windower.add_to_chat(200, 'Furrow: Searching for the second furrow.')
-			target2()
-			coroutine.sleep(2)
-			plant()
-			coroutine.sleep(2)
-		end
-		
-		if num > 2 then
-			windower.add_to_chat(200, 'Furrow: Searching for the third furrow.')
-			target3()
-			coroutine.sleep(2)
-			plant()
-			coroutine.sleep(2)
-		end
-		
+		windower.add_to_chat(200, 'Furrow: Searching for the second furrow.')
+		target2()
+		coroutine.sleep(2)
+		plant()
+		coroutine.sleep(2)
+		windower.add_to_chat(200, 'Furrow: Searching for the third furrow.')
+		target3()
+		coroutine.sleep(2)
+		plant()
+		coroutine.sleep(2)
 		running = false
 		windower.add_to_chat(200, 'Furrow: Planting Complete!')
 	else
 		windower.add_to_chat(200, 'Furrow: Something went wrong! Please try your command again after reloading Furrow.')
-	end
+		end
 end
 
 function furrow_command(...)
-	if #arg == 0 then
-		windower.add_to_chat(167, 'Invalid command.')
-		return
-	end
-	
-	if #arg > 1 and arg[2] ~= "1" and arg[2] ~= "2" and arg[2] ~= "3" then
-		windower.add_to_chat(167, 'Invalid command: [ '..arg[2]..' ] Enter the number of furrows unlocked as the second argument. IE: furrow start 2')
-		return
-	end
-	
-    if arg[ 1 ]:lower() == 'start' then
+    if #arg > 1 then
+        windower.add_to_chat(167, 'Invalid command.')
+    elseif #arg == 1 and arg[ 1 ]:lower() == 'start' then
         if running == false then
             running = true
             windower.add_to_chat(200, 'Furrow: Begin loop...')
-			if #arg == 2 and arg[2] ~= nil then
-				loop(tonumber(arg[2]))
-			else
-				loop(nFurrows)
-			end
+            loop()
         elseif running == true then
             windower.add_to_chat(200, 'It appears Furrow is already running an action, please use //furrow abort to reload the addon and try again.')
         end
-		
-    elseif arg[ 1 ]:lower() == 'stop' then
+    elseif #arg == 1 and arg[ 1 ]:lower() == 'stop' then
         if running == false then
             windower.add_to_chat(200, 'Furrow: There are no current actions to stop. Use //furrow abort to force-reload the addon if necessary.')
 		elseif running == true then
 			windower.add_to_chat(200, 'Furrow: Aborting all actions and reloading.')
 			windower.send_command('lua reload furrow')
         end
-		
-	elseif arg[ 1 ]:lower() == 'plant' then
+	elseif #arg == 1 and arg[ 1 ]:lower() == 'plant' then
 		if running == false then
-			windower.add_to_chat(200, 'Furrow: Starting a single planting cycle.')
+            windower.add_to_chat(200, 'Furrow: Starting a single planting cycle.')
 			running = true			
-			if #arg == 2 and arg[2] ~= nil then
-				plantcycle(tonumber(arg[2]))
-			else
-				plantcycle(nFurrows)
-			end
+			plantcycle()
 		elseif running == true then
             windower.add_to_chat(200, 'It appears Furrow is already running an action, please use //furrow abort to reload the addon and try again.')
 		end
-		
-	elseif arg[ 1 ]:lower() == 'harvest' then
+	elseif #arg == 1 and arg[ 1 ]:lower() == 'harvest' then
 		if running == false then
             windower.add_to_chat(200, 'Furrow: Starting a single harvesting cycle.')
 			running = true
-			if #arg == 2 and arg[2] ~= nil then
-				harvestcycle(tonumber(arg[2]))
-			else
-				harvestcycle(nFurrows)
-			end
+			harvestcycle()
 		elseif running == true then
             windower.add_to_chat(200, 'It appears Furrow is already running an action, please use //furrow abort to reload the addon and try again.')
 		end
-		
-	elseif arg[ 1 ]:lower() == 'abort' then
+	elseif #arg == 1 and arg[ 1 ]:lower() == 'abort' then
         windower.add_to_chat(200, 'Furrow: Aborting all actions and reloading.')
 		windower.send_command('lua reload furrow')
-		
-	elseif arg[ 1 ]:lower() == 'help' then
+	elseif #arg == 1 and arg[ 1 ]:lower() == 'help' then
         windower.add_to_chat(200, 'Furrow commands: start stop abort plant harvest. See readme for additional information.')
-		
 	else
-		windower.add_to_chat(167, 'Invalid command.')
-	end
+		end
 end
 
 windower.register_event('addon command', furrow_command)
