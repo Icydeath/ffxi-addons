@@ -7,13 +7,13 @@
 
 Commands: /furrow <command>
 
-plant: Plants a Revival Root in each of your furrows.
-harvest: Harvests all items from your furrows. If npcJunk is set to 'true', it will also run a selljunk command automatically.
-start: Starts a loop that plants, waits an hour, and harvests the furrows before beginning again.
-stop: Stops all actions by reloading the addon.
-abort: Same as stop.
-selljunk: Sells the list of items set in the 'junk' table to the moogle. (Requires the SellNPC addon)
-help: Lists these commands.
+- plant: Plants a Revival Root in each of your furrows.
+- harvest: Harvests all items from your furrows. If npcJunk is set to 'true', it will also run a selljunk command automatically.
+- start: Starts a loop that plants, waits an hour, and harvests the furrows before beginning again.
+- stop: Stops all actions by reloading the addon.
+- abort: Same as stop.
+- selljunk: Sells the list of items set in the 'junk' table to the moogle. (Requires the SellNPC addon)
+- help: Lists these commands.
 
 ----
 
