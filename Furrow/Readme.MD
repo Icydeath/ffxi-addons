@@ -1,6 +1,19 @@
-- Modified by Icydeath to allow a 2nd argument.
-You can now supply the number of furrows you have after the start, plant, and harvest commands.
-Example: furrow start 2
+** Modified by Icydeath
+- You can now supply the number of furrows you have after the start, plant, and harvest commands. ie: furrow start 2
+- Script now can utilize SellNPC & Treasury Addon functionality. 
+- Set npcJunk to true to sell the garbage to the moogle. (Requires the SellNPC addon)
+- Set dropStone to true to automatically drop 'Scroll of Stone' since npc won't buy it. (Requires the Treasury addon)
+- New command (Requires the SellNPC addon): selljunk
+
+Commands: /furrow <command>
+
+plant: Plants a Revival Root in each of your furrows.
+harvest: Harvests all items from your furrows. If npcJunk is set to 'true', it will also run a selljunk command automatically.
+start: Starts a loop that plants, waits an hour, and harvests the furrows before beginning again.
+stop: Stops all actions by reloading the addon.
+abort: Same as stop.
+selljunk: Sells the list of items set in the 'junk' table to the moogle. (Requires the SellNPC addon)
+help: Lists these commands.
 
 ----
 
