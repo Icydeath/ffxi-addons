@@ -43,66 +43,141 @@ return {
             'Composure'
         }
     },
-    ['self'] = {
-        'Haste II',
-        'Refresh II'
+	
+	['geo/rdm'] = {
+        'Haste',
+		'Aquaveil',
+		'Stoneskin',
+		'Refresh'
     },
-	['rdm/sch'] = {
-        ['self'] = {
-            'Light Arts',
-			'Addendum: White',
-        }
+    ['geo/whm'] = {
+        'Haste',
+		'Aquaveil',
+		'Stoneskin'
+    },
+	['Ava'] = {
+
+            'Refresh'
+    },
+	['acumen'] = {
+            'Indi-Acumen',
+			'Haste',
+			'Refresh'
+            
+    },
+	['focus'] = {
+            'Indi-focus',
+			'Haste'
+            
+    },
+	['Wilt'] = {
+			'Haste',
+            'Aquaveil',
+            'Indi-Wilt',
+            'Reraise',
+            'Stoneskin'
+    },
+	['frailty'] = {
+			'Refresh',
+            'Indi-Frailty',
+			'Geo-Haste'
+    },
+	['Barrier'] = {
+			'Haste',
+            'Aquaveil',
+            'Indi-Barrier',
+            'Reraise',
+            'Stoneskin'
+    },
+	['Haste'] = {
+			'Haste',
+            'Indi-Haste',
+            'Geo-Fury',
+            'Stoneskin'
+    },
+	['MAB'] = {
+			'Haste',
+            'Aquaveil',
+            'Indi-Acumen',
+            'Reraise',
+            'Stoneskin'
+    },
+	['Att'] = {
+			'Haste',
+            'Aquaveil',
+            'Indi-Fury',
+            'Reraise',
+            'Stoneskin'
+    },
+	['refresh'] = {
+			'Haste',
+            'Indi-Refresh',
+            'Stoneskin'
+    },
+	['torpor'] = {
+			'Refresh',
+            'Indi-Torpor',
+			'Geo-Haste'
+
+    },
+	['Meva'] = {
+			'Haste',
+            'Aquaveil',
+            'Indi-Attunement',
+            'Reraise',
+            'Stoneskin'
     },
     ['whm'] = {
-        ['melee'] = {
-            'Haste'
-        },
-        ['self'] = {
             'Haste',
             'Aquaveil',
             'Protectra V',
             'Shellra V',
             'Reraise IV',
             'Afflatus Solace'
-        }
+        
     },
     ['whm/rdm'] = {
-        ['melee'] = {
-            'Haste'
-        },
-        ['self'] = {
             'Haste',
             'Refresh',
-            'Aquaveil',
             'Protectra V',
             'Shellra V',
-            'Phalanx',
             'Reraise IV',
             'Afflatus Solace'
-        }
+        
     },
     ['whm/sch'] = {
-        ['melee'] = {
-            'Haste'
-        },
-        ['self'] = {
+            'Haste',
             'Light Arts',
+            'Aquaveil',
             'Protectra V',
             'Shellra V',
             'Reraise IV',
-            'Afflatus Solace',
-			'Addendum: White',
-			--'Sublimation'
-        }
+            'Afflatus Solace'
+        
     },
-	['smn/rdm'] = {
-		['melee'] = {
-            'Haste'
-        },
-		['self'] = {
-			'Haste',
-            'Refresh',
-            'Aquaveil',
-        }
-	}
+	['sch'] = {
+            'Light Arts',
+            'Protect V',
+            'Shell V',
+            'Reraise'
+        
+    },
+	['war'] = {
+            'Berserk',
+            'Aggressor',
+            'Warcry',
+            'Retaliation',
+			'Hasso'
+			
+			
+    },
+	['pld'] = {
+            --'Crusade',
+            'Phalanx',
+            'Reprisal',
+            'Enlight',
+			--'Cocoon'
+			
+			
+    }
 }

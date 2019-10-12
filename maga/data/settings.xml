@@ -43,31 +43,11 @@
             </text>
         </display>
         <fern>true</fern>
-        <pellucid>true</pellucid>
+        <pellucid>false</pellucid>
         <profiles>
             <default>
 
             </default>
-            <sam_valorous_ws>
-                <1>
-                    <1>
-                        <name>str</name>
-                        <val>7</val>
-                    </1>
-                    <2>
-                        <name>attack</name>
-                        <val>20</val>
-                    </2>
-                    <3>
-                        <name>weapon skill damage</name>
-                        <val>3</val>
-                    </3>
-                    <4>
-                        <name>accuracy</name>
-                        <val>20</val>
-                    </4>
-                </1>
-            </sam_valorous_ws>
         </profiles>
         <style>melee</style>
         <taupe>true</taupe>

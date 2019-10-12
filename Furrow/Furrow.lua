@@ -6,12 +6,32 @@ _addon.commands = {'furrow'}
 
 require('logger')
 require('coroutine')
+
 --notice('Please note that Furrow requires all three Garden Furrows to be unlocked for proper operation. Refer to the readme for more information.')
 
 -- ** NOTE: To utilize the auto sell and auto drop features of the script you must have the SellNPC & Treasury Addons. **
 
 -- default number of furrows unlocked. You can change this here or pass in the number of furrows as an argument when you start the addon. ie: //furrow start 2
 nFurrows = 3
+nFurtilizer = 0
+
+-- Set one of the following to true for furtilizing to shorten the harvest time, set all to false to not furtilize.
+usedung = false -- Dung (-25% harvest time)
+usegh = false -- Grove Humus(-25% harvest time)
+usemm = false -- Miracle Mulch(-50% harvest time)
+
+-- Other furtilize options >>> NOT YET IMPLEMENTED
+	usecrystal = false
+	useRichHumus = false
+	
+	-- R/E furtilizers, so they can only be used once.
+	useAcidicHumus = false -- Set to true to use it once
+	useAlkalineHumus = false -- Set to true to use it once
+	
+	-- flags used by the script to track the R/E furtilizers
+	usedAcidicHumus = false 
+	usedAlkalineHumus = false
+---------------------
 
 -- Set to true if you want treasury to auto drop Scroll of Stone for you since it can't be NPC'd.
 dropStone = true
@@ -56,6 +76,7 @@ end
 
 -- addon tracking variable, leave this alone ^.^
 running = false
+furtilizerUsed = 0
 
 function loop(num)
 	nFurrows = num
@@ -64,14 +85,36 @@ function loop(num)
 		plantcycle(nFurrows)
 		coroutine.sleep (2)
 		running = true
+	
+		if usedung or usegh or usemm then
+			if furtilizerUsed == nFurtilizer then
+				windower.add_to_chat(200, 'Furrow: All furtilize used, turning off furtilize cycle.')
+				usemm = false
+				usegh = false
+				usedung = false
+			else
+				windower.add_to_chat(200, 'Furrow: Starting the furtilize cycle.')
+				furtilizecycle(nFurrows)
+				coroutine.sleep (2)
+				running = true
+			end			
+		end
 		
-		windower.add_to_chat(200, 'Furrow: Sleeping for an hour before the harvest.')
-		coroutine.sleep (600)
-		windower.add_to_chat(200, 'Reminder: Furrow will commence harvest in fifty minutes. Use //furrow abort to cancel.')
-		coroutine.sleep (600)
-		windower.add_to_chat(200, 'Reminder: Furrow will commence harvest in forty minutes. Use //furrow abort to cancel.')
-		coroutine.sleep (600)
-		windower.add_to_chat(200, 'Reminder: Furrow will commence harvest in thiry minutes. Use //furrow abort to cancel.')
+		if not usemm then
+			if not usedung and not usegh then
+				windower.add_to_chat(200, 'Furrow: Sleeping for an hour before the harvest.')
+				coroutine.sleep (600)
+				windower.add_to_chat(200, 'Reminder: Furrow will commence harvest in fifty minutes. Use //furrow abort to cancel.')
+				coroutine.sleep (600)
+			else
+				windower.add_to_chat(200, 'Reminder: Furrow will commence harvest in forty-five minutes. Use //furrow abort to cancel.')
+				coroutine.sleep (300)
+			end
+			
+			windower.add_to_chat(200, 'Reminder: Furrow will commence harvest in forty minutes. Use //furrow abort to cancel.')
+			coroutine.sleep (600)
+		end
+		windower.add_to_chat(200, 'Reminder: Furrow will commence harvest in thirty minutes. Use //furrow abort to cancel.')
 		coroutine.sleep (600)
 		windower.add_to_chat(200, 'Reminder: Furrow will commence harvest in twenty minutes. Use //furrow abort to cancel.')
 		coroutine.sleep (600)
@@ -224,6 +267,28 @@ function plant()
 		coroutine.sleep(0.5)
 end			
 
+function furtilize(item)
+		windower.add_to_chat(200, 'Furrow: Furtilizing...')
+		windower.chat.input("/item \""..item.."\" <t>")
+		coroutine.sleep(5)
+		windower.send_command('setkey enter down')
+		coroutine.sleep(0.5)
+		windower.send_command('setkey enter up')
+		coroutine.sleep(2)
+		windower.send_command('setkey enter down')
+		coroutine.sleep(0.5)
+		windower.send_command('setkey enter up')
+		coroutine.sleep(2)
+		windower.send_command('setkey enter down')
+		coroutine.sleep(0.5)
+		windower.send_command('setkey enter up')
+		coroutine.sleep(5)
+		windower.send_command('setkey escape down')
+		coroutine.sleep(0.5)
+		windower.send_command('setkey escape up')
+		coroutine.sleep(0.5)
+end
+
 function harvest()
 		windower.add_to_chat(200, 'Furrow: Harvesting this furrow.')
 		windower.send_command('setkey enter down')
@@ -316,6 +381,48 @@ function plantcycle(num)
 	end
 end
 
+function furtilizecycle(num)
+	nFurrows = num
+	if running == true then
+		item = "Miracle Mulch"
+		if usedung then
+			item = "Dung"
+		elseif usegh then
+			item = "Grove Humus"
+		end
+		
+		windower.add_to_chat(200, 'Furrow: Searching for the first furrow.')
+		target1()
+		coroutine.sleep(2)
+		furtilize(item)
+		coroutine.sleep(2)
+		furtilizerUsed = furtilizerUsed + 1
+		
+		if num > 1 then
+			windower.add_to_chat(200, 'Furrow: Searching for the second furrow.')
+			target2()
+			coroutine.sleep(2)
+			furtilize(item)
+			coroutine.sleep(2)
+			furtilizerUsed = furtilizerUsed + 1
+		end
+		
+		if num > 2 then
+			windower.add_to_chat(200, 'Furrow: Searching for the third furrow.')
+			target3()
+			coroutine.sleep(2)
+			furtilize(item)
+			coroutine.sleep(2)
+			furtilizerUsed = furtilizerUsed + 1
+		end
+		
+		running = false
+		windower.add_to_chat(200, 'Furrow: Furtilizing Complete!')
+	else
+		windower.add_to_chat(200, 'Furrow: Something went wrong! Please try your command again after reloading Furrow.')
+	end
+end
+
 function selljunkcycle()
 	if running == true then
 		windower.add_to_chat(200, 'Furrow: Adding junk to SellNPC queue.')
@@ -352,13 +459,23 @@ function furrow_command(...)
 	
     if arg[ 1 ]:lower() == 'start' then
         if running == false then
-            running = true
-			windower.add_to_chat(200, 'Furrow: Begin loop...')
-			if #arg == 2 and arg[2] ~= nil then
-				loop(tonumber(arg[2]))
-			else
-				loop(nFurrows)
+			if #arg > 1 then
+				if arg[2] ~= nil then
+					windower.add_to_chat(200, 'Furrow: Number of furrows set to '..arg[2])
+					nFurrows = tonumber(arg[2])
+				end
+				if usedung or usegh or usemm then
+					if #arg == 3 and arg[3] ~= nil then
+						windower.add_to_chat(200, 'Furrow: Number of furtilizers to use is set to '..arg[3])
+						nFurtilizer = tonumber(arg[3])
+					end
+				end
 			end
+			
+			windower.add_to_chat(200, 'Furrow: Begin loop...')
+			running = true
+			loop(nFurrows)
+			
         elseif running == true then
             windower.add_to_chat(200, 'It appears Furrow is already running an action, please use //furrow abort to reload the addon and try again.')
         end
@@ -373,13 +490,29 @@ function furrow_command(...)
 		
 	elseif arg[ 1 ]:lower() == 'plant' then
 		if running == false then
-			windower.add_to_chat(200, 'Furrow: Starting a single planting cycle.')
-			running = true			
 			if #arg == 2 and arg[2] ~= nil then
-				plantcycle(tonumber(arg[2]))
-			else
-				plantcycle(nFurrows)
+				nFurrows = tonumber(arg[2])
 			end
+			windower.add_to_chat(200, 'Furrow: Starting a single planting cycle.')
+			running = true
+			plantcycle(nFurrows)
+			
+			if usedung or usegh or usemm then
+				running = true
+				furtilizecycle(nFurrows)
+			end
+		elseif running == true then
+            windower.add_to_chat(200, 'It appears Furrow is already running an action, please use //furrow abort to reload the addon and try again.')
+		end
+		
+	elseif arg[ 1 ]:lower() == 'furtilize' then
+		if running == false then
+			if #arg == 2 and arg[2] ~= nil then
+				nFurrows = tonumber(arg[2])
+			end
+			windower.add_to_chat(200, 'Furrow: Starting a single furtilize cycle.')
+			running = true
+			furtilizecycle(nFurrows)
 		elseif running == true then
             windower.add_to_chat(200, 'It appears Furrow is already running an action, please use //furrow abort to reload the addon and try again.')
 		end

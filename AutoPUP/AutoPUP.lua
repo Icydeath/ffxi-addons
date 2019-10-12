@@ -236,10 +236,12 @@ windower.register_event('addon command', function(...)
     elseif commands[1] == 'off' then
         actions = false
 	elseif commands[1] == 'repair' then
-        if commands[2] then
-			if command[2] == 'true' then settings.repair = true end
-			if command[2] == 'false' then settings.repair = true end
+        if settings.repair == true then
+			settings.repair = false
+		else
+			settings.repair = true
 		end
+		print('AutoPUP: Repair = '..tostring(settings.repair))
 	elseif commands[1] == 'repairhpp' then
 		commands[2] = commands[2] and tonumber(commands[2])
         if commands[2] then

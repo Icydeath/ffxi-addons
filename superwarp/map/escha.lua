@@ -1,6 +1,6 @@
 return T{
 	short_name = 'ew',
-	long_name = 'eascha portal',
+	long_name = 'eschan portal',
 	npc_names = T{
 		warp = T{'Eschan Portal', 'Ethereal Ingress'},
 		enter = T{'Undulating Confluence', 'Dimensional Portal'},

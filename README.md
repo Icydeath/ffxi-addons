@@ -87,7 +87,7 @@ _List of custom addons. Some have been modified by me to suit my own needs, full
 
 **positions** - positioning mules
 
-**jroller** - GUI version of AutoCOR. Seems to work just as good if not better.
+**jroller** - GUI version of AutoCOR. Works well, seems to bust more often though QQ
 
 **autoburst** - Auto magic burst
 
@@ -103,8 +103,30 @@ _List of custom addons. Some have been modified by me to suit my own needs, full
 
 **canteen** - When in Omen this will run your toon to the goblin and grab a canteen. (within 50 yalms)
 
-**quetz** - Updated quetz script
-	
+**Quetz** - Updated quetz script. Very robuse version that focuses on multiboxing. It can be problematic getting it to work correctly. Check out quetz2 if you are having issues.
+
+.. more new additions ..
+
+**Quetz2** - A reworked quetz script - less buggy, more consistant version. See the readme
+
+**Naga** - Like Quetz script but for Naga. I've added config settings to the script so you can customize it for each toon.
+
+**Azi** - Like Quetz script but for Azi. I've added config settings to the script so you can customize it for each toon.
+
+**furrow** - A modified version of the original furrow script by me. See furrow2 for even more features.
+
+**furrow2** - A more robuse version of furrow, still based off the original script but with more options. Note: Some features may still not be finished.
+
+**unm** - Updated to Darkdoom's v2, further modified the script to include the force option; which allows the player to continue to pop the unm even if sparks are capped.
+
+**SendAllTarget** - by Selindrile, Addon created to make Send more useful in terms of targetting, may require a loaded gearswap user file.
+
+**Repeater** - by Selindrile, Simple windower command repeating tool for FFXI. Forgot about this one, so useful for when you need it.
+
+**MAGA** - Modified maga to play alarms when augment requirements are met & when you run out of stones.
+
+**PorterPacker** - by Ivaar, Stores and Retrieves gear from the porter moogle.
+
 If you need further information be sure to check out the addons readme file, otherwise you can skim the addons .lua to get an idea of how it works.
 
 I will try to keep this list updated, but no promises :smiley:

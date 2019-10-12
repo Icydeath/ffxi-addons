@@ -1,6 +1,9 @@
-**Author:**  Cairthenn<br>
-**Version:**  1.0.0.4<br>
-**Date:** March 6, 2017<br>
+**Author:**  Cairthenn - modded by Icy<br>
+**Version:**  1.0.0.5<br>
+**Date:** 10/6/2019<br>
+
+#### UPDATED BY ICY ####
+* Added .wav alarms for when you run out of stones and when your required augments are met and its waiting for you to respond.
 
 # MAGA (Make Augments Great Again) #
 

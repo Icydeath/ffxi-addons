@@ -110,6 +110,7 @@ function buffs.getDebuffQueue()
                         local ign = buffs.ignored_debuffs[debuff.en]
                         if not ((ign ~= nil) and ((ign.all == true) or ((ign[targ] ~= nil) and (ign[targ] == true)))) then
                             dbq:enqueue('debuff', spell, targ, debuff, ' ('..debuff.en..')')
+							
                         end
                     end
                 end

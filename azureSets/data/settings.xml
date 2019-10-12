@@ -16,6 +16,28 @@
                 <slot07>Radiant Breath</slot07>
                 <slot08>Eyes On Me</slot08>
             </aby>
+            <brash>
+                <slot01>delta thrust</slot01>
+                <slot02>barbed crescent</slot02>
+                <slot03>erratic flutter</slot03>
+                <slot04>retinal glare</slot04>
+                <slot05>tenebral crush</slot05>
+                <slot06>spectral floe</slot06>
+                <slot07>regurgitation</slot07>
+                <slot08>magic fruit</slot08>
+                <slot09>entomb</slot09>
+                <slot10>water bomb</slot10>
+                <slot11>sound blast</slot11>
+                <slot12>dream flower</slot12>
+                <slot13>magic hammer</slot13>
+                <slot14>subduction</slot14>
+                <slot15>occultation</slot15>
+                <slot16>memento mori</slot16>
+                <slot17>cursed sphere</slot17>
+                <slot18>cocoon</slot18>
+                <slot19>anvil lightning</slot19>
+                <slot20>diamondhide</slot20>
+            </brash>
             <dd>
                 <slot01>delta thrust</slot01>
                 <slot02>barbed crescent</slot02>
@@ -38,9 +60,53 @@
                 <slot19>magic fruit</slot19>
                 <slot20>battery charge</slot20>
             </dd>
+            <deathborne>
+                <slot01>delta thrust</slot01>
+                <slot02>barbed crescent</slot02>
+                <slot03>erratic flutter</slot03>
+                <slot04>retinal glare</slot04>
+                <slot05>silent storm</slot05>
+                <slot06>searing tempest</slot06>
+                <slot07>regurgitation</slot07>
+                <slot08>magic fruit</slot08>
+                <slot09>entomb</slot09>
+                <slot10>water bomb</slot10>
+                <slot11>sound blast</slot11>
+                <slot12>dream flower</slot12>
+                <slot13>magic hammer</slot13>
+                <slot14>subduction</slot14>
+                <slot15>occultation</slot15>
+                <slot16>memento mori</slot16>
+                <slot17>cursed sphere</slot17>
+                <slot18>cocoon</slot18>
+                <slot19>anvil lightning</slot19>
+                <slot20>diamondhide</slot20>
+            </deathborne>
             <default>
 
             </default>
+            <duskbrood>
+                <slot01>delta thrust</slot01>
+                <slot02>barbed crescent</slot02>
+                <slot03>erratic flutter</slot03>
+                <slot04>retinal glare</slot04>
+                <slot05>silent storm</slot05>
+                <slot06>spectral floe</slot06>
+                <slot07>regurgitation</slot07>
+                <slot08>magic fruit</slot08>
+                <slot09>entomb</slot09>
+                <slot10>water bomb</slot10>
+                <slot11>sound blast</slot11>
+                <slot12>dream flower</slot12>
+                <slot13>magic hammer</slot13>
+                <slot14>subduction</slot14>
+                <slot15>occultation</slot15>
+                <slot16>memento mori</slot16>
+                <slot17>cursed sphere</slot17>
+                <slot18>cocoon</slot18>
+                <slot19>blinding fulgor</slot19>
+                <slot20>diamondhide</slot20>
+            </duskbrood>
             <dw>
                 <slot01>delta thrust</slot01>
                 <slot02>barbed crescent</slot02>

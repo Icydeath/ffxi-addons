@@ -57,6 +57,12 @@
             <y>827</y>
         </pos>
     </combat>
+    <eldiablo>
+        <pos>
+            <x>929</x>
+            <y>819</y>
+        </pos>
+    </eldiablo>
     <gorby>
         <pos>
             <x>925</x>
@@ -75,6 +81,12 @@
             <y>826</y>
         </pos>
     </icydeath>
+    <icylife>
+        <pos>
+            <x>926</x>
+            <y>893</y>
+        </pos>
+    </icylife>
     <rythor>
         <pos>
             <x>931</x>

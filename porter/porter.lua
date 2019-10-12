@@ -145,8 +145,51 @@ function show_slip(slip_number, slip_page, owned_only)
     end
 end
 
+local bags = {'inventory', 'safe', 'storage', 'locker', 'satchel', 'sack', 'case', 'wardrobe', 'safe2', 'wardrobe2', 'wardrobe3', 'wardrobe4'}
+
+function is_storable(item_id)
+    for slip_id, slip_item in pairs(slips.items) do
+        if slip_item:contains(item_id) then
+            return slip_id-29311
+        end
+    end
+end
+
 windower.register_event('addon command',function (slip_number, slip_page, owned_only)
-    if tonumber(slip_number) == nil then
+    if slip_number == 'store' and tonumber(slip_page) then
+        
+    elseif slip_number == 'find' then
+        if item_names:length() == 0 then
+            load_resources()
+        end
+
+        local n = 0
+        local slip_tables = {}
+        for x = 1, #bags do bag = bags[x]
+            for index = 1, 80 do local item = windower.ffxi.get_items(bag, index)
+                local slip_number = item and is_storable(item.id)
+                if slip_number then
+
+                    if not slip_tables[slip_number] then slip_tables[slip_number] = {} end
+
+                    slip_tables[slip_number][#slip_tables[slip_number]+1] = {bag=bag, id=item.id}
+
+                    n = n + 1
+                end
+            end
+        end
+        
+        for slip = 1, 30 do local items = slip_tables[slip]
+            if items then
+                for x = 1, #items do local item = items[x]
+                    windower.add_to_chat(207, 'Slip %2d: %-10s %s':format(slip, item.bag, item_names[item.id] or 'Unknown item: %d':format(item.id)))
+                end
+            end
+        end
+        
+        windower.add_to_chat(207, 'Found %s storable items in all bags':format(n))
+        return
+    elseif tonumber(slip_number) == nil then
         slip_page = nil
 
         if slip_number == 'owned' then

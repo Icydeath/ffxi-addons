@@ -107,8 +107,8 @@ return {
         ['whm'] = 4
     },
     ['players'] = {
-        ['Icydeath'] = 0,
-		['Eldiablo'] = 1
+        ['Mipha'] = 1,
+		['Urbosa'] = 1
     },
     ['status_removal'] = {
         ['addle'] = 2,

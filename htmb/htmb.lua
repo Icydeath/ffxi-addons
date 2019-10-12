@@ -1,14 +1,13 @@
 _addon.name = 'htmb'
 _addon.author = 'Ivaar'
-_addon.version = '1.0.0.0'
+_addon.version = '1.0.0.1'
 _addon.command = 'htmb'
 
 require('luau')
 require('pack')
 bit = require('bit')
 
---buy_list = {10,2,5,9,3} -- key items will be purchased in this order until you are unable to buy more
-buy_list = {14} -- key items will be purchased in this order until you are unable to buy more
+buy_list = {10,2,5,9,3} -- key items will be purchased in this order until you are unable to buy more
 
 htmb_map = {
      [0] = {name = 'Shadow Lord phantom gem',      cost = 10},
@@ -16,7 +15,7 @@ htmb_map = {
      [2] = {name = 'Celestial Nexus phantom gem',  cost = 10},
      [3] = {name = 'Phantom gem of apathy',        cost = 15},
      [4] = {name = 'Phantom gem of arrogance',     cost = 15},
-     [5] = {name = 'Phantom gem of evny',          cost = 15},
+     [5] = {name = 'Phantom gem of envy',          cost = 15},
      [6] = {name = 'Phantom gem of cowardice',     cost = 15},
      [7] = {name = 'Phantom gem of rage',          cost = 15},
      [8] = {name = 'P. Perpetrator phantom gem',   cost = 20},
@@ -32,6 +31,10 @@ htmb_map = {
     [17] = {name = 'Waking Dream phantom gem',     cost = 10},
     [18] = {name = 'Feared One phantom gem',       cost = 10},
     [19] = {name = 'Dawn phantom gem',             cost = 10},
+    [20] = {name = 'Stygian Pact phantom gem',     cost = 10},
+    [21] = {name = 'Champion phantom gem',         cost = 10},
+    [22] = {name = 'Divine phantom gem',           cost = 10},
+    [23] = {name = 'Maiden phantom gem',           cost = 10},
 }
 
 htmb_npcs = {

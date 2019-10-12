@@ -51,4 +51,16 @@
             <y>777</y>
         </pos>
     </clubfoot>
+    <eldiablo>
+        <pos>
+            <x>895</x>
+            <y>777</y>
+        </pos>
+    </eldiablo>
+    <icydeath>
+        <pos>
+            <x>850</x>
+            <y>750</y>
+        </pos>
+    </icydeath>
 </settings>

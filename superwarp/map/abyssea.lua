@@ -1,5 +1,5 @@
 local warp_zones = S{ 232, 236, 240, 246, 243, 242 } -- ports + ru'lude and heaven's tower
-local entry_zones = S{ 102, 108, 117, 118, 103, 104, 106, 112, 126 } 
+local entry_zones = S{ 102, 108, 117, 118, 103, 104, 107, 106, 112 } 
 local teleport_npcs = S{ "Ernst", "Ivan", "Willis", "Horst", "Kierron", "Vincent"}
 local abyssea_zones = S{ 15, 45, 132, 215, 216, 217, 218, 253, 254}
 return T{

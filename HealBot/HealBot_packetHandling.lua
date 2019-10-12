@@ -4,7 +4,7 @@
     HealBot packet handling functions
 --]]
 --==============================================================================
-
+require('logger')
 local messages_blacklist = _libs.lor.packets.messages_blacklist
 local messages_initiating = _libs.lor.packets.messages_initiating
 local messages_completing = _libs.lor.packets.messages_completing
@@ -168,11 +168,17 @@ function registerEffect(ai, tact, actor, target, monitored_ids)
         end
     elseif messages_noEffect:contains(tact.message_id) then     --ai.param: spell; tact.param: buff/debuff
         --Spell had no effect on {target}
+		--windower.add_to_chat("Here 1:")
+		
         local spell = res.spells[ai.param]
         if (spell ~= nil) then
             if spells_statusRemoval:contains(spell.id) then
                 --The debuff must have worn off or have been removed already
+				--windower.add_to_chat("debuff worn off? 1: ")
+				--log('No effect')
                 local debuffs = removal_map[spell.en]
+				--log(spell.en)
+				--log(debuffs)
                 if (debuffs ~= nil) then
                     for _,debuff in pairs(debuffs) do
                         buffs.register_debuff(target, debuff, false)
@@ -195,6 +201,20 @@ function registerEffect(ai, tact, actor, target, monitored_ids)
                 buffs.register_debuff(target, debuff_id, true)
             end
         end
+		-------------------------
+		-- else
+			-- local debuffs = removal_map[spell.en]
+			-- if spells_statusRemoval:contains(spell.id) then
+                -- --The debuff must have worn off or have been removed already
+                -- local debuffs = removal_map[spell.en]
+                -- if (debuffs ~= nil) then
+                    -- for _,debuff in pairs(debuffs) do
+                        -- buffs.register_debuff(target, debuff, false)
+                    -- end
+                -- end
+			-- end
+		-- end
+		---------------------------
     elseif messages_specific_debuff_gain[tact.message_id] ~= nil then
         local gained_debuffs = messages_specific_debuff_gain[tact.message_id]
         for _,gained_debuff in pairs(gained_debuffs) do

@@ -28,7 +28,7 @@ For more information, please refer to <http://unlicense.org/>
 _addon.name = 'QuickTrade'
 _addon.author = 'Valok@Asura'
 _addon.version = '1.8.0'
-_addon.command = 'qtr'
+_addon.commands = {'qtr','quicktrade'}
 
 require('tables')
 require('coroutine')

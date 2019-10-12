@@ -37,15 +37,15 @@ require('logger')
 
 
 defaults = {
-delay = .75,
-debug = false,
-pellucid = true,
-taupe = true,
-fern = true,
-style = "",
-profiles = {
-    default = {}
-}
+	delay = .75,
+	debug = false,
+	pellucid = true,
+	taupe = true,
+	fern = true,
+	style = "",
+	profiles = {
+		default = {}
+	}
 }
 history = L{}
 augments = L{{}}
@@ -121,7 +121,7 @@ constants = {
         [22] = L{"melee", "healing"},
         [23] = L{"melee", "healing"},
         [24] = L{"melee", "healing"},
-        [25] = L{"melee", "familair"},
+        [25] = L{"melee", "familiar"},
         [26] = L{"melee", "magic"},
         [27] = L{"melee", "magic"},
         [28] = L{"melee"},
@@ -172,6 +172,7 @@ windower.register_event('incoming chunk', function(id,data)
         update_display()
         
         if compare_augments(results) then
+			windower.play_sound(windower.addon_path..'sounds/chime.wav')
             notice("Stopped augmenting for the following: ")
             for k,v in pairs(results) do
                 log(k .. ' ' .. v)
@@ -275,6 +276,7 @@ function start(style)
                     if status.taupe % 25 == 0 then notice("Stones remaining: Pellucid[%d], Fern[%d], Taupe[%d]":format(status.pellucid, status.fern, status.taupe)) end
                     internal_augment(settings.style, "taupe")
                 else
+					windower.play_sound(windower.addon_path..'sounds/doublebass.wav')
                     notice("You ran out of stones!")
                     cancel()
                     break

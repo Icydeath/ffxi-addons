@@ -21,6 +21,8 @@ local conditions = {
 	
 }
 
+npc_name = ""
+pkt = {}
 ipcflag = false
 busy=false
 busy2=false
@@ -28,6 +30,13 @@ busy3=false
 menuid=0
 zone=""
 tp={}
+
+valid_zones = T{"Reisinjima"}
+
+valid_zones = {
+	
+	[291] = {npc="Shiftrix", menu=9701},
+}
 
 currentPC=windower.ffxi.get_player()
 
@@ -83,17 +92,17 @@ function begin(namearg)
 		
 	if currentPC.main_job == 'PLD' then
 		windower.send_command('hb mincure 4')
-		windower.send_command('autows use savage blade')
-		windower.send_command('autows hp > 0 < 99')
-		windower.send_command('autows on')
+		windower.send_command('aws use savage blade')
+		windower.send_command('aws hp > 0 < 99')
+		windower.send_command('aws on')
 	elseif currentPC.main_job == 'WAR' then
 		windower.send_command('hb buff ' .. currentPC.name .. ' berserk')
 		windower.send_command('hb buff ' .. currentPC.name .. ' retaliation')
 		windower.send_command('hb buff ' .. currentPC.name .. ' restraint')
 		windower.send_command('hb buff ' .. currentPC.name .. ' blood rage')
-		windower.send_command('autows use impulse drive')
-		windower.send_command('autows hp > 0 < 99')
-		windower.send_command('autows on')
+		windower.send_command('aws use impulse drive')
+		windower.send_command('aws hp > 0 < 99')
+		windower.send_command('aws on')
 	elseif currentPC.main_job == 'WHM' then
 		windower.send_command('hb bufflist whm ' .. currentPC.name .. '')
 		windower.send_command('hb buff ' .. currentPC.name .. ' auspice')
@@ -110,9 +119,9 @@ function begin(namearg)
 			end
 		end
 		
-		windower.send_command('autows use hexa strike')
-		windower.send_command('autows hp > 0 < 99')
-		windower.send_command('autows on')
+		windower.send_command('aws use hexa strike')
+		windower.send_command('aws hp > 0 < 99')
+		windower.send_command('aws on')
 		
 		--DW subs for whm to get more points faster
 		if currentPC.sub_job == 'NIN' or currentPC.sub_job == 'DNC' then
@@ -128,48 +137,53 @@ function begin(namearg)
 		windower.send_command('geo entrust off')
 		windower.send_command('hb buff ' .. currentPC.name .. ' haste')
 		windower.send_command('hb mincure 4')
-		windower.send_command('autows use hexa strike')
-		windower.send_command('autows hp > 0 < 99')
-		windower.send_command('autows on')
+		windower.send_command('aws use hexa strike')
+		windower.send_command('aws hp > 0 < 99')
+		windower.send_command('aws on')
 	elseif currentPC.main_job == 'COR' then
 		windower.send_command('lua r roller')
 		coroutine.sleep(1.0)
 		windower.send_command('roller roll1 chaos')
-		windower.send_command('roller roll2 rogue')
-		windower.send_command('autows use evisceration')
-		windower.send_command('autows hp > 0 < 99')
-		windower.send_command('autows on')
+		windower.send_command('roller roll2 samurai')
+		windower.send_command('aws use Savage Blade')
+		windower.send_command('aws hp > 0 < 99')
+		windower.send_command('aws on')
 	elseif currentPC.main_job == 'THF' then
-		windower.send_command('autows use rudra\'s storm')
-		windower.send_command('autows hp > 0 < 99')
-		windower.send_command('autows on')
+		windower.send_command('aws use rudra\'s storm')
+		windower.send_command('aws hp > 0 < 99')
+		windower.send_command('aws on')
 	elseif currentPC.main_job == 'NIN' then
-		windower.send_command('autows use Blade: Ten')
-		windower.send_command('autows hp > 0 < 99')
-		windower.send_command('autows on')
+		windower.send_command('aws use Blade: Ten')
+		windower.send_command('aws hp > 0 < 99')
+		windower.send_command('aws on')
 	elseif currentPC.main_job == 'SAM' then
 		windower.send_command('hb buff ' .. currentPC.name .. ' hasso')
-		windower.send_command('autows use Tachi: Fudo')
-		windower.send_command('autows hp > 0 < 99')
-		windower.send_command('autows on')
+		windower.send_command('aws use Tachi: Fudo')
+		windower.send_command('aws hp > 0 < 99')
+		windower.send_command('aws on')
 	elseif currentPC.main_job == 'MNK' then
-		windower.send_command('autows use Victory Smite')
-		windower.send_command('autows hp > 0 < 99')
-		windower.send_command('autows on')
+		windower.send_command('aws use Victory Smite')
+		windower.send_command('aws hp > 0 < 99')
+		windower.send_command('aws on')
 	elseif currentPC.main_job == 'DRG' then
-		windower.send_command('autows use Stardiver')
-		windower.send_command('autows hp > 0 < 99')
-		windower.send_command('autows on')
+		windower.send_command('aws use Stardiver')
+		windower.send_command('aws hp > 0 < 99')
+		windower.send_command('aws on')
+	elseif currentPC.main_job == 'DRK' then
+		windower.send_command('aws use Torcleaver')
+		windower.send_command('aws hp > 0 < 99')
+		windower.send_command('aws tpgt 1249')
+		windower.send_command('aws on')
 	elseif currentPC.main_job == 'BLU' then
-		windower.send_command('autows use Chant Du Cygne')
-		windower.send_command('autows hp > 0 < 99')
-		windower.send_command('autows on')
+		windower.send_command('aws use Chant Du Cygne')
+		windower.send_command('aws hp > 0 < 99')
+		windower.send_command('aws on')
 	elseif currentPC.main_job == 'BRD' then
 		windower.send_command('hb disable cure')
 		windower.send_command('hb disable na')
-		windower.send_command('autows use Evisceration')
-		windower.send_command('autows hp > 0 < 99')
-		windower.send_command('autows on')
+		windower.send_command('aws use Evisceration')
+		windower.send_command('aws hp > 0 < 99')
+		windower.send_command('aws on')
 	end
 	
 	-- Sub job abilities
@@ -282,15 +296,20 @@ end
 
 function exitArena()
 	
-		
+	coroutine.sleep(5)
+	currentPC=windower.ffxi.get_player()
+	coroutine.sleep(3)
 	-- If dead, reraise and continue next fight.
 	if currentPC.vitals.hp == 0 then
-		log('You died.  Auto Reraise in 30sec!')
-		coroutine.sleep(30)
+		log('You died.  Auto Reraise!')
+		coroutine.sleep(20)
 		windower.send_command('setkey enter down')
 		coroutine.sleep(.05)
 		windower.send_command('setkey enter up')
 		coroutine.sleep(.05)
+	else
+		log('You lived! Waiting delay')
+		coroutine.sleep(20)
 	end
 
 	log("Fight's over, teleporting in 5 minutes!")
@@ -335,6 +354,7 @@ function exitArena()
 		windower.send_command('input /item ' .. settings.ring1 .. ' <me>')
 		coroutine.sleep(45)
 		windower.send_command('gs enable ring2 ')
+		zone = windower.ffxi.get_info()['zone']
 	end
 
 	enterReisen()
@@ -344,28 +364,11 @@ end
 
 function enterReisen()
 
-	log('Entering Reisenjima in 1 minute.')
-	zone = windower.ffxi.get_info()['zone']
+	log('Entering Reisenjima soon.')
+
 	
-	if zone ~= 117 and zone ~= 102 and zone ~= 108 then
-		log('Some error, could not teleport, so exiting.')
-		windower.send_command('quetz stop')
-	end
 	
 	coroutine.sleep(35)
-	--coroutine.sleep(5)
-	
-	--Check if all party members present before continuing due to teleport issues.
-	
-	local wegood = checkpartymembers()
-	while wegood == false do
-		log('Waiting for party members to be in zone, sleeping for 15 sec')
-		coroutine.sleep(15)
-		wegood = checkpartymembers()
-	end
-
-	--Everyone here
-	log('All members present, continuing')
 	
 	--Checking leader
 	local arewelead = windower.ffxi.get_party()
@@ -404,17 +407,22 @@ function enterReisen()
 	-- Enter via packets
 	------------------------------------
 	
-	zone = windower.ffxi.get_info()['zone']
+	
 
 	-- Use SW
-	local distance
-	distance = windower.ffxi.get_mob_by_name('Dimensional Portal').distance
-	if math.sqrt(distance)<5.7 then
-		coroutine.sleep(get_delay())
-		windower.send_command('sw ew enter')
+	zone = windower.ffxi.get_info()['zone']
+	while (zone == 117 or zone == 102 or zone == 108) do
+	
+		local distance
+		distance = windower.ffxi.get_mob_by_name('Dimensional Portal').distance
+		if math.sqrt(distance)<5.7 then
+			coroutine.sleep(get_delay())
+			windower.send_command('sw ew enter')
+		end
+		zone = windower.ffxi.get_info()['zone']
+		coroutine.sleep(15)
 	end
-
-		
+	
 	coroutine.sleep(20)
 	
 	getVorseal()
@@ -426,43 +434,46 @@ function getVorseal()
 	log('Getting Vorseal shortly.')
 	
 	coroutine.sleep(35)
-
-	busy2=false
 	
 	-- Sleep for party members until it's your turn 
 	coroutine.sleep(get_running_delay())
 
-	tp = windower.ffxi.get_mob_by_name('Shiftrix')
-	zone = windower.ffxi.get_info()['zone']
-	
-	if not busy2 then
-		busy2=true
-		local distance
-		distance = windower.ffxi.get_mob_by_name('Shiftrix').distance
-		if math.sqrt(distance)<5.7 then
-			tp = windower.ffxi.get_mob_by_name('Shiftrix')
-			poke_npc(tp.id,tp.index)
+		got_vorseal = 0
+		busy=false
+ 
+		while got_vorseal == 0 do
+		
+			coroutine.sleep(5)
+			
+			if got_vorseal == 0 then
+				if not busy then
+					
+					pkt = validate()
+					if pkt then
+						busy = true
+						poke_npc(pkt['Target'],pkt['Target Index'])
+					else
+						log('Packet failed')
+					end
+				end
+			else
+				windower.add_to_chat(8,"Vorseal already obtained.")
+			end
+			
+			-- Sleep for time to detect buffs
+			coroutine.sleep(15)
+			CurBuffs = windower.ffxi.get_player()["buffs"]
+				
+			
+			for key,val in pairs(CurBuffs) do
+				if val == 603 then
+					got_vorseal = 1
+				end
+			end
+			
 		end
-	end
-	
-	coroutine.sleep(3)
-	
-	if busy2 then
-		print("Something not right @ Vorseal!")
-		stop()
-	end
-	
-	coroutine.sleep(15)
-	windower.send_command('setkey escape down')
-	coroutine.sleep(.5)
-	windower.send_command('setkey escape up')
-	coroutine.sleep(5)
-	windower.send_command('setkey escape down')
-	coroutine.sleep(.5)
-	windower.send_command('setkey escape up')
-	coroutine.sleep(5)	
 
-	coroutine.sleep(25)
+	coroutine.sleep(15)
 	enterArena()
 	
 end
@@ -559,17 +570,33 @@ function moveToLocation()
 		end		
 
 		
+		--Check if all party members present before continuing due to teleport issues.
+	
+		--[[
+		local wegood = checkpartymembers()
+		while wegood == false do
+			log('Waiting for party members to ready.')
+			coroutine.sleep(5)
+			wegood = checkpartymembers()
+		end
+		--]]
+		
+		--Everyone here
+		log('All members present, continuing')
+		
 		coroutine.sleep(30)
 		windower.ffxi.turn(-3.95)
 		coroutine.sleep(.5)
 		log('Moving to pull location.')
 		windower.ffxi.run(true)
-		coroutine.sleep(9.8)
+		coroutine.sleep(9.3)
 		windower.ffxi.run(false)
-		coroutine.sleep(2.5)
-		windower.send_command('input /lockstyle off')
-		coroutine.sleep(15)
-		windower.send_command('input /lockstyleset ' .. settings.lockset)
+		windower.ffxi.run(false)
+		windower.send_command('input /heal')
+		coroutine.sleep(5)
+		windower.send_command('input /heal')
+		windower.ffxi.run(false)
+		windower.ffxi.run(false)
 
 		log('Arrived at pull location.')
 		coroutine.sleep(5)
@@ -584,13 +611,20 @@ function moveToLocation()
 		windower.send_command('autogeo on')
 		windower.send_command('singer on')
 		coroutine.sleep(5)
-		
-		
-		
 	
 	else
+
+		--[[
+		local wegoodalt = checkpartymembers()
+		while wegoodalt == false do
+			log('Waiting for party members to ready.')
+			coroutine.sleep(5)
+			wegoodalt = checkpartymembers()
+		end
+		--]]
+		
 		log('Waiting for main to follow to pull location.')
-		coroutine.sleep(90)
+		coroutine.sleep(125)
 	end
 	
 	start()
@@ -645,7 +679,7 @@ function checkpartymembers()
 					allmemberspresent = false
 				else
 					--Do distance check
-					if math.sqrt(ptymember.distance) < 10 then
+					if math.sqrt(ptymember.distance) < 15 then
 						tempflag = true
 					else
 						tempflag = false
@@ -694,6 +728,8 @@ windower.register_event('addon command', function(input, ...)
 		stop()
     elseif cmd == 'start' then
 		begin()
+	elseif cmd == 'debugtest' then
+		enterReisen()
     end
 end)
 
@@ -712,48 +748,93 @@ windower.register_event('load', function()
 	windower.send_command('lua l anchor')
 	windower.send_command('lua l autows')
 	windower.send_command('lua l healbot')
-	windower.send_command('lua l multictrl')
+	--windower.send_command('lua l multictrl')
 end)
 
+
+function validate()
+	local zone = windower.ffxi.get_info()['zone']
+	local me,target_index,target_id,distance
+	local result = {}
+
+	if valid_zones[zone] then
+		for i,v in pairs(windower.ffxi.get_mob_array()) do
+			if v['name'] == windower.ffxi.get_player().name then
+				result['me'] = i
+			elseif v['name'] == valid_zones[zone].npc then
+				target_index = i
+				target_id = v['id']
+				npc_name = v['name']
+				result['Menu ID'] = valid_zones[zone].menu
+				distance = windower.ffxi.get_mob_by_id(target_id).distance
+			end
+		end
+
+		if math.sqrt(distance)<6 then
+			result['Target'] = target_id
+			result['Option Index'] = 10
+			result['_unknown1'] = 0
+			result['Target Index'] = target_index
+			result['Zone'] = zone 
+		else
+			windower.add_to_chat(10,"Too far from npc")
+		end
+	else
+		windower.add_to_chat(10,"Not in a zone with proper npc")
+	end
+	if result['Zone'] == nil then result = nil end
+	return result
+end
+
 windower.register_event('incoming chunk',function(id,data,modified,injected,blocked)
-		
-	if id == 0x034 or id == 0x037 or id == 0x032 then
 
-		if busy2 == true then
+	if id == 0x034 or id == 0x032 then
 
-			busy2=false
-			
+		if busy == true and pkt then
+
 			local packet = packets.new('outgoing', 0x05B)
 
-			packet["Target"]=tp.id
-			packet["Option Index"]=10
-			packet["_unknown1"]=0
-			packet["Target Index"]=tp.index
+			packet["Target"]=pkt['Target']
+			packet["Option Index"]=pkt['Option Index']
+			packet["_unknown1"]=pkt['_unknown1']
+			packet["Target Index"]=pkt['Target Index']
 			packet["Automated Message"]=true
 			packet["_unknown2"]=0
-			packet["Zone"]=zone
-			packet["Menu ID"]=9701
+			packet["Zone"]=pkt['Zone']
+			packet["Menu ID"]=pkt['Menu ID']
 			packets.inject(packet)
 			
+			packet["Target"]=pkt['Target']
+			packet["Option Index"]=14
+			packet["_unknown1"]=pkt['_unknown1']
+			packet["Target Index"]=pkt['Target Index']
+			packet["Automated Message"]=true
+			packet["_unknown2"]=0
+			packet["Zone"]=pkt['Zone']
+			packet["Menu ID"]=pkt['Menu ID']
+			packets.inject(packet)
 			
-			coroutine.sleep(4)
+			-- send exit menu
+			packet["Target"]=pkt['Target']
+			packet["Option Index"]=0
+			packet["_unknown1"]=pkt['_unknown1']
+			packet["Target Index"]=pkt['Target Index']
+			packet["Automated Message"]=false
+			packet["_unknown2"]=0
+			packet["Zone"]=pkt['Zone']
+			packet["Menu ID"]=pkt['Menu ID']
+			packets.inject(packet)
 
-			packet["Target"]=tp.id
-			packet["Option Index"]=9
-			packet["_unknown1"]=0
-			packet["Target Index"]=tp.index
-			packet["Automated Message"]=true
-			packet["_unknown2"]=0
-			packet["Zone"]=zone
-			packet["Menu ID"]=9701
+			local packet = packets.new('outgoing', 0x016, {["Target Index"]=pkt['me'],})
 			packets.inject(packet)
-			
-			
-			busy2=false
-		
+			busy = false
+			lastpkt = pkt
+			pkt = {}
+			return true
 		end
 	end
-end)			
+
+end)
 
 
 function poke_npc(npc,target_index)

@@ -473,6 +473,9 @@ function disableCommand(cmd, disable)
     elseif S{'na','heal_debuff','cure_debuff'}:contains(cmd) then
         settings.disable.na = disable
         atc('Removal of status effects'..msg)
+	elseif S{'erase'}:contains(cmd) then
+		settings.disable.erase = disable
+		atc('Erase status effects'..msg)
     elseif S{'buff','buffs','buffing'}:contains(cmd) then
         settings.disable.buff = disable
         atc('Buffing'..msg)
@@ -663,7 +666,7 @@ function utils.load_configs()
     hb.config.priorities.dispel =         hb.config.priorities.dispel or {}     --not implemented yet
     hb.config.priorities.default =        hb.config.priorities.default or 5
     
-    --process_mabil_debuffs()
+    process_mabil_debuffs()
     local msg = hb.configs_loaded and 'Rel' or 'L'
     hb.configs_loaded = true
     atcc(262, msg..'oaded config files.')
