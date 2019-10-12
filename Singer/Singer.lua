@@ -17,9 +17,9 @@ song_timers = require('song_timers')
 default = {
     delay=5,
     --dummy=L{'Knight\'s Minne','Knight\'s Minne II'},
-	dummy=L{'',''},
+	dummy=L{'Valor Minuet V',''},
     buffs={['haste']=L{},['refresh']=L{}},
-    marcato='',
+    marcato='Valor Minuet V',
     clarion={aoe=''},
     actions=false,
     pianissimo=false,

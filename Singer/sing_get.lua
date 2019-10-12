@@ -21,6 +21,7 @@ get.songs = {
     sirvente = {'Foe Sirvente'},
     dirge = {'Adventurer\'s Dirge'},
     scherzo = {'Sentinel\'s Scherzo'},
+	light = {'Light Carol II','Light Carol'},
     }
 
 local equippable_bags = {

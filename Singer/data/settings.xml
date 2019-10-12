@@ -50,9 +50,9 @@
             <aoe />
         </clarion>
         <delay>5</delay>
-        <dummy>Mage&apos;s Ballad III,</dummy>
+        <dummy>Valor Minuet V,</dummy>
         <ignore />
-        <marcato>Victory March</marcato>
+        <marcato>Valor Minuet V</marcato>
         <max_ws>99</max_ws>
         <min_ws>20</min_ws>
         <pianissimo>false</pianissimo>
@@ -78,11 +78,9 @@
     <rythor>
         <box>
             <pos>
-                <x>865</x>
-                <y>588</y>
+                <x>1426</x>
+                <y>818</y>
             </pos>
         </box>
-        <dummy>Valor Minuet V,</dummy>
-        <marcato>Valor Minuet V</marcato>
     </rythor>
 </settings>
