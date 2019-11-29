@@ -29,7 +29,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 _addon.author = 'Icy'
 _addon.name = 'AutoPUP'
 _addon.commands = {'autopup','pup'}
-_addon.version = '1.0.0.0'
+_addon.version = '1.1.0.0'
+
+-- 1.1.0.0: Auto deploy and auto activate added. Will now auto equip +3 oils before attempting to repair.
 
 require('pack')
 require('lists')
@@ -39,7 +41,7 @@ texts = require('texts')
 config = require('config')
 
 default = {
-    man = L{'Light Maneuver','Fire Maneuver', 'Fire Maneuver'},
+    man = L{'Light Maneuver','Fire Maneuver', 'Wind Maneuver'},
     active = true,
     text = {text = {size=10}},
 	sets = T{
@@ -49,7 +51,7 @@ default = {
 		['caittank'] = {'Light Maneuver', 'Fire Maneuver', 'Light Maneuver'},
 		['caittank_overdrive'] = {'Light Maneuver', 'Fire Maneuver', 'Thunder Maneuver'},
 		
-		['default'] = {'Light Maneuver', 'Fire Maneuver', 'Fire Maneuver'},
+		['default'] = {'Light Maneuver', 'Fire Maneuver', 'Wind Maneuver'},
 		['default_overdrive'] = {'Light Maneuver', 'Fire Maneuver', 'Thunder Maneuver'},
 		
 		['dd'] = {'Light Maneuver', 'Fire Maneuver', 'Wind Maneuver'},
@@ -91,6 +93,8 @@ default = {
 	repair = true,
 	repairhpp = 40,
 	set = 'default',
+	deploy = false,
+	activate = false,
 }
 settings = config.load(default)
 
@@ -137,7 +141,7 @@ pup_maneuvers = T{
 } ]]
 
 local display_box = function()
-    return 'AutoPUP [O%s]\nMan 1 [%s]\nMan 2 [%s]\nMan 3 [%s]\nSet [%s]\nRepair [%s] <= [%s]':format(actions and 'n' or 'ff', settings.man[1], settings.man[2], settings.man[3], settings.set, tostring(settings.repair), settings.repairhpp..'%')
+    return 'AutoPUP [O%s]\nSet [%s]\nMan 1 [%s]\nMan 2 [%s]\nMan 3 [%s]\nRepair [%s] <= [%s]\nActivate [%s]\nDeploy [%s]':format(actions and 'n' or 'ff', settings.set, settings.man[1], settings.man[2], settings.man[3], tostring(settings.repair), settings.repairhpp..'%', tostring(settings.activate), tostring(settings.deploy))
 end
 
 pup_status = texts.new(display_box(),settings.text,setting)
@@ -149,27 +153,37 @@ windower.register_event('prerender',function ()
 	local play = windower.ffxi.get_player()
 	if not play or play.main_job ~= 'PUP' or play.status > 1 then return end
 	
-	local pet = windower.ffxi.get_mob_by_target('pet')
-	if pet == nil then return end
-	local petdistance = pet.distance:sqrt()
-	
     local curtime = os.clock()
     if nexttime + del <= curtime then
         nexttime = curtime
         del = 2
+		local abil_recasts = windower.ffxi.get_ability_recasts()
 		
-        local abil_recasts = windower.ffxi.get_ability_recasts()
-		buffs = play.buffs
-		--windower.add_to_chat(207, dump(buffs))
+		-- Activate
+		local pet = windower.ffxi.get_mob_by_target('pet')
+		if pet == nil then 
+			if settings.activate then
+				if abil_recasts[205] == 0 then
+					use_JA('/ja "Activate" <me>')
+				elseif abil_recasts[115] == 0 then
+					use_JA('/ja "Deus Ex Automata" <me>')
+				end
+			end
+			return 
+		end
 		
+		local petdistance = pet.distance:sqrt()
 		-- Repair
-		if pet and settings.repair and pet.hpp <= settings.repairhpp and petdistance < 25 then
+		if pet and settings.repair and pet.hpp <= settings.repairhpp and petdistance < 23 then
 			if abil_recasts[206] and abil_recasts[206] == 0 then
-				use_JA('/ja "Repair" <me>')
+				windower.send_command("input /equip ammo 'Automat. Oil +3';wait .5;input /ja 'Repair' <me>")
+				--use_JA('/ja "Repair" <me>')
 				return
 			end
 		end
 		
+		buffs = play.buffs
+		--windower.add_to_chat(207, dump(buffs))
 		-- set overdrive maneuver set
 		if table.contains(buffs, 166) and not settings.set:contains('_overdrive') then
 			windower.send_command('pup set '..settings.set..'_overdrive')
@@ -206,11 +220,17 @@ windower.register_event('prerender',function ()
 						break
 					end
 				else
-					print('Unknown maneuver: $s':format(settings.man[x]))
+					windower.add_to_chat(9, 'Unknown maneuver: $s':format(settings.man[x]))
 				end
 			end
+			return
 		end
 		
+		local target = windower.ffxi.get_mob_by_target('bt')
+		if settings.deploy and pet.status == 0 and (target and target.hpp > 0) and abil_recasts[207] == 0 then
+			use_PET('Deploy', '<bt>')
+			return
+		end
     end
 end)
 
@@ -235,13 +255,27 @@ windower.register_event('addon command', function(...)
         actions = true
     elseif commands[1] == 'off' then
         actions = false
+	elseif commands[1] == 'deploy' then
+        if settings.deploy == true then
+			settings.deploy = false
+		else
+			settings.deploy = true
+		end
+		windower.add_to_chat(8, 'AutoPUP: Deploy = '..tostring(settings.deploy))
+	elseif commands[1] == 'activate' then
+        if settings.activate == true then
+			settings.activate = false
+		else
+			settings.activate = true
+		end
+		windower.add_to_chat(8, 'AutoPUP: Activate = '..tostring(settings.activate))
 	elseif commands[1] == 'repair' then
         if settings.repair == true then
 			settings.repair = false
 		else
 			settings.repair = true
 		end
-		print('AutoPUP: Repair = '..tostring(settings.repair))
+		windower.add_to_chat(8, 'AutoPUP: Repair = '..tostring(settings.repair))
 	elseif commands[1] == 'repairhpp' then
 		commands[2] = commands[2] and tonumber(commands[2])
         if commands[2] then
@@ -255,7 +289,7 @@ windower.register_event('addon command', function(...)
 				settings.set = tostring(commands[2])
 				settings.man = newset
 				setupMultiman(settings.man)
-				print('AutoPUP: '..settings.set..' set loaded.')
+				windower.add_to_chat(8, 'AutoPUP: '..settings.set..' set loaded.')
 			end
 			
 		end
@@ -269,12 +303,12 @@ windower.register_event('addon command', function(...)
 			local m = pup_buffs:with('en', commands[3])
             if m then
                 settings.man[commands[2]] = m.en
-                print('AutoPUP: '..m.en)
+                windower.add_to_chat(8, 'AutoPUP: '..m.en)
             else
                 for k,v in pairs(pup_buffs) do
                     if v and v.en:startswith(commands[3]) then
                         settings.man[commands[2]] = v.en
-                        print('AutoPUP: '..v.en)
+                        windower.add_to_chat(8, 'AutoPUP: '..v.en)
                     end
                 end
             end
@@ -283,7 +317,7 @@ windower.register_event('addon command', function(...)
         end
     elseif commands[1] == 'save' then
         settings:save()
-		print('AutoPUP: saved settings')
+		windower.add_to_chat(8, 'AutoPUP: saved settings')
     elseif commands[1] == 'eval' then
         assert(loadstring(table.concat(commands, ' ',2)))()
     else
@@ -294,7 +328,7 @@ end)
 
 windower.register_event('load', function()
 	setupMultiman(settings.man)
-	print("AutoPUP: for commands use //pup help")
+	windower.add_to_chat(8, "AutoPUP: for commands use //pup help")
 end)
 
 function setupMultiman(arr)
@@ -319,11 +353,14 @@ function use_JA(str)
     del = 1.2
     windower.chat.input(str)
 end
+function use_PET(str,ta)
+    windower.send_command('input /pet "%s" %s':format(str,ta))
+    del = 1.2
+end
 
 function showhelp()
-	windower.add_to_chat(207, '== AutoPUP Help ==')
-	windower.add_to_chat(205, 'COMMAND: ON/OFF')
-	windower.add_to_chat(207, ' //pup {on/off}')
+	windower.add_to_chat(205, '    == AutoPUP :: HELP ==')
+	windower.add_to_chat(207, ' //pup - toggles addon on/off')
 	windower.add_to_chat(205, 'COMMAND: MAN')
 	windower.add_to_chat(207, ' //pup man {#} {maneuver}')
 	windower.add_to_chat(207, '   ex: //pup man 1 fire maneuver')
@@ -333,8 +370,11 @@ function showhelp()
 	windower.add_to_chat(207, ' //pup set {setname}')
 	windower.add_to_chat(207, '   ex: //pup set spamdd')
 	windower.add_to_chat(205, 'COMMAND: REPAIR')
-	windower.add_to_chat(207, ' //pup repair {true/false}')
+	windower.add_to_chat(207, ' //pup repair - turns auto repair on/off')
 	windower.add_to_chat(207, ' //pup repairhpp {#}')
+	windower.add_to_chat(205, 'COMMAND: ACTIVATE & DEPLOY')
+	windower.add_to_chat(207, ' //pup activate - turns auto activate on/off')
+	windower.add_to_chat(207, ' //pup deploy - turns auto deploy on/off -- uses <bt>')
 	windower.add_to_chat(205, 'COMMAND: SAVE')
 	windower.add_to_chat(207, ' //pup save')
 end
