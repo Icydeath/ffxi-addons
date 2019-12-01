@@ -1,4 +1,7 @@
 --[[ Addon is based off ZoneTimer
+ 1.0.0.3
+	> added another logic case for catching effects applied on jumps.
+	
  1.0.0.2
 	> Cleaned up text layout.
 	> White base text, turns green when floor is completed.
@@ -10,7 +13,7 @@
 ]]
 _addon.name = 'NniTimer'
 _addon.author = 'Icy'
-_addon.version = '1.0.0.2'
+_addon.version = '1.0.0.3'
 _addon.command = 'nnitimer'
 
 require('logger')
@@ -213,11 +216,19 @@ windower.register_event('incoming text', function(original, modified, original_m
 	elseif settings.show_effects_received and (windower.wc_match(original, "*is restricted.*")) then
 		split_original = original:split('is')
 		if nEffect ~= "" then
-			nEffect = nEffect..", -"..split_original[1]
+			nEffect = nEffect..", -"..split_original[1]:gsub('y', '', 1)
 		else
-			nEffect = "-"..split_original[1]
+			nEffect = "-"..split_original[1]:gsub('y', '', 1)
 		end
-		
+	
+	elseif settings.show_effects_received and (windower.wc_match(original, "*are restricted.*")) then
+		split_original = original:split('are')
+		if nEffect ~= "" then
+			nEffect = nEffect..", -"..split_original[1]:gsub('y', '', 1)
+		else
+			nEffect = "-"..split_original[1]:gsub('y', '', 1)
+		end
+	
 	-- syncs up the time based off msgs received from the instance.
 	elseif (windower.wc_match(original, "*Time Remaining: 1 minute (Earth time).*")) then -- 1 min warning: 1740
 		start_time = os.time() - 1740
