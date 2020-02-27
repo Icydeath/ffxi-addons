@@ -29,8 +29,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 _addon.author = 'Icy'
 _addon.name = 'AutoPUP'
 _addon.commands = {'autopup','pup'}
-_addon.version = '1.1.0.0'
+_addon.version = '1.1.0.1'
 
+-- 1.1.0.1: New command added, allows setting multiple maneuvers at once, ie: //pup mans fire wind light
 -- 1.1.0.0: Auto deploy and auto activate added. Will now auto equip +3 oils before attempting to repair.
 
 require('pack')
@@ -70,10 +71,10 @@ default = {
 		['sstank_overdrive'] = {'Light Maneuver', 'Fire Maneuver', 'Thunder Maneuver'},
 		
 		['spamdd'] = {'Wind Maneuver', 'Wind Maneuver', 'Wind Maneuver'},
-		['spamdd_overdrive'] = {'Wind Maneuver', 'Fire Maneuver', 'Wind Maneuver'},
+		['spamdd_overdrive'] = {'Fire Maneuver', 'Wind Maneuver', 'Fire Maneuver'},
 		
 		['ranger'] = {'Wind Maneuver', 'Wind Maneuver', 'Wind Maneuver'},
-		['ranger_overdrive'] = {'Wind Maneuver', 'Fire Maneuver', 'Fire Maneuver'},
+		['ranger_overdrive'] = {'Fire Maneuver', 'Wind Maneuver', 'Fire Maneuver'},
 		
 		['boneslayer'] = {'Light Maneuver', 'Fire Maneuver', 'Wind Maneuver'},
 		['boneslayer_overdrive'] = {'Light Maneuver', 'Fire Maneuver', 'Thunder Maneuver'},
@@ -172,6 +173,12 @@ windower.register_event('prerender',function ()
 			return 
 		end
 		
+		local target = windower.ffxi.get_mob_by_target('bt')
+		if settings.deploy and pet.status == 0 and (target and target.hpp > 0) and abil_recasts[207] == 0 then
+			use_PET('Deploy', '<bt>')
+			return
+		end
+		
 		local petdistance = pet.distance:sqrt()
 		-- Repair
 		if pet and settings.repair and pet.hpp <= settings.repairhpp and petdistance < 23 then
@@ -226,11 +233,7 @@ windower.register_event('prerender',function ()
 			return
 		end
 		
-		local target = windower.ffxi.get_mob_by_target('bt')
-		if settings.deploy and pet.status == 0 and (target and target.hpp > 0) and abil_recasts[207] == 0 then
-			use_PET('Deploy', '<bt>')
-			return
-		end
+		
     end
 end)
 
@@ -293,6 +296,16 @@ windower.register_event('addon command', function(...)
 			end
 			
 		end
+	elseif commands[1] == 'mans' then
+		if commands[2] then 
+			setManeuver(1,commands[2])
+			if commands[3] then 
+				setManeuver(2,commands[3])
+				if commands[3] then 
+					setManeuver(3,commands[4]) 
+				end
+			end
+		end
     elseif commands[1] == 'man' then
         commands[2] = commands[2] and tonumber(commands[2])
         if commands[2] and commands[3] then
@@ -303,14 +316,9 @@ windower.register_event('addon command', function(...)
 			local m = pup_buffs:with('en', commands[3])
             if m then
                 settings.man[commands[2]] = m.en
-                windower.add_to_chat(8, 'AutoPUP: '..m.en)
+				windower.add_to_chat(8, 'AutoPUP: ('..tostring(commands[2])..') '..m.en)
             else
-                for k,v in pairs(pup_buffs) do
-                    if v and v.en:startswith(commands[3]) then
-                        settings.man[commands[2]] = v.en
-                        windower.add_to_chat(8, 'AutoPUP: '..v.en)
-                    end
-                end
+				setManeuver(commands[2],commands[3])
             end
 			
 			setupMultiman(settings.man)
@@ -325,6 +333,15 @@ windower.register_event('addon command', function(...)
     end
     pup_status:text(display_box())
 end)
+
+function setManeuver(num, str)
+	for jaid,val in pairs(pup_buffs) do
+		if val and val.en:startswith(str:ucfirst()) then
+			settings.man[num] = val.en
+			--windower.add_to_chat(8, 'AutoPUP: ('..tostring(num)..') '..val.en)
+		end
+	end
+end
 
 windower.register_event('load', function()
 	setupMultiman(settings.man)
@@ -362,6 +379,8 @@ function showhelp()
 	windower.add_to_chat(205, '    == AutoPUP :: HELP ==')
 	windower.add_to_chat(207, ' //pup - toggles addon on/off')
 	windower.add_to_chat(205, 'COMMAND: MAN')
+	windower.add_to_chat(207, ' //pup mans {maneuver} {maneuver} {maneuver}')
+	windower.add_to_chat(207, ' 	ex: //pup mans fire wind light')
 	windower.add_to_chat(207, ' //pup man {#} {maneuver}')
 	windower.add_to_chat(207, '   ex: //pup man 1 fire maneuver')
 	windower.add_to_chat(207, '   ex: //pup man 2 wind')
