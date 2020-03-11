@@ -1,3 +1,12 @@
+## Some of my other repositories
+
+- [PartyBars](https://github.com/Icydeath/ffxi-partybars-addon)
+- [WarpMenu](https://github.com/Icydeath/ffxi-warpmenu-addon)
+- [XIVPetBars](https://github.com/Icydeath/ffxi-xivpetbar-addon)
+- [StoreMats](https://github.com/Icydeath/ffxi-addon-storemats)
+
+### _Be sure to check my list of [respositories](https://github.com/Icydeath?tab=repositories). I may add new addons there but forget to list it here :-D_
+
 # FFXI Windower Addons
 _List of custom addons. Some have been modified by me to suit my own needs, full credit goes to the original creators._
 
