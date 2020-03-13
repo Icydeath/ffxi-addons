@@ -4,6 +4,8 @@
 - [WarpMenu](https://github.com/Icydeath/ffxi-warpmenu-addon)
 - [XIVPetBars](https://github.com/Icydeath/ffxi-xivpetbar-addon)
 - [StoreMats](https://github.com/Icydeath/ffxi-addon-storemats)
+- [ShoutAlert](https://github.com/Icydeath/ShoutAlert)
+- [InstanceNotifier](https://github.com/Icydeath/InstanceNotifier)
 
 ### _Be sure to check my list of [respositories](https://github.com/Icydeath?tab=repositories). I may add new addons there but forget to list it here :-D_
 
