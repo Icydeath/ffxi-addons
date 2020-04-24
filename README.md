@@ -1,5 +1,5 @@
 ## Some of my other repositories
-
+- [Addon_Manager](https://github.com/Icydeath/ffxi-addon-manager) 4/24/2020
 - [PartyBars](https://github.com/Icydeath/ffxi-partybars-addon)
 - [WarpMenu](https://github.com/Icydeath/ffxi-warpmenu-addon)
 - [XIVPetBars](https://github.com/Icydeath/ffxi-xivpetbar-addon)
