@@ -5,3 +5,8 @@
 *.png
 *.jpg
 *.xml
+abyhelper/aby_data.lua
+abyhelper/abyhelper.lua
+abyhelper/README.md
+abyhelper/ui.lua
+*.settings.xml
