@@ -1,40 +1,15 @@
---[[
-
-    Commands:
-    
-    [spell] is the spells name without the Indi-/Geo- prefix
-    
-    //geo indi [spell] 
-        e.g "//geo indi precision"  "geo indi off"
-    
-    //geo geo [spell] 
-        e.g "//geo geo precision"  "//geo geo off"
-     
-    //geo entrust player [spell] 
-        "e.g //geo entrust kupipi refresh"  "//geo entrust off"
-        
-    //geo refresh kupipi [on/off]   -- /ma refresh kupipi
-
-    //geo haste tenzen [on/off]     -- /ma haste tenzen
-    
-    //geo recast indi [min] [max]   -- Begin recasting indi between [min] and [max] seconds before they wear off.(randomized)
-    
-    //geo recast buff [min] [max]   -- Same as the above for haste and refresh.
-
-    //geo aug lifestream 20         -- set indi effect duration augment on lifestream cape
-    
-    //geo active                    -- display active settings in text box
-    
-    //geo save                      -- save settings on per character basis
-    
-    //geo [on/off]                  -- turn actions on/off
-    
---]]
-_addon.author = 'Ivaar'
+_addon.author = 'Ivaar, modified by icy'
 _addon.commands = {'AutoGEO','geo','ageo'}
 _addon.name = 'AutoGEO'
-_addon.version = '1.15.07.19'
+_addon.version = '2020.5.25'
 
+--[[ 
+5/25: Some QoL changes added
+	- updated the help info [//ageo]
+	- added the [set] command, see help for info
+	- added support for partial spell names ie: [//ageo indi attun]  will set indi to Indi-Attunement
+	- saving config is now global
+]]
 require('luau')
 texts = require('texts')
 packets = require('packets')
@@ -53,7 +28,16 @@ default = {
     recast={indi={min=20,max=25},buff={min=5,max=10}},
     aug = {lifestream=20},
     text = {text={size=10}},
-    }
+	spell_sets = T{
+		{name=S{'att', 'dps', 'melee'}, indi='Indi\-Haste', geo='Geo\-Frailty', entrust='Indi\-Fury'},
+		{name=S{'acc'}, indi='Indi\-Haste', geo='Geo\-Torpor', entrust='Indi\-Precision'},
+		{name=S{'matt'}, indi='Indi\-Acumen', geo='Geo\-Malaise', entrust='Indi\-Refresh'},
+		{name=S{'macc'}, indi='Indi\-Focus', geo='Geo\-Languor', entrust='Indi\-Refresh'},
+		{name=S{'pdt', 'def'}, 	indi='Indi\-Barrier', 	geo='Geo\-Wilt', entrust='Indi\-Haste'},
+		{name=S{'meva'}, indi='Indi\-Attunement',geo='Geo\-Vex', entrust='Indi\-Haste'},
+		{name=S{'mdt', 'mdef'}, indi='Indi\-Fend', geo='Geo\-Fade', entrust='Indi\-Haste'},
+	},
+}
 
 settings = config.load(default)
 last_coords = 'fff':pack(0,0,0)
@@ -68,7 +52,7 @@ equipment = L{
     [27451] = 'Azimuth Gaiters',
     [27452] = 'Azimuth Gaiters +1',
     [28637] = 'Lifestream Cape',
-    }
+}
 
 geo_spells = T{
     [768] = {id=768,en="Indi-Regen",mp_cost=37,targets=5},
@@ -131,12 +115,12 @@ geo_spells = T{
     [825] = {id=825,en="Geo-Slow",mp_cost=189,targets=32},
     [826] = {id=826,en="Geo-Paralysis",mp_cost=215,targets=32},
     [827] = {id=827,en="Geo-Gravity",mp_cost=348,targets=32},
-    }
+}
 
 spell_ids = L{
     [57] = {id=57,enl='haste',dur=180,levels={[3]=40,[5]=48}},
     [109] = {id=109,enl='refresh',dur=150,levels={[5]=41,[22]=62}},
-    }
+}
 
 display_box = function()
     local str
@@ -254,8 +238,10 @@ function valid_target(targ,dst)
     return false
 end
 
-function addon_message(str)
-    windower.add_to_chat(207, _addon.name..': '..str)
+function addon_message(str, colorid)
+	colorid = tonumber(colorid) or 207
+	str = str and (_addon.name..': '..str) or '\n'
+	windower.add_to_chat(colorid, str)
 end
 
 function addon_command(...)
@@ -312,18 +298,55 @@ function addon_command(...)
         elseif commands[1] == 'aug' and settings.aug[commands[2]] and commands[3] and tonumber(commands[3]) then
             settings.aug['lifestream'] = tonumber(commands[3])
             addon_message('Lifestream Cape = Indi eff. dur. +%s.':format(commands[3]))
+			
+			
+		elseif commands[1]:lower() == 'set' then
+			if commands[2] and not commands[3] then
+				set_spell(nil, commands[2]) -- uses the sets spells.
+			elseif commands[2] and commands[3] then
+				commands[2] = commands[2]:lower()
+				commands[3] = commands[3]:lower()
+				if commands[2] == 'save' and not commands[4] then -- set save [name]
+					settings.spell_sets:insert({name=S{commands[3]}, geo=settings.geo, indi=settings.indi, entrust=settings.entrust.ma})
+					settings:save("all")
+					addon_message('Saved set as [%s]':format(commands[3]))
+				elseif commands[2] == 'add' then -- set add [name] [geo] [indi] [indi]
+					if commands[4] and commands[5] and commands[6] then
+						local gspell = geo_spells:with('en', 'Geo\-'..commands[4]:ucfirst())
+						local ispell = geo_spells:with('en', 'Indi\-'..commands[5]:ucfirst())
+						local enspell = geo_spells:with('en', 'Indi\-'..commands[6]:ucfirst())
+						if gspell and ispell and enspell then
+							settings.spell_sets:insert({name=S{commands[3]}, geo=gspell.en, indi=ispell.en, entrust=enspell.en})
+							settings:save("all")
+							addon_message('Added set [%s]':format(commands[3]))
+						else
+							addon_message('Invalid spell name.')
+						end
+					else
+						addon_message(' //ageo set add [name] [geo-spell] [indi-spell] [indi-spell] - adds a new set')
+					end
+				else
+					addon_message('Setting spells...')
+					set_spell('geo', commands[2])
+					set_spell('indi', commands[3])
+				end
+			else
+				show_sets()
+			end
+			
+			
         elseif type(settings[commands[1]]) == 'string' and commands[2] then
             if commands[2] == 'off' then   
                 settings[commands[1]] = nil
                 addon_message('%s will not be used':format(commands[1]))
             else
-                local spell = geo_spells:with('en',commands[1]:ucfirst()..'\-'..commands[2]:ucfirst())
-                if spell then
-                    settings[commands[1]] = spell.en
-                    addon_message('%s set to %s':format(commands[1],commands[2]))
-                else
-                    addon_message('Invalid spell name.')
-                end
+				local spell = geo_spells:with('en',commands[1]:ucfirst()..'\-'..commands[2]:ucfirst())
+				if spell then
+					settings[commands[1]] = spell.en
+					addon_message('%s set to %s':format(commands[1],commands[2]))
+				else
+					addon_message('Invalid spell name.')
+				end
             end
         elseif type(settings[commands[1]]) == 'number' and commands[2] and tonumber(commands[2]) then
             settings[commands[1]] = tonumber(commands[2])
@@ -336,13 +359,100 @@ function addon_command(...)
             end
             addon_message('%s %s':format(commands[1],settings[commands[1]] and 'On' or 'Off'))
         elseif commands[1] == 'save' then
-            settings:save()
+            settings:save("all")
+			addon_message('Settings saved.')
         elseif commands[1] == 'eval' then
             assert(loadstring(table.concat(commands, ' ',2)))()
         end
+	else
+		help()
     end
     geo_status:text(display_box())
    -- windower.add_to_chat(207, str)
+end
+
+function set_spell(stype, str)
+	str = stype and str:ucfirst() or str
+	if stype then
+		local spell = geo_spells:with('en', str)
+		if spell and not settings[stype]:find(spell.en) then
+			settings[stype] = spell.en
+			addon_message('%s is now set.':format(spell.en))
+		else
+			for k,v in pairs(geo_spells) do
+				if v and not settings[stype]:find(v.en) and v.en:startswith(stype:ucfirst()..'\-'..str) then
+					settings[stype] = v.en
+					addon_message('%s is now set.':format(v.en))
+				end
+			end
+		end
+	else 
+		local set = nil 
+		for k,v in pairs(settings.spell_sets) do
+			if v.name:contains(str) then
+				set = v
+				break
+			end
+		end
+		
+		if set then
+			local geospell = geo_spells:with('en', set.geo)
+			local indispell = geo_spells:with('en', set.indi)
+			if geospell and indispell then 
+				settings.geo = geospell.en 
+				addon_message('%s is now set.':format(geospell.en))
+				settings.indi = indispell.en 
+				addon_message('%s is now set.':format(indispell.en))
+			end
+			if set.entrust and settings.entrust then
+				local espell = geo_spells:with('en', set.entrust)
+				local t = settings.entrust.target
+				if espell and t then
+					settings.entrust = { target=t, ma=espell.en }
+					addon_message('Entrust %s with %s':format(t:ucfirst(), espell.en))
+				end
+			end
+		else
+			addon_message('Set %s not found.':format(str))
+		end
+	end
+end
+
+function show_sets()
+	addon_message(' Available Sets:')
+	for k,v in pairs(settings.spell_sets) do
+		addon_message('')
+		--addon_message(' %s':format(v.name:concat(' | ')))
+		addon_message(' %s = [%s]  [%s]  [Entrust: %s]':format(v.name:concat(' | '), v.geo, v.indi, v.entrust))
+	end
+end
+
+function help()
+	addon_message('------------------------------------------------------------------------')
+	addon_message('    NOTE: [spell] is the spells name without the Indi-/Geo- prefix')
+	addon_message('------------------------------------------------------------------------')
+	addon_message('GEO - INDI - ENTRUST', 200)
+	addon_message(' //ageo geo [spell/off] - uses geo spell given, off disables geo spells')
+	addon_message(' //ageo indi [spell/off] - uses indi spell given, off disables indi spells')
+	addon_message(' //ageo entrust [player] [spell] - entrust player with spell')
+	addon_message('    //ageo entrust off - disables using entrust')
+	addon_message()
+	addon_message('SET', 200)
+	addon_message(' //ageo set - Shows a list of available sets')
+	addon_message(' //ageo set [setname] - Sets the spells from [setname]')
+	addon_message(' //ageo set add [setname] [geospell] [indispell] [indispell] - adds a new set')
+	addon_message(' //ageo set save [setname] - saves currently set spells as a set.')
+	addon_message(' //ageo set [spell] [spell] - Allows you to set a geo and a indi spell at the same time. ')
+	addon_message()
+	addon_message('RECAST - AUG', 200)
+	addon_message(' //ageo recast indi [min] [max] - Recasts indi between the given secs before they wear off')
+	addon_message(' //ageo recast buff [min] [max] - Recasts buffs between the given secs')
+	addon_message(' //ageo aug lifestream [#] - set indi effect duration aug on lifestream cape')
+	addon_message()
+	addon_message('OTHER', 200)
+	addon_message(' //ageo active - display settings in textbox')
+	addon_message(' //ageo save -- saves settings')
+	addon_message(' //ageo [on/off] -- turn actions on/off')
 end
 
 function calculate_buffs(curbuffs)
