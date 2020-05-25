@@ -1,7 +1,7 @@
-_addon.author = 'Ivaar'
+_addon.author = 'Ivaar, modified by icy'
 _addon.name = 'AutoCOR'
 _addon.commands = {'cor'}
-_addon.version = '1.18.01.29'
+_addon.version = '2020.5.6'
 
 require('pack')
 require('lists')
@@ -14,6 +14,7 @@ default = {
     roll = L{'Ninja Roll','Corsair\'s Roll'},
     active = true,
     crooked_cards = 1,
+	roll_while_engaged = true, -- when false, it will not roll while engaged.
     text = {text = {size=10}},
     }
 
@@ -39,7 +40,7 @@ rolls = T{
     [108] = {id=108,buff=320,en="Hunter's Roll",lucky=4,unlucky=8,bonus="Accuracy",job='Rng'},
     [109] = {id=109,buff=321,en="Samurai Roll",lucky=2,unlucky=6,bonus="Store TP",job='Sam'},
     [110] = {id=110,buff=322,en="Ninja Roll",lucky=4,unlucky=8,bonus="Evasion",job='Nin'},
-    [111] = {id=111,buff=323,en="Drachen Roll",lucky=3,unlucky=7,bonus="Pet Accuracy",job='Drg'},
+    [111] = {id=111,buff=323,en="Drachen Roll",lucky=4,unlucky=7,bonus="Pet Accuracy",job='Drg'},
     [112] = {id=112,buff=324,en="Evoker's Roll",lucky=5,unlucky=9,bonus="Refresh",job='smn'},
     [113] = {id=113,buff=325,en="Magus's Roll",lucky=2,unlucky=6,bonus="Magic Defense",job='Blu'},
     [114] = {id=114,buff=326,en="Corsair's Roll",lucky=5,unlucky=9,bonus="Experience Points",job='Cor'},
@@ -60,7 +61,7 @@ rolls = T{
     }
 
 local display_box = function()
-    return 'AutoCOR [O%s]\nRoll 1 [%s]\nRoll 2 [%s]':format(actions and 'n' or 'ff',settings.roll[1],settings.roll[2])
+    return 'AutoCOR [%s]\nRoll 1 [%s]\nRoll 2 [%s]\nWhile engaged [%s]':format(actions and 'On' or 'Off', settings.roll[1], settings.roll[2], settings.roll_while_engaged and 'On' or 'Off')
 end
 
 cor_status = texts.new(display_box(),settings.text,setting)
@@ -83,7 +84,8 @@ windower.register_event('prerender',function ()
         nexttime = curtime
         del = 0.1
         local play = windower.ffxi.get_player()
-        if not play or play.main_job ~= 'COR' or play.status > 1 then return end
+        if not play or play.main_job ~= 'COR' or play.status > 1 or (play.status == 1 and not settings.roll_while_engaged) then return end
+		
         local abil_recasts = windower.ffxi.get_ability_recasts()
         if buffs[16] or is_moving then return end
         if buffs[309] then
@@ -124,31 +126,30 @@ windower.register_event('addon command', function(...)
         actions = true
     elseif commands[1] == 'off' then
         actions = false
-    elseif commands[1] == 'cc' and commands[2] then
-        if commands[2] == 'off' then
+    elseif commands[1] == 'cc' then
+        if settings.crooked_cards == 1 then
             settings.crooked_cards = 0
-        elseif commands[2] and tonumber(commands[2]) >= 2 then
-            settings.crooked_cards = tonumber(commands[2])
+        else
+            settings.crooked_cards = 1
         end
     elseif commands[1] == 'roll' then
         commands[2] = commands[2] and tonumber(commands[2])
         if commands[2] and commands[3] then
             commands[3] = windower.convert_auto_trans(commands[3])
-            for x = 3,#commands do commands[x] = commands[x]:ucfirst() end
-            commands[3] = table.concat(commands, ' ',3)
-            local roll = rolls:with('job',commands[3]) or rolls:with('en',commands[3])
-            if roll and not settings.roll:find(roll.en) then
-                settings.roll[commands[2]] = roll.en
-                print(roll.en,roll.bonus,roll.job and roll.job:upper())
-            else
-                for k,v in pairs(rolls) do
-                    if v and not settings.roll:find(v.en) and v.en:startswith(commands[3]) then
-                        settings.roll[commands[2]] = v.en
-                        print(v.en,v.bonus,v.job and v.job:upper())
-                    end
-                end
-            end
+			for x = 3,#commands do commands[x] = commands[x]:ucfirst() end
+			commands[3] = table.concat(commands, ' ',3)
+			set_roll(commands[2], commands[3])
         end
+	elseif commands[1] == 'rolls' then
+		if commands[2] then
+			set_roll(1, commands[2])
+			if commands[3] then
+				set_roll(2, commands[3])
+			end
+		end
+	elseif commands[1] == 'engaged' or commands[1] == 'e' then
+		settings.roll_while_engaged = not settings.roll_while_engaged
+			
     elseif commands[1] == 'save' then
         settings:save()
     elseif commands[1] == 'eval' then
@@ -159,6 +160,22 @@ windower.register_event('addon command', function(...)
     cor_status:text(display_box())
     --windower.add_to_chat(207, str)
 end)
+
+function set_roll(num, str)
+	str = str:ucfirst()
+	local roll = rolls:with('job',str) or rolls:with('en',str)
+	if roll and not settings.roll:find(roll.en) then
+		settings.roll[num] = roll.en
+		--print(roll.en,roll.bonus,roll.job and roll.job:upper())
+	else
+		for k,v in pairs(rolls) do
+			if v and not settings.roll:find(v.en) and v.en:startswith(str) then
+				settings.roll[num] = v.en
+				--print(v.en,v.bonus,v.job and v.job:upper())
+			end
+		end
+	end
+end
 
 function use_JA(str)
     del = 1.2
