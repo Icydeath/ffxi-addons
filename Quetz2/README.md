@@ -10,3 +10,6 @@
  -	Added a 'End fight commands' setting where you can deactivate addons or gearswap methods at the end of the fight.
  -	Added logic to make sure the char running the script is the party leader before trying to cast trusts.
  -	Added logic to check if a trust is left blank so errors don't occur.
+ 
+2.0.8: Modified by Icy
+ -	Added Mireu dragon logic.

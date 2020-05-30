@@ -1,5 +1,5 @@
 _addon.author   = 'Original by Kaotic, rewritten by Otamarai, modified by Icy'
-_addon.version  = '2.07'
+_addon.version  = '2.0.8'
 _addon.commands = {'Quetz2', 'Q2'}
 
 require 'logger'
@@ -247,12 +247,18 @@ end
 
 
 function fight()
+	local mob
 	local quetz = windower.ffxi.get_mob_by_name('Quetzalcoatl')
+	local mireu = windower.ffxi.get_mob_by_name('Mireu')
 	local player = windower.ffxi.get_player()
 	local party = windower.ffxi.get_party()
 	if isBuffActive(603) then	
-		if quetz.hpp > 0 then
+		if quetz and quetz.hpp > 0 then
 			fighting = true
+			mob = quetz
+		elseif mireu and mireu.hpp > 0 then
+			fighting = true
+			mob = mireu
 		else
 			fighting = false
 		end
@@ -262,22 +268,22 @@ function fight()
 			end
 			delay = 3
 		end
-		if player.status == 0 and isBuffActive(603) and fighting then			--If not engaged then engage
+		if mob and player.status == 0 and isBuffActive(603) and fighting then			--If not engaged then engage
 			windower.send_command(settings.start_fight_commands)
 			engagequetz = packets.new('outgoing', 0x01A, {
-				['Target'] = quetz.id,
-				['Target Index'] = quetz.index,
+				['Target'] = mob.id,
+				['Target Index'] = mob.index,
 				['Category'] = 0x02,
 			})
 			packets.inject(engagequetz)
 			delay = 1
-		elseif math.sqrt(quetz.distance) > 7 and player.status == 1 and fighting then		--Turn and run to quetz
+		elseif mob and math.sqrt(mob.distance) > 7 and player.status == 1 and fighting then		--Turn and run to quetz
 			local target = windower.ffxi.get_mob_by_index(player.target_index or 0)
 			local self_vector = windower.ffxi.get_mob_by_index(player.index or 0)
 			local angle = (math.atan2((target.y - self_vector.y), (target.x - self_vector.x))*180/math.pi)*-1
 			windower.ffxi.turn((angle):radian())
 			windower.ffxi.run(true)
-		elseif math.sqrt(quetz.distance) <= 7 and player.status == 1 and fighting then		--Summon trusts when they die
+		elseif mob and math.sqrt(mob.distance) <= 7 and player.status == 1 and fighting then		--Summon trusts when they die
 			windower.ffxi.run(false)
 			if summonTrust() ~= false and not isBuffActive(6) and not isBuffActive(2) then
 				windower.send_command('input /ma "'..summonTrust()..'" <me>')
