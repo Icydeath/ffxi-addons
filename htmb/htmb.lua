@@ -1,13 +1,13 @@
 _addon.name = 'htmb'
-_addon.author = 'Ivaar'
-_addon.version = '1.0.0.1'
+_addon.author = 'Ivaar, modded by Icy'
+_addon.version = '1.0.0.1i'
 _addon.command = 'htmb'
 
 require('luau')
 require('pack')
 bit = require('bit')
 
-buy_list = {10,2,5,9,3} -- key items will be purchased in this order until you are unable to buy more
+buy_list = {10,} -- key items will be purchased in this order until you are unable to buy more
 
 htmb_map = {
      [0] = {name = 'Shadow Lord phantom gem',      cost = 10},
@@ -68,6 +68,16 @@ function initiate_npc(name)
     end
 end
 
+function print_help()
+	windower.add_to_chat(170, '== HTMB COMMANDS ==')
+	windower.add_to_chat(170, '//htmb - When near one of the KI NPCs, it will buy the KI\'s you have set.')
+	windower.add_to_chat(170, '//htmb {list/l} - Prints out the full list of KI\'s you can add to the buy list.')
+	windower.add_to_chat(170, '//htmb {list/l} {buy/set} - Prints out your currently set buy list.')
+	windower.add_to_chat(170, '//htmb {add/a} {#} - adds the given KI # to the buy list.')
+	windower.add_to_chat(170, '//htmb {remove/r} {#} - removes the KI # from the buy list.')
+	--windower.add_to_chat(170, '')
+end
+
 windower.register_event('incoming chunk', function(id, data, modified, injected, blocked)
     if id == 0x034 then
         local zone_id, menu_id = data:unpack('H2', 43)
@@ -91,10 +101,38 @@ windower.register_event('outgoing chunk', function(id, data, modified, injected,
     end
 end)
 
-windower.register_event('addon command', function()
-    local zone = windower.ffxi.get_info().zone
-
-    if htmb_npcs[zone] then
-        initiate_npc(htmb_npcs[zone].name)
-    end
+windower.register_event('addon command', function(...)
+	local commands = {...}
+	if commands[1] then
+		commands[1] = commands[1]:lower()
+		
+		if tonumber(commands[2]) then 
+			if not buy_list[tonumber(commands[2])] and commands[1] == 'add' or commands[1] == 'a' then
+				table.insert(buy_list, tonumber(commands[2]))
+			elseif buy_list[tonumber(commands[2])] and commands[1] == 'remove' or commands[1] == 'r' then
+				table.remove(buy_list, tonumber(commands[2]))
+			end
+			
+		elseif commands[1] == 'help' or commands[1] == 'h' then
+			print_help()
+			
+		elseif commands[1] == 'list' or commands[1] == 'l' then
+			if commands[2] and commands[2]:lower() == 'set' or commands[2]:lower() == 'buy' then
+				windower.add_to_chat(100, '==CURRENT BUY LIST==')
+				for key,val in ipairs(buy_list) do
+					windower.add_to_chat(100, val..' : '..htmb_map[val].name)
+				end
+			else
+				windower.add_to_chat(200, '==OPTIONS==')
+				for key,val in ipairs(htmb_map) do
+					windower.add_to_chat(200, key..' : '..val.name)
+				end
+			end
+		end
+	else
+		local zone = windower.ffxi.get_info().zone
+		if htmb_npcs[zone] then
+			initiate_npc(htmb_npcs[zone].name)
+		end
+	end
 end)
