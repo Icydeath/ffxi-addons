@@ -11,41 +11,72 @@ function FunctionButton(args) -- constructs the object, but does not initialize 
 	fb._track._x = args.x
 	fb._track._y = args.y
 	fb._track._icon = args.icon
+	fb._track._click_width = args.click_width or 16
+	fb._track._click_height = args.click_heigth or 16
+	fb._track._bg_alpha = args.bg_alpha or 40
 	fb._track._mouse_event = nil
 	fb._track._update_event = nil
 	fb._track._suppress = false
 	--fb._track._startPressed = args.startPressed
 	fb._track._update_command = args.command
 	fb._track._pressed = false	
+	fb._track._hovered = false	
 	fb._track._disabled = args.disabled
 	fb._track._shown = true
-	
+
 	return setmetatable(fb, _meta.FunctionButton)	
 end
 
 _meta.FunctionButton.__methods['draw'] = function(fb) -- Finishes initialization and draws the graphics
 	local self = tostring(fb)
 	-- draw the button
-	windower.prim.create(self)
-	windower.prim.set_visibility(self, true)
-	windower.prim.set_position(self, fb._track._x, fb._track._y)
-	windower.prim.set_texture(self, GUI.complete_filepath('icon_button.png'))
-	windower.prim.set_fit_to_texture(self, true)
+	-- windower.prim.create(self)
+	-- windower.prim.set_visibility(self, true)
+	-- windower.prim.set_position(self, fb._track._x, fb._track._y)
+	-- windower.prim.set_texture(self, GUI.complete_filepath(fb._track._icon))
+	-- windower.prim.set_fit_to_texture(self, true)
+	
 	-- blue square to darken the button when pressed
+	local area = '%s area':format(self)
+	windower.prim.create(area)
+	windower.prim.set_visibility(area, true) -- start pressed if var is true or inverted var is false
+	windower.prim.set_position(area, fb._track._x, fb._track._y)
+	windower.prim.set_color(area, fb._track._bg_alpha, 0, 0, 0)
+	windower.prim.set_size(area, fb._track._click_width, fb._track._click_height)
+	
+	-- TESTING HOVER
+	-- local hover = '%s hover':format(self)
+	-- windower.prim.create(hover)
+	-- windower.prim.set_visibility(hover, false)
+	-- windower.prim.set_position(hover, fb._track._x, fb._track._y)
+	-- windower.prim.set_color(hover, fb._track._bg_alpha * 2, 0, 0, 0)
+	-- windower.prim.set_size(hover, fb._track._click_width, fb._track._click_height)
+	----------
+	
+	-- colored square to darken the button when pressed
 	local press = '%s press':format(self)
 	windower.prim.create(press)
 	windower.prim.set_visibility(press, false) -- start pressed if var is true or inverted var is false
-	windower.prim.set_position(press, fb._track._x + 3, fb._track._y + 3)
-	windower.prim.set_color(press, 100, 0, 0, 127)
-	windower.prim.set_size(press, 36, 36)
-
+	windower.prim.set_position(press, fb._track._x, fb._track._y)
+	windower.prim.set_color(press, 50, 0, 127, 0)
+	windower.prim.set_size(press, fb._track._click_width, fb._track._click_height)
+	
+	
 	-- draw the pressed and unpressed icons
 	local name = '%s Icon':format(self)
 	windower.prim.create(name)
 	windower.prim.set_visibility(name, true)
-	windower.prim.set_position(name, fb._track._x + 5, fb._track._y + 5)
+	windower.prim.set_position(name, fb._track._x, fb._track._y)
 	windower.prim.set_texture(name, GUI.complete_filepath(fb._track._icon))
 	windower.prim.set_fit_to_texture(name, true)
+	
+	-- -- bottom border
+	-- local bottom_border = '%s bottom_border':format(self)
+	-- windower.prim.create(bottom_border)
+	-- windower.prim.set_visibility(bottom_border, true) -- start pressed if var is true or inverted var is false
+	-- windower.prim.set_position(bottom_border, fb._track._x, fb._track._y + fb._track._click_height)
+	-- windower.prim.set_color(bottom_border, 100, 217, 217, 217)
+	-- windower.prim.set_size(bottom_border, fb._track._click_width, 1)
 	
 	-- display the icon that is currently active
 	--windower.prim.set_visibility('%s %s':format(self, ('Down' and fb._track._startPressed) or 'Up'), fb._track._var ~= fb._track._invert)
@@ -55,18 +86,28 @@ end
 
 _meta.FunctionButton.__methods['on_mouse'] = function(fb, t, x, y, delta, blocked)
 	if fb._track._disabled then return end
-	if t == 1 then
+	
+	if t == 0 then -- testing hover
+		-- if not fb._track._hovered then
+			-- if x > fb._track._x and x < fb._track._x + fb._track._click_width and y > fb._track._y and y < fb._track._y + fb._track._click_height then
+				-- fb:hover()
+			-- else
+				-- fb:unhover()
+			-- end
+		-- end
+		
+	elseif t == 1 then
 		if fb._track._suppress then
 			fb._track._suppress = false
 			return true
 		end
-		if x > fb._track._x and x < fb._track._x + 42 and y > fb._track._y and y < fb._track._y + 42 then
+		if x > fb._track._x and x < fb._track._x + fb._track._click_width and y > fb._track._y and y < fb._track._y + fb._track._click_height then
 			fb:press()
 			return true
 		end
 	elseif t == 2 then
 		if fb._track._pressed then
-			if x > fb._track._x and x < fb._track._x + 42 and y > fb._track._y and y < fb._track._y + 42 then
+			if x > fb._track._x and x < fb._track._x + fb._track._click_width and y > fb._track._y and y < fb._track._y + fb._track._click_height then
 				if type(fb._track._update_command) == 'function' then
 					fb._track._update_command()
 				elseif type(fb._track._update_command) == 'string' then
@@ -76,11 +117,26 @@ _meta.FunctionButton.__methods['on_mouse'] = function(fb, t, x, y, delta, blocke
 			fb:unpress()
 			return true
 		end
-		if x > fb._track._x and x < fb._track._x + 42 and y > fb._track._y and y < fb._track._y + 42 then
+		if x > fb._track._x and x < fb._track._x + fb._track._click_width and y > fb._track._y and y < fb._track._y + fb._track._click_height then
 			return true
 		end
+	-- else
+		-- fb:unhover()
 	end
 end
+
+_meta.FunctionButton.__methods['hover'] = function(fb)
+	-- hover testing
+	fb._track._hovered = true
+	windower.prim.set_visibility('%s hover':format(tostring(fb)), true)
+end
+_meta.FunctionButton.__methods['unhover'] = function(fb)
+	--log('unhover fired')
+	-- hover testing
+	fb._track._hovered = false
+	windower.prim.set_visibility('%s hover':format(tostring(fb)), false)
+end
+
 
 _meta.FunctionButton.__methods['press'] = function(fb)
 	-- visually depress the button
@@ -133,6 +189,7 @@ _meta.FunctionButton.__methods['undraw'] = function(fb)
 	windower.prim.delete(self)
 	windower.prim.delete('%s press':format(self))
 	windower.prim.delete('%s Icon':format(self))
+	windower.prim.delete('%s area':format(self))
 
 	--GUI.unregister_mouse_listener(fb._track._mouse_event)
 	GUI.unregister_mouse_listener(fb)

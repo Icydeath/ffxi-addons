@@ -15,14 +15,14 @@ function PassiveText(args, ...) -- constructs the object, but does not initializ
 	
 	pt._track._text = args.text
 	pt._track._var = T{...}
-	pt._track._font = args.font or 'Helvetica'
+	pt._track._font = args.font or 'Impact'
 	pt._track._font_size = args.font_size or 10
 	pt._track._color = args.color or {255,253,252,250}
 	pt._track._stroke_color = args.stroke_color or {127, 18, 97, 136}
 	pt._track._bold = args.bold or false
-	
 	pt._track._align = (args.align or 'left'):lower()
-
+	--pt._track._bg_color = args.bg_color or {0, 0, 0, 0}
+	
 	return setmetatable(pt, _meta.PassiveText)	
 end
 
@@ -36,6 +36,7 @@ _meta.PassiveText.__methods['draw'] = function(pt) -- Finishes initialization an
 	windower.text.set_color(self, table.unpack(pt._track._color))--255, 253, 252, 250)
 	windower.text.set_font_size(self, pt._track._font_size)
 	windower.text.set_bold(self, pt._track._bold)
+	--windower.text.set_bg_color(self,  table.unpack(pt._track._bg_color))
 	
 	windower.text.set_location(self, pt._track._x, pt._track._y)
 	windower.text.set_right_justified(self, pt._track._align == 'right')

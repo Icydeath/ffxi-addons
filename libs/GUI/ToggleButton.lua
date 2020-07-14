@@ -27,6 +27,7 @@ function ToggleButton(args) -- constructs the object, but does not initialize it
 	tb._track._pressed = ((type(tb._track._var)=='table' and tb._track._var.value) or (type(tb._track._var)=='string' and _G[tb._track._var])) ~= tb._track._invert
 	
 	--(tb._track._var.value or _G[tb._track._var])
+	--log(args.var)
 	
 	return setmetatable(tb, _meta.ToggleButton)	
 end
@@ -39,13 +40,14 @@ _meta.ToggleButton.__methods['draw'] = function(tb) -- Finishes initialization a
 	windower.prim.set_position(self, tb._track._x, tb._track._y)
 	windower.prim.set_texture(self, GUI.complete_filepath('icon_button.png'))
 	windower.prim.set_fit_to_texture(self, true)
+		
 	-- blue square to darken the button when pressed
-	local press = '%s press':format(self)
-	windower.prim.create(press)
-	windower.prim.set_visibility(press, ((type(tb._track._var)=='table' and tb._track._var.value) or (type(tb._track._var)=='string' and _G[tb._track._var])) ~= tb._track._invert) -- start pressed if var is true or inverted var is false
-	windower.prim.set_position(press, tb._track._x + 3, tb._track._y + 3)
-	windower.prim.set_color(press, 100, 0, 0, 127)
-	windower.prim.set_size(press, 36, 36)
+	-- local press = '%s press':format(self)
+	-- windower.prim.create(press)
+	-- windower.prim.set_visibility(press, ((type(tb._track._var)=='table' and tb._track._var.value) or (type(tb._track._var)=='string' and _G[tb._track._var])) ~= tb._track._invert) -- start pressed if var is true or inverted var is false
+	-- windower.prim.set_position(press, tb._track._x + 3, tb._track._y + 3)
+	-- windower.prim.set_color(press, 100, 0, 0, 127)
+	-- windower.prim.set_size(press, 36, 36)
 
 	-- draw the pressed and unpressed icons
 	local name = '%s Up':format(self)

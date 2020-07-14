@@ -11,3 +11,5 @@ abyhelper/README.md
 abyhelper/ui.lua
 *.settings.xml
 *.bmp
+addon_manager/addon_manager.lua
+*.dat
