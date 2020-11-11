@@ -4,7 +4,7 @@ return {
             'Haste II',
             'Protect V',
             'Shell V',
-            'Phalanx II'
+            'Phalanx II',
         },
         ['abyself'] = {
             'Haste II',
@@ -12,25 +12,25 @@ return {
             'Protect V',
             'Shell V',
             'Phalanx',
-            'Composure'
+            'Composure',
         },
         ['mage'] = {
             'Haste II',
             'Refresh II',
             'Protect V',
             'Shell V',
-            'Phalanx II'
+            'Phalanx II',
         },
         ['mage2'] = {
             'Haste II',
             'Refresh II',
-            'Phalanx II'
+            'Phalanx II',
         },
         ['melee'] = {
             'Haste II',
             'Phalanx II',
             'Protect V',
-            'Shell V'
+            'Shell V',
         },
         ['self'] = {
             'Haste II',
@@ -40,144 +40,124 @@ return {
             'Shell V',
             'Phalanx',
             'Reraise',
-            'Composure'
-        }
+            'Composure',
+        },
     },
-	
-	['geo/rdm'] = {
+    ['geo/rdm'] = {
         'Haste',
-		'Aquaveil',
-		'Stoneskin',
-		'Refresh'
+        'Aquaveil',
+        'Stoneskin',
+        'Refresh',
     },
     ['geo/whm'] = {
         'Haste',
-		'Aquaveil',
-		'Stoneskin'
+        'Aquaveil',
+        'Stoneskin',
     },
-	['Ava'] = {
-
-            'Refresh'
+    ['Ava'] = {
+        'Refresh',
     },
-	['acumen'] = {
-            'Indi-Acumen',
-			'Haste',
-			'Refresh'
-            
+    ['acumen'] = {
+        'Indi-Acumen',
+        'Haste',
+        'Refresh',
     },
-	['focus'] = {
-            'Indi-focus',
-			'Haste'
-            
+    ['focus'] = {
+        'Indi-focus',
+        'Haste',
     },
-	['Wilt'] = {
-			'Haste',
-            'Aquaveil',
-            'Indi-Wilt',
-            'Reraise',
-            'Stoneskin'
+    ['Wilt'] = {
+        'Haste',
+        'Aquaveil',
+        'Indi-Wilt',
+        'Reraise',
+        'Stoneskin',
     },
-	['frailty'] = {
-			'Refresh',
-            'Indi-Frailty',
-			'Geo-Haste'
+    ['frailty'] = {
+        'Refresh',
+        'Indi-Frailty',
+        'Geo-Haste',
     },
-	['Barrier'] = {
-			'Haste',
-            'Aquaveil',
-            'Indi-Barrier',
-            'Reraise',
-            'Stoneskin'
+    ['Barrier'] = {
+        'Haste',
+        'Aquaveil',
+        'Indi-Barrier',
+        'Reraise',
+        'Stoneskin',
     },
-	['Haste'] = {
-			'Haste',
-            'Indi-Haste',
-            'Geo-Fury',
-            'Stoneskin'
+    ['Haste'] = {
+        'Haste',
+        'Indi-Haste',
+        'Geo-Fury',
+        'Stoneskin',
     },
-	['MAB'] = {
-			'Haste',
-            'Aquaveil',
-            'Indi-Acumen',
-            'Reraise',
-            'Stoneskin'
+    ['MAB'] = {
+        'Haste',
+        'Aquaveil',
+        'Indi-Acumen',
+        'Reraise',
+        'Stoneskin',
     },
-	['Att'] = {
-			'Haste',
-            'Aquaveil',
-            'Indi-Fury',
-            'Reraise',
-            'Stoneskin'
+    ['Att'] = {
+        'Haste',
+        'Aquaveil',
+        'Indi-Fury',
+        'Reraise',
+        'Stoneskin',
     },
-	['refresh'] = {
-			'Haste',
-            'Indi-Refresh',
-            'Stoneskin'
+    ['refresh'] = {
+        'Haste',
+        'Indi-Refresh',
+        'Stoneskin',
     },
-	['torpor'] = {
-			'Refresh',
-            'Indi-Torpor',
-			'Geo-Haste'
-
+    ['torpor'] = {
+        'Refresh',
+        'Indi-Torpor',
+        'Geo-Haste',
     },
-	['Meva'] = {
-			'Haste',
-            'Aquaveil',
-            'Indi-Attunement',
-            'Reraise',
-            'Stoneskin'
+    ['Meva'] = {
+        'Haste',
+        'Aquaveil',
+        'Indi-Attunement',
+        'Reraise',
+        'Stoneskin',
     },
     ['whm'] = {
-            'Haste',
-            'Aquaveil',
-            'Protectra V',
-            'Shellra V',
-            'Reraise IV',
-            'Afflatus Solace'
-        
+        'Haste',
+        'Aquaveil',
+        'Protectra V',
+        'Shellra V',
+        'Reraise IV',
+        'Afflatus Solace',
     },
     ['whm/rdm'] = {
-            'Haste',
-            'Refresh',
-            'Protectra V',
-            'Shellra V',
-            'Reraise IV',
-            'Afflatus Solace'
-        
+        'Haste',
+        'Refresh',
+        'Protectra V',
+        'Shellra V',
+        'Reraise IV',
+        'Afflatus Solace',
     },
     ['whm/sch'] = {
-            'Haste',
-            'Light Arts',
-            'Aquaveil',
-            'Protectra V',
-            'Shellra V',
-            'Reraise IV',
-            'Afflatus Solace'
-        
+        'Haste',
+        'Light Arts',
+        'Aquaveil',
+        'Protectra V',
+        'Shellra V',
+        'Reraise IV',
+        'Afflatus Solace',
     },
-	['sch'] = {
-            'Light Arts',
-            'Protect V',
-            'Shell V',
-            'Reraise'
-        
+    ['sch'] = {
+        'Light Arts',
+        'Protect V',
+        'Shell V',
+        'Reraise',
     },
-	['war'] = {
-            'Berserk',
-            'Aggressor',
-            'Warcry',
-            'Retaliation',
-			'Hasso'
-			
-			
+    ['war'] = {
+        'Berserk',
+        'Aggressor',
+        'Warcry',
+        'Retaliation',
+        'Hasso',
     },
-	['pld'] = {
-            --'Crusade',
-            'Phalanx',
-            'Reprisal',
-            'Enlight',
-			--'Cocoon'
-			
-			
-    }
 }

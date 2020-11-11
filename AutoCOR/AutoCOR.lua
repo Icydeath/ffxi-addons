@@ -1,7 +1,9 @@
 _addon.author = 'Ivaar, modified by icy'
 _addon.name = 'AutoCOR'
 _addon.commands = {'cor'}
-_addon.version = '2020.5.6'
+_addon.version = '2020.10.24'
+
+-- 10/24/20: Will now automatically turn off when you leave a battle field
 
 require('pack')
 require('lists')
@@ -25,6 +27,8 @@ del = 0
 buffs = {}
 finish_act = L{2,3,5}
 start_act = L{7,8,9,12}
+ignore_buff_loss_zones = L{291, 289, 288}
+zone = windower.ffxi.get_info().zone
 
 rolls = T{
     [98] = {id=98,buff=310,en="Fighter's Roll",lucky=5,unlucky=9,bonus="Double Attack Rate",job='War'},
@@ -227,6 +231,7 @@ windower.register_event('incoming chunk', function(id,data,modified,is_injected,
 end)
 
 function reset()
+	zone = windower.ffxi.get_info().zone
     actions = false
     is_casting = false
     buffs = {}
@@ -237,8 +242,16 @@ function status_change(new,old)
     --is_casting = false
     if new > 1 and new < 4 then
         reset()
-    end
+	end
 end
 
+function lose_buff(buff_id)
+	if buff_id == 143 and not ignore_buff_loss_zones:contains(zone) then
+		reset()
+	end
+end
+
+windower.register_event('lose buff', lose_buff)
 windower.register_event('status change', status_change)
 windower.register_event('zone change','job change','logout', reset)
+

@@ -29,8 +29,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 _addon.author = 'Icy'
 _addon.name = 'AutoPUP'
 _addon.commands = {'autopup','pup'}
-_addon.version = '1.1.0.1'
+_addon.version = '1.1.0.2'
 
+-- 1.1.0.2: Automatically turns off when you leave a battlefield
 -- 1.1.0.1: New command added, allows setting multiple maneuvers at once, ie: //pup mans fire wind light
 -- 1.1.0.0: Auto deploy and auto activate added. Will now auto equip +3 oils before attempting to repair.
 
@@ -98,6 +99,9 @@ default = {
 	activate = false,
 }
 settings = config.load(default)
+
+ignore_buff_loss_zones = L{291, 289, 288}
+zone = windower.ffxi.get_info().zone
 
 multiman = ""
 multimanCnt = 0
@@ -411,6 +415,7 @@ function status_change(new,old)
 end
 
 function zone_change()
+	zone = windower.ffxi.get_info().zone
 	reset()
 	pup_status:text(display_box())
 end
@@ -428,5 +433,12 @@ function dump(o)
     end
 end
 
+function lose_buff(buff_id)
+	if buff_id == 143 and not ignore_buff_loss_zones:contains(zone) then
+		reset()
+	end
+end
+
+windower.register_event('lose buff', lose_buff)
 windower.register_event('status change', status_change)
 windower.register_event('zone change','job change','logout', zone_change)

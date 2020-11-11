@@ -25,14 +25,17 @@ OTHER DEALINGS IN THE SOFTWARE.
 For more information, please refer to <http://unlicense.org/>
 ]]
 
+-- 1.8.1 : added Neo Nyzul ??? +1 +2 item's w/ loop support. //qtr loop 10
+
 _addon.name = 'QuickTrade'
-_addon.author = 'Valok@Asura'
-_addon.version = '1.8.0'
+_addon.author = 'Valok@Asura - mod by Icy'
+_addon.version = '1.8.1'
 _addon.commands = {'qtr','quicktrade'}
 
 require('tables')
 require('coroutine')
 res = require('resources')
+require('logger')
 
 exampleOnly = false
 textSkipTimer = 1
@@ -62,7 +65,7 @@ windower.register_event('addon command', function(...)
 	loopText = ''
 	performLoopsAfterAll = 0
 
-	if #arg > 0 and arg[1] == 'loop'then
+	if #arg > 0 and arg[1] == 'loop' then
 		loopModeSet = true
 
 		if #arg > 1 and arg[2] then
@@ -97,6 +100,25 @@ end)
 
 function quicktrade(arg)
 	-- Tables of the tradeable itemIDs that may be found in the player inventory
+	local nniIDs = {
+		{id = 9011, name = '??? Sword +1', count = 0, stacks = 0, stacksize = 1},
+		{id = 9012, name = '??? Dagger +1', count = 0, stacks = 0, stacksize = 1},
+		{id = 9013, name = '??? Pole +1', count = 0, stacks = 0, stacksize = 1},
+		{id = 9014, name = '??? Axe +1', count = 0, stacks = 0, stacksize = 1},
+		{id = 9015, name = '??? Bow +1', count = 0, stacks = 0, stacksize = 1},
+		{id = 9016, name = '??? Gloves +1', count = 0, stacks = 0, stacksize = 1},
+		{id = 9017, name = '??? Footwear +1', count = 0, stacks = 0, stacksize = 1},
+		{id = 9018, name = '??? Headwear +1', count = 0, stacks = 0, stacksize = 1},
+		{id = 9019, name = '??? Earring +1', count = 0, stacks = 0, stacksize = 1},
+		{id = 9020, name = '??? Ring +1', count = 0, stacks = 0, stacksize = 1},
+		{id = 9021, name = '??? Cape +1', count = 0, stacks = 0, stacksize = 1},
+		{id = 9022, name = '??? Sash +1', count = 0, stacks = 0, stacksize = 1},
+		{id = 9023, name = '??? Shield +1', count = 0, stacks = 0, stacksize = 1},
+		{id = 9024, name = '??? Necklace +1', count = 0, stacks = 0, stacksize = 1},
+		{id = 9025, name = '??? Box +1', count = 0, stacks = 0, stacksize = 1},
+		{id = 9026, name = '??? Box +2', count = 0, stacks = 0, stacksize = 1},
+	}
+	
 	local crystalIDs = {
 		{id = 4096, name = 'fire crystal', count = 0, stacks = 0, stacksize = 12},
 		{id = 4097, name = 'ice crystal', count = 0, stacks = 0, stacksize = 12},
@@ -161,6 +183,9 @@ function quicktrade(arg)
 	
 	local spGobbieKeyIDs = {
 		{id = 8973, name = 'special gobbiedial key', count = 0, stacks = 0, stacksize = 99},
+		{id = 9217, name = 'dial key #ab', count = 0, stacks = 0, stacksize = 99},
+		{id = 9218, name = 'dial key #fo', count = 0, stacks = 0, stacksize = 99},
+		{id = 9274, name = 'dial key #anv', count = 0, stacks = 0, stacksize = 99},
 	}
 
 	local zincOreIDs = {
@@ -302,17 +327,17 @@ function quicktrade(arg)
 		{name = '???', idTable = mellidoptWingIDs, tableType = 'Mellidopt Wings', loopable = true, loopWait = 5},
 		{name = 'Mrohk Sahjuuli', idTable = salvagePlanIDs, tableType = 'Salvage Plans', loopable = true, loopWait = 5},
 		{name = 'Paparoon', idTable = alexandriteIDs, tableType = 'Alexandrite', loopable = true, loopWait = 5},
-		{name = 'Mystrix', idTable = spGobbieKeyIDs, tableType = 'Special Gobbiedial Keys', loopable = true, loopWait = 14},
-		{name = 'Habitox', idTable = spGobbieKeyIDs, tableType = 'Special Gobbiedial Keys', loopable = true, loopWait = 14},
-		{name = 'Bountibox', idTable = spGobbieKeyIDs, tableType = 'Special Gobbiedial Keys', loopable = true, loopWait = 14},
-		{name = 'Specilox', idTable = spGobbieKeyIDs, tableType = 'Special Gobbiedial Keys', loopable = true, loopWait = 14},
-		{name = 'Arbitrix', idTable = spGobbieKeyIDs, tableType = 'Special Gobbiedial Keys', loopable = true, loopWait = 14},
-		{name = 'Funtrox', idTable = spGobbieKeyIDs, tableType = 'Special Gobbiedial Keys', loopable = true, loopWait = 14},
-		{name = 'Priztrix', idTable = spGobbieKeyIDs, tableType = 'Special Gobbiedial Keys', loopable = true, loopWait = 14},
-		{name = 'Sweepstox', idTable = spGobbieKeyIDs, tableType = 'Special Gobbiedial Keys', loopable = true, loopWait = 14},
-		{name = 'Wondrix', idTable = spGobbieKeyIDs, tableType = 'Special Gobbiedial Keys', loopable = true, loopWait = 14},
-		{name = 'Rewardox', idTable = spGobbieKeyIDs, tableType = 'Special Gobbiedial Keys', loopable = true, loopWait = 14},
-		{name = 'Winrix', idTable = spGobbieKeyIDs, tableType = 'Special Gobbiedial Keys', loopable = true, loopWait = 14},
+		{name = 'Mystrix', idTable = spGobbieKeyIDs, tableType = 'Special Gobbiedial Keys', loopable = true, loopWait = 18},
+		{name = 'Habitox', idTable = spGobbieKeyIDs, tableType = 'Special Gobbiedial Keys', loopable = true, loopWait = 18},
+		{name = 'Bountibox', idTable = spGobbieKeyIDs, tableType = 'Special Gobbiedial Keys', loopable = true, loopWait = 18},
+		{name = 'Specilox', idTable = spGobbieKeyIDs, tableType = 'Special Gobbiedial Keys', loopable = true, loopWait = 18},
+		{name = 'Arbitrix', idTable = spGobbieKeyIDs, tableType = 'Special Gobbiedial Keys', loopable = true, loopWait = 18},
+		{name = 'Funtrox', idTable = spGobbieKeyIDs, tableType = 'Special Gobbiedial Keys', loopable = true, loopWait = 18},
+		{name = 'Priztrix', idTable = spGobbieKeyIDs, tableType = 'Special Gobbiedial Keys', loopable = true, loopWait = 18},
+		{name = 'Sweepstox', idTable = spGobbieKeyIDs, tableType = 'Special Gobbiedial Keys', loopable = true, loopWait = 18},
+		{name = 'Wondrix', idTable = spGobbieKeyIDs, tableType = 'Special Gobbiedial Keys', loopable = true, loopWait = 18},
+		{name = 'Rewardox', idTable = spGobbieKeyIDs, tableType = 'Special Gobbiedial Keys', loopable = true, loopWait = 18},
+		{name = 'Winrix', idTable = spGobbieKeyIDs, tableType = 'Special Gobbiedial Keys', loopable = true, loopWait = 18},
 		{name = 'Talib', idTable = zincOreIDs, tableType = 'Zinc Ore', loopable = true, loopWait = 3},
 		{name = 'Nanaa Mihgo', idTable = yagudoNecklaceIDs, tableType = 'Yagudo Necklaces', loopable = true, loopWait = 10},
 		{name = 'Yoran-Oran', idTable = mandragoraMadIDs, tableType = 'Mandragora Mad Items', loopable = true, loopWait = 8},
@@ -326,6 +351,7 @@ function quicktrade(arg)
 		{name = 'Affi', idTable = geasFeteZitahIDs, tableType = "Geas Fete Zi'Tah Items", loopable = false, loopWait = 0},
 		{name = 'Dremi', idTable = geasFeteRuaunIDs, tableType = "Geas Fete Ru'Aun Items", loopable = false, loopWait = 0},
 		{name = 'Shiftrix', idTable = geasFeteReisenjimaIDs, tableType = "Geas Fete Reisenjima Items", loopable = false, loopWait = 0},
+		{name = 'Drahbah', idTable = nniIDs, tableType = "Neo Nyzul Isle Assualt Items", loopable = true, loopWait = 5},
 	}
 	
 	local idTable = {}
@@ -576,7 +602,14 @@ function quicktrade(arg)
 				end
 			end
 		elseif tableType == 'Special Gobbiedial Keys' or tableType == 'Soul Plates' then -- 1 item at a time
-			tradeString = 'tradenpc  1 "' .. idTable[1].name .. '"'
+			--tradeString = 'tradenpc  1 "' .. idTable[1].name .. '"'
+			tradeString = 'tradenpc  1 "'
+			for i = 1, #idTable do
+				if idTable[i].count > 0 then
+					tradeString = tradeString .. idTable[i].name .. '"'
+					break
+				end
+			end
 		elseif tableType == 'Zinc Ore' or tableType == 'Yagudo Necklaces' then -- 4 items at a time
 			if idTable[1].count >= 4 then
 				tradeString = 'tradenpc 4 "' .. idTable[1].name .. '"'

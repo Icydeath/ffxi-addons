@@ -1,4 +1,10 @@
 return {
+    ["Abject Awiija"] = S{
+        2
+    },
+    ["Abject Kharoub"] = S{
+        2
+    },
     ["Air Circle"] = S{
         4,
         194
@@ -8,6 +14,9 @@ return {
         5,
         13,
         194
+    },
+    ["Arciela"] = S{
+        2
     },
     ["August"] = S{
         2
@@ -69,6 +78,9 @@ return {
         2,
         10
     },
+    ["Bozzetto Protector"] = S{
+        2
+    },
     ["Bozzetto Rascal"] = S{
         2,
         28
@@ -88,11 +100,29 @@ return {
     ["Bozzetto Swiftshooter"] = S{
         28
     },
+    ["Bozzetto Wyvern"] = S{
+        2
+    },
+    ["Brimboil"] = S{
+        28
+    },
     ["Broadleaf Palm"] = S{
         2,
         194
     },
+    ["Cait Sith"] = S{
+        28
+    },
+    ["Cannered Noz"] = S{
+        2
+    },
     ["Chirurgeon"] = S{
+        2
+    },
+    ["Chloris"] = S{
+        2
+    },
+    ["Cirein-croin"] = S{
         2
     },
     ["Cloud of Darkness"] = S{
@@ -100,6 +130,9 @@ return {
     },
     ["Dark Circle"] = S{
         2
+    },
+    ["Dark Gyves"] = S{
+        10
     },
     ["Despot"] = S{
         194
@@ -115,6 +148,10 @@ return {
         7,
         28
     },
+    ["Dragua"] = S{
+        2,
+        6
+    },
     ["Earth Circle"] = S{
         194
     },
@@ -127,6 +164,9 @@ return {
         2,
         10,
         28
+    },
+    ["Gancanagh"] = S{
+        2
     },
     ["Gin"] = S{
         2,
@@ -153,6 +193,13 @@ return {
     ["Gnarled Rampart"] = S{
         194
     },
+    ["Harpimaira"] = S{
+        4
+    },
+    ["Heqet"] = S{
+        2,
+        6
+    },
     ["Hydra Bard"] = S{
         2
     },
@@ -169,11 +216,17 @@ return {
     ["Incarnation Icon"] = S{
         2
     },
+    ["Ingrid"] = S{
+        2
+    },
     ["Insidivo"] = S{
         28
     },
     ["Ircinraq"] = S{
         28
+    },
+    ["Isgebind"] = S{
+        2
     },
     ["Kei"] = S{
         2,
@@ -190,6 +243,9 @@ return {
     ["Knotted Root"] = S{
         194
     },
+    ["Kubool Ja's Mhuufya"] = S{
+        2
+    },
     ["Kyou"] = S{
         10
     },
@@ -202,6 +258,12 @@ return {
     },
     ["Lithicthrower Image"] = S{
         12
+    },
+    ["Lord Vryko"] = S{
+        5
+    },
+    ["Mildaunegeux"] = S{
+        2
     },
     ["Monolithic Boulder"] = S{
         2
@@ -232,17 +294,32 @@ return {
     ["Plouton"] = S{
         28
     },
+    ["Psycheflayer"] = S{
+        5
+    },
     ["Putraxia"] = S{
         28
     },
     ["Rancibus"] = S{
         28
     },
+    ["Rosulatia"] = S{
+        2
+    },
     ["Sere Stump"] = S{
         194
     },
+    ["Sovereign Behemoth"] = S{
+        2
+    },
     ["Thunder Circle"] = S{
         194
+    },
+    ["Ulhuadshi"] = S{
+        2
+    },
+    ["Vanguard Eye"] = S{
+        2
     },
     ["Wasp Nest"] = S{
         194

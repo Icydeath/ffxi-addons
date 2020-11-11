@@ -1,0 +1,205 @@
+------------------------------------------------------------------------------------------------------------
+-- NOTE: IF YOU ADD A NEW KEY TO THE TABLES BE SURE TO INCLUDE IT IN THE 'normalize' method in trader.lua --
+------------------------------------------------------------------------------------------------------------
+local pops_by_mob = T{
+	-- Abyssea zones? maybe at some point...
+	
+	
+	-- Delve Notorious Monsters - Morimar Basalt Fields
+	{ mob="Volatile Matamata", npc="???", items={["Alizarin Yggrete Shard I"]=1}, content="Delve NM", zone='Morimar Basalt Fields', pos='(J-8)', loot={"Manibozho Brais","Mikinaak Gauntlets","Zoran's Belt",}, },
+	{ mob="Perdurable Raptor", npc="???", items={["Alizarin Yggrete Shard II"]=1}, content="Delve NM", zone='Morimar Basalt Fields', pos='(H-11)', loot={"Bokwus Boots","Manibozho Beret","Bladeborn Earring",}, },
+	{ mob="Shimmering Tarichuk", npc="???", items={["Alizarin Yggrete Shard III"]=1}, content="Delve NM", zone='Morimar Basalt Fields', pos='(J-11)', loot={"Bokwus Robe","Lifestorm Earring",}, },
+	{ mob="Tutewehiwehi", npc="???", items={["Alizarin Yggrete Shard IV"]=1}, content="Delve NM", zone='Morimar Basalt Fields', pos='(E-7/8)', loot={"Halachuinic Sword","Kiji","Surefire Arquebus","Honed Tathlum",}, },
+	{ mob="Kurma", npc="???", items={["Alizarin Yggrete Shard V"]=1}, content="Delve NM", zone='Morimar Basalt Fields', pos='(F-10)', loot={"Bloodbath Axe","Soothsayer Staff","Refraction Cape",}, },
+	-- Delve Notorious Monsters - 
+	{ mob="Faded Craklaw", npc="???", items={["Zaffre Yggrete Shard I"]=1}, content="Delve NM", zone='Foret de Hennetiel', pos='(H-6)', loot={"Bokwus Circlet","Manibozho Gloves","Psystorm Earring",}, },
+	{ mob="Aberrant Uragnite", npc="???", items={["Zaffre Yggrete Shard II"]=1}, content="Delve NM", zone='Foret de Hennetiel', pos='(J-7/8)', loot={"Bokwus Slops","Mikinaak Greaves","Mephitis Grip",}, },
+	{ mob="Divagating Jagil", npc="???", items={["Zaffre Yggrete Shard III"]=1}, content="Delve NM", zone='Foret de Hennetiel', pos='(J-10)', loot={"Mikinaak Breastplate","Dudgeon Earring",}, },
+	{ mob="Nerrivik", npc="???", items={["Zaffre Yggrete Shard IV"]=1}, content="Delve NM", zone='Foret de Hennetiel', pos='(H-10,NW)', loot={"Aphotic Kukri","Ophidian Trident","Speleogen Bow","Asperity Necklace",}, },
+	{ mob="Krabakarpo", npc="???", items={["Zaffre Yggrete Shard V"]=1}, content="Delve NM", zone='Foret de Hennetiel', pos='(F-9)', loot={"Brethren Axe","Mondaha Cudgel","Alternator",}, },
+	-- Delve Notorious Monsters - 
+	{ mob="Unfettered Twitherym", npc="???", items={["Celadon Yggrete Shard I"]=1}, content="Delve NM", zone='Ceizak Battlegrounds', pos='(J-7)', loot={"Manibozho Boots","Mikinaak Helm","Inquisitor Bead Necklace",}, },
+	{ mob="Supernal Chapuli", npc="???", items={["Celadon Yggrete Shard II"]=1}, content="Delve NM", zone='Ceizak Battlegrounds', pos='(J-9)', loot={"Bokwus Gloves","Mikinaak Cuisses","Heartseeker Earring",}, },
+	{ mob="Transcendent Scorpion", npc="???", items={["Celadon Yggrete Shard III"]=1}, content="Delve NM", zone='Ceizak Battlegrounds', pos='(I-10)', loot={"Manibozho Jerkin","Steelflash Earring",}, },
+	{ mob="Mastop", npc="???", items={["Celadon Yggrete Shard IV"]=1}, content="Delve NM", zone='Ceizak Battlegrounds', pos='(G-8)', loot={"Rigor Baghnakhs","Dimmet Scythe","Yaskomo's Pole","Contriver's Cape",}, },
+	{ mob="Tax'et", npc="???", items={["Celadon Yggrete Shard V"]=1}, content="Delve NM", zone='Ceizak Battlegrounds', pos='(G-10,NW)', loot={"Bereaver","Uguisumaru","Steadfast Shield","Locus Ring",}, },
+	-- Delve Notorious Monsters - 
+	{ mob="Xag'Nar", npc="???", items={["Russet Yggrete Shard I"]=1}, content="Delve NM", zone='Yorcia Weald', pos='(J-7)', loot={"Inlamvuyeso","Artsieq Cuffs","Qaaxo Leggings",}, },
+	{ mob="Laevvid", npc="???", items={["Russet Yggrete Shard II"]=1}, content="Delve NM", zone='Yorcia Weald', pos='(J-9)', loot={"Zanhi Ring","Qaaxo Mask","Xaddi Cuisses",}, },
+	{ mob="Morseiu", npc="???", items={["Russet Yggrete Shard III"]=1}, content="Delve NM", zone='Yorcia Weald', pos='(H-7)', loot={"Samanisi Cape","Artsieq Jubbah",}, },
+	{ mob="Ircinraq", npc="???", items={["Russet Yggrete Shard IV"]=1}, content="Delve NM", zone='Yorcia Weald', pos='(I-10)', loot={"Usonmunku","Isuka","Iqabi Necklace",}, },
+	{ mob="Hyoscya", npc="???", items={["Russet Yggrete Shard V"]=1}, content="Delve NM", zone='Yorcia Weald', pos='(F-7/8)', loot={"Lekboza","Twebuliij","Pulfanxa","Magneto",}, },
+	-- Delve Notorious Monsters - 
+	{ mob="Broxa", npc="???", items={["Phlox Yggrete Shard I"]=1}, content="Delve NM", zone='Marjami Ravine', pos='(K-6)', loot={"Kuwunga Earring","Xaddi Gauntlets","Artsieq Boots",}, },
+	{ mob="Plaguevein Bats", npc="???", items={["Phlox Yggrete Shard II"]=1}, content="Delve NM", zone='Marjami Ravine', pos='(M-11)', loot={"Paeapua","Qaaxo Tights","Artsieq Hat",}, },
+	{ mob="Hakawai", npc="???", items={["Phlox Yggrete Shard III"]=1}, content="Delve NM", zone='Marjami Ravine', pos='(G-9)', loot={"Fucho-no-Obi","Xaddi Mail",}, },
+	{ mob="Ironbeak Inguza", npc="???", items={["Phlox Yggrete Shard IV"]=1}, content="Delve NM", zone='Marjami Ravine', pos='(D-11)', loot={"Sabebus","Gwati Earring","Vunetshelo",}, },
+	{ mob="Podarge", npc="???", items={["Phlox Yggrete Shard V"]=1}, content="Delve NM", zone='Marjami Ravine', pos='(E-6)', loot={"Shokudaikiri-Mitsutada","Emxgha","Mubvumbamiri Mantle","Rinda Shield",}, },
+	-- Delve Notorious Monsters - 
+	{ mob="Calydontis", npc="???", items={["Aster Yggrete Shard I"]=1}, content="Delve NM", zone='Kamihr Drifts', pos='(I-10)', loot={"Qaaxo Mitaines","Xaddi Boots","Nguruve Ring",}, },
+	{ mob="Azeman", npc="???", items={["Aster Yggrete Shard II"]=1}, content="Delve NM", zone='Kamihr Drifts', pos='(H-9)', loot={"Xaddi Headgear","Artsieq Hose","Gevaudan Belt",}, },
+	{ mob="Sinaa", npc="???", items={["Aster Yggrete Shard III"]=1}, content="Delve NM", zone='Kamihr Drifts', pos='(H-11)', loot={"Imbodla Necklace","Qaaxo Harness",}, },
+	{ mob="Cherti", npc="???", items={["Aster Yggrete Shard IV"]=1}, content="Delve NM", zone='Kamihr Drifts', pos='(G-8)', loot={"Kbiroj","Gabaxorea","Cibitshavore",}, },
+	{ mob="Mirka", npc="???", items={["Aster Yggrete Shard V"]=1}, content="Delve NM", zone='Kamihr Drifts', pos='(F-8)', loot={"Idaraaja","Tinhaspa","Kumalo",}, },
+	
+	-- Odyssey - Sheol A
+	{ mob="Aegypius", npc="Ethereal Junction", items={["Abyssdiver's Feather"]=1}, content="Sheol A", zone='Walk of Echoes', loot={"Lustreless Scales",}, },
+	{ mob="Ailuros", npc="Ethereal Junction", items={["Voso's Hide"]=1}, content="Sheol A", zone='Walk of Echoes', loot={"Lustreless Scales",}, },
+	{ mob="Brachys", npc="Ethereal Junction", items={["Arthro's Shell"]=1}, content="Sheol A", zone='Walk of Echoes', loot={"Lustreless Scales",}, },
+	{ mob="Cynara", npc="Ethereal Junction", items={["Veloz's Needle"]=1}, content="Sheol A", zone='Walk of Echoes', loot={"Lustreless Scales",}, },
+	{ mob="Damysus", npc="Ethereal Junction", items={["Joyous's Moss"]=1}, content="Sheol A", zone='Walk of Echoes', loot={"Lustreless Scales",}, },
+	{ mob="Dione", npc="Ethereal Junction", items={["Orcfeltrap's Leaf"]=1}, content="Sheol A", zone='Walk of Echoes', loot={"Lustreless Scales",}, },
+	{ mob="Eurytus", npc="Ethereal Junction", items={["Heiligtum's Moss"]=1}, content="Sheol A", zone='Walk of Echoes', loot={"Lustreless Scales",}, },
+	{ mob="Gloios", npc="Ethereal Junction", items={["G. Gel's Mucus"]=1}, content="Sheol A", zone='Walk of Echoes', loot={"Lustreless Scales",}, },
+	{ mob="Harpe", npc="Ethereal Junction", items={["Malatrix's Shard"]=1}, content="Sheol A", zone='Walk of Echoes', loot={"Lustreless Scales",}, },
+	{ mob="Kusarikku", npc="Ethereal Junction", items={["Immanibugard's Hide"]=1}, content="Sheol A", zone='Walk of Echoes', loot={"Lustreless Scales",}, },
+	{ mob="Leucippe", npc="Ethereal Junction", items={["Tiyanak's Fang"]=1}, content="Sheol A", zone='Walk of Echoes', loot={"Lustreless Scales",}, },
+	{ mob="Megaera", npc="Ethereal Junction", items={["Warblade's Hide"]=1}, content="Sheol A", zone='Walk of Echoes', loot={"Lustreless Scales",}, },
+	{ mob="Physis", npc="Ethereal Junction", items={["Samantha's Vine"]=1}, content="Sheol A", zone='Walk of Echoes', loot={"Lustreless Scales",}, },
+	{ mob="Ptelea", npc="Ethereal Junction", items={["Mender's Log"]=1}, content="Sheol A", zone='Walk of Echoes', loot={"Lustreless Scales",}, },
+	{ mob="Salamandra", npc="Ethereal Junction", items={["Intuila's Hide"]=1}, content="Sheol A", zone='Walk of Echoes', loot={"Lustreless Scales",}, },
+	{ mob="Tipuli", npc="Ethereal Junction", items={["Imperator's Wing"]=1}, content="Sheol A", zone='Walk of Echoes', loot={"Lustreless Scales",}, },
+	
+	-- Odyssey - Sheol B
+	{ mob="Akidu", npc="Ethereal Junction", items={["Vermillion's Wing"]=1}, content="Sheol B", zone='Walk of Echoes', loot={"Lustreless Hides",}, },
+	{ mob="Allergorhai", npc="Ethereal Junction", items={["Specter's Ore"]=1}, content="Sheol B", zone='Walk of Echoes', loot={"Lustreless Hides",}, },
+	{ mob="Apollinaris VII-II", npc="Ethereal Junction", items={["Centurio's Armor"]=1}, content="Sheol B", zone='Walk of Echoes', loot={"Lustreless Hides",}, },
+	{ mob="Azdaha", npc="Ethereal Junction", items={["Coca's Wing"]=1}, content="Sheol B", zone='Walk of Echoes', loot={"Lustreless Hides",}, },
+	{ mob="Bendigeidfran", npc="Ethereal Junction", items={["Largantua's Shard"]=1}, content="Sheol B", zone='Walk of Echoes', loot={"Lustreless Hides",}, },
+	{ mob="Bes", npc="Ethereal Junction", items={["Azrael's Eye"]=1}, content="Sheol B", zone='Walk of Echoes', loot={"Lustreless Hides",}, },
+	{ mob="Chelamma", npc="Ethereal Junction", items={["Mephitas's Claw"]=1}, content="Sheol B", zone='Walk of Echoes', loot={"Lustreless Hides",}, },
+	{ mob="Chnubis", npc="Ethereal Junction", items={["Glazemane's Fang"]=1}, content="Sheol B", zone='Walk of Echoes', loot={"Lustreless Hides",}, },
+	{ mob="Count Malefis", npc="Ethereal Junction", items={["Vidmapire's Claw"]=1}, content="Sheol B", zone='Walk of Echoes', loot={"Lustreless Hides",}, },
+	{ mob="Fleet-footed Lokberry", npc="Ethereal Junction", items={["Clawberry's Coat"]=1}, content="Sheol B", zone='Walk of Echoes', loot={"Lustreless Hides",}, },
+	{ mob="Fornax", npc="Ethereal Junction", items={["V. Cluster's Ash"]=1}, content="Sheol B", zone='Walk of Echoes', loot={"Lustreless Hides",}, },
+	{ mob="Gandji", npc="Ethereal Junction", items={["Arke's Wing"]=1}, content="Sheol B", zone='Walk of Echoes', loot={"Lustreless Hides",}, },
+	{ mob="Gravehaunter", npc="Ethereal Junction", items={["Muut's Vestment"]=1}, content="Sheol B", zone='Walk of Echoes', loot={"Lustreless Hides",}, },
+	{ mob="Ishum", npc="Ethereal Junction", items={["G. Grenade's Ash"]=1}, content="Sheol B", zone='Walk of Echoes', loot={"Lustreless Hides",}, },
+	{ mob="Kuk", npc="Ethereal Junction", items={["Beist's Blood"]=1}, content="Sheol B", zone='Walk of Echoes', loot={"Lustreless Hides",}, },
+	{ mob="Langmeidong", npc="Ethereal Junction", items={["Vedrfolnir's Wing"]=1}, content="Sheol B", zone='Walk of Echoes', loot={"Lustreless Hides",}, },
+	{ mob="Man-kheper-re", npc="Ethereal Junction", items={["Jill's Spittle"]=1}, content="Sheol B", zone='Walk of Echoes', loot={"Lustreless Hides",}, },
+	{ mob="Maverick Maude", npc="Ethereal Junction", items={["Celine's Vine"]=1}, content="Sheol B", zone='Walk of Echoes', loot={"Lustreless Hides",}, },
+	{ mob="Nerites", npc="Ethereal Junction", items={["Ayapec's Shell"]=1}, content="Sheol B", zone='Walk of Echoes', loot={"Lustreless Hides",}, },
+	{ mob="Ptesan Wi", npc="Ethereal Junction", items={["Camahueto's Fur"]=1}, content="Sheol B", zone='Walk of Echoes', loot={"Lustreless Hides",}, },
+	{ mob="Shara", npc="Ethereal Junction", items={["Douma's Shard"]=1}, content="Sheol B", zone='Walk of Echoes', loot={"Lustreless Hides",}, },
+	{ mob="Simir", npc="Ethereal Junction", items={["Mhuufya's Beak"]=1}, content="Sheol B", zone='Walk of Echoes', loot={"Lustreless Hides",}, },
+	{ mob="Spyrysyon", npc="Ethereal Junction", items={["Ethereal Incense"]=1}, content="Sheol B", zone='Walk of Echoes', loot={"Lustreless Hides",}, },
+	{ mob="Tabitjet", npc="Ethereal Junction", items={["Uropygid's Needle"]=1}, content="Sheol B", zone='Walk of Echoes', loot={"Lustreless Hides",}, },
+	{ mob="Taniwha", npc="Ethereal Junction", items={["Bakunawa's Ink"]=1}, content="Sheol B", zone='Walk of Echoes', loot={"Lustreless Hides",}, },
+	{ mob="Tripix", npc="Ethereal Junction", items={["Bambrox's Shawl"]=1}, content="Sheol B", zone='Walk of Echoes', loot={"Lustreless Hides",}, },
+	{ mob="Zacatzontli", npc="Ethereal Junction", items={["Strix's Tailfeather"]=1}, content="Sheol B", zone='Walk of Echoes', loot={"Lustreless Hides",}, },
+	
+	-- Odyssey - Sheol C
+	{ mob="Arsena", npc="Ethereal Junction", items={["Sarama's Hide"]=1}, content="Sheol C", zone='Walk of Echoes', loot={"Lustreless Wings",}, },
+	{ mob="Bygul", npc="Ethereal Junction", items={["Shedu's Mane"]=1}, content="Sheol C", zone='Walk of Echoes', loot={"Lustreless Wings",}, },
+	{ mob="Chaos Steward", npc="Ethereal Junction", items={["Tumult's Blood"]=1}, content="Sheol C", zone='Walk of Echoes', loot={"Lustreless Wings",}, },
+	{ mob="Dabbat al-Ard", npc="Ethereal Junction", items={["Sovereign's Hide"]=1}, content="Sheol C", zone='Walk of Echoes', loot={"Lustreless Wings",}, },
+	{ mob="Kurmajara", npc="Ethereal Junction", items={["Tolba's Shell"]=1}, content="Sheol C", zone='Walk of Echoes', loot={"Lustreless Wings",}, },
+	{ mob="Lotanu", npc="Ethereal Junction", items={["Hidhaegg's Scale"]=1}, content="Sheol C", zone='Walk of Echoes', loot={"Lustreless Wings",}, },
+	{ mob="Wayra Tata", npc="Ethereal Junction", items={["Thu'ban's Scale"]=1}, content="Sheol C", zone='Walk of Echoes', loot={"Lustreless Wings",}, },
+	
+	-- Escha - Zi'Tah Tier I
+	{ mob="Aglaophotis", npc="Affi", items={["Fish Mithkabob"]=2}, content="Tier I", zone="Escha - Zi'Tah", loot={"Eschite Gauntlets","Naga Kyahan","Psycloth Vest","Marked Gorget",}, opens_menu=true, ki="Aglaophotis bud" },
+	{ mob="Angrboda", npc="Affi", items={["Fish Mithkabob"]=2}, content="Tier I", zone="Escha - Zi'Tah", loot={"Lucidity Sash","Despair Mail","Vanya Hood","Rawhide Trousers",}, opens_menu=true, ki="Angrboda's necklace" },
+	{ mob="Cunnast", npc="Affi", items={["Fish Mithkabob"]=2}, content="Tier I", zone="Escha - Zi'Tah", loot={"Vanya Robe","Despair Finger Gauntlets","Rawhide Boots","Willpower Grip",}, opens_menu=true, ki="Cunnast's talon" },
+	{ mob="Ferrodon", npc="Affi", items={["Fish Mithkabob"]=2}, content="Tier I", zone="Escha - Zi'Tah", loot={"Despair Greaves","Subtlety Spectacles","Pursuer's Doublet","Vanya Slops",}, opens_menu=true, ki="Ferrodon's scale" },
+	{ mob="Gestalt", npc="Affi", items={["Fish Mithkabob"]=2}, content="Tier I", zone="Escha - Zi'Tah", loot={"Rawhide Gloves","Psycloth Boots","Disperser's Cape","Despair Helm",}, opens_menu=true, ki="Gestalt's retina" },
+	{ mob="Gulltop", npc="Affi", items={["Fish Mithkabob"]=2}, content="Tier I", zone="Escha - Zi'Tah", loot={"Infused Earring","Naga Somen","Pursuer's Cuffs","Vanya Clogs",}, opens_menu=true, ki="Gulltop's shell" },
+	{ mob="Lustful Lydia", npc="Affi", items={["Fish Mithkabob"]=2}, content="Tier I", zone="Escha - Zi'Tah", loot={"Eschite Breastplate","Naga Hakama","Psycloth Tiara","Seraphic Ampulla",}, opens_menu=true, ki="Lydia's vine" },
+	{ mob="Revetaur", npc="Affi", items={["Fish Mithkabob"]=2}, content="Tier I", zone="Escha - Zi'Tah", loot={"Pursuer's Beret","Vanya Cuffs","Despair Cuisses","Grenade Core",}, opens_menu=true, ki="Revetaur's horn" },
+	{ mob="Tangata Manu", npc="Affi", items={["Fish Mithkabob"]=2}, content="Tier I", zone="Escha - Zi'Tah", loot={"Eschite Cuisses","Rawhide Mask","Psycloth Manillas","Mendicant's Earring",}, opens_menu=true, ki="Tangata's wing" },
+	{ mob="Vidala", npc="Affi", items={["Fish Mithkabob"]=2}, content="Tier I", zone="Escha - Zi'Tah", loot={"Rawhide Vest","Psycloth Lappas","Eschite Greaves","Overbearing Ring",}, opens_menu=true, ki="Vidala's claw" },
+	{ mob="Vyala", npc="Affi", items={["Fish Mithkabob"]=2}, content="Tier I", zone="Escha - Zi'Tah", loot={"Naga Samue","Resonance Ring","Pursuer's Pants",}, opens_menu=true, ki="Vyala's prey" },
+	{ mob="Wepwawet", npc="Affi", items={["Fish Mithkabob"]=2}, content="Tier I", zone="Escha - Zi'Tah", loot={"Naga Tekko","Pursuer's Gaiters","Clemency Grip","Eschite Helm",}, opens_menu=true, ki="Wepwawet's tooth" },
+	-- Escha - Zi'Tah Tier II
+	{ mob="Brittlis", npc="Affi", items={["Ethereal Incense"]=5}, content="Tier II", zone="Escha - Zi'Tah", loot={"Nibiru Faussar","Nibiru Harp","Sensui","Purity Ring",}, opens_menu=true, ki="Brittlis's ring" },
+	{ mob="Ionos", npc="Affi", items={["Ayapec's Shell"]=5}, content="Tier II", zone="Escha - Zi'Tah", loot={"Nibiru Sainti","Nibiru Bow","Nibiru Sickle","Thaumaturge's Cape",}, opens_menu=true, ki="Ionos's webbing" },
+	{ mob="Kamohoalii", npc="Affi", items={["Ayapec's Shell"]=5}, content="Tier II", zone="Escha - Zi'Tah", loot={"Nibiru Tabar","Nibiru Cudgel","Forefathers' Grip",}, opens_menu=true, ki="Kamohoalii's fin" },
+	{ mob="Nosoi", npc="Affi", items={["Ayapec's Shell"]=5}, content="Tier II", zone="Escha - Zi'Tah", loot={"Nibiru Blade","Nibiru Shield","Mijin","Calamitous Earring",}, opens_menu=true, ki="Nosoi's feather" },
+	{ mob="Sensual Sandy", npc="Affi", items={["Ethereal Incense"]=5}, content="Tier II", zone="Escha - Zi'Tah", loot={"Nibiru Knife","Nibiru Lance","Nibiru Gun","Sinew Belt",}, opens_menu=true, ki="Sandy's lasher" },
+	{ mob="Umdhlebi", npc="Affi", items={["Ethereal Incense"]=5}, content="Tier II", zone="Escha - Zi'Tah", loot={"Nibiru Chopper","Nibiru Staff","Sapience Orb",}, opens_menu=true, ki="Umdhlebi's flower" },
+	-- Escha - Zi'Tah Tier III
+	{ mob="Fleetstalker", npc="Affi", items={["Riftborn Boulder"]=5}, content="Tier III", zone="Escha - Zi'Tah", loot={"Penetrating Cape","Router","Shrieker's Cuffs","Sweller's Harness","Vulcanite Ore",}, ki="Fleetstalker's claw" },
+	{ mob="Shockmaw", npc="Affi", items={["Beitetsu"]=5}, content="Tier III", zone="Escha - Zi'Tah", loot={"Inspirited Boots","Doyen Pants","Dampener's Torque","Annealed Lance","Vulcanite Ore",}, ki="Shockmaw's blubber" },
+	{ mob="Urmahlullu", npc="Affi", items={["Pluton"]=5}, content="Tier III", zone="Escha - Zi'Tah", loot={"Eschan Stone","Onca Suit","Skormoth Mask","Chastisers","Vulcanite Ore",}, ki="Urmahlullu's armor" },
+	-- Escha - Zi'Tah Tier I HELM
+	{ mob="Alpluachra Bucca Puca", npc="Affi", items={["Ashweed"]=1, ["Gravewood Log"]=1}, content="HELM", zone="Escha - Zi'Tah", loot={"Hermetic Earring","Annointed Kalasiris",}, ki="Coven's dust" },
+	{ mob="Blazewing", npc="Affi", items={["Duskcrawler"]=1, ["Gravewood Log"]=1}, content="HELM", zone="Escha - Zi'Tah", loot={"Falcon Eye","Kubira Meikogai",}, ki="Blazewing's pincer" },
+	{ mob="Pazuzu", npc="Affi", items={["Ashweed"]=1, ["Duskcrawler"]=1}, content="HELM", zone="Escha - Zi'Tah", loot={"Makora Meikogai","Empath Necklace",}, ki="Pazuzu's blade hilt" },
+	-- Escha - Zi'Tah Tier II HELM
+	{ mob="Wrathare", npc="Affi", items={["Ashweed"]=1, ["Duskcrawler"]=1, ["Gravewood Log"]=1}, content="HELM", zone="Escha - Zi'Tah", loot={"Warden's Ring","Enforcer's Harness",}, ki="Wrathare's carrot" },
+	
+	-- Escha - Ru'Aun Tier I
+	{ mob="Asida", npc="Dremi", items={["Steel Ingot"]=2}, content="Tier I", zone="Escha - Ru'Aun", loot={"Balarama Grip","Vertigo Ring","Bushin Abjuration: Feet","Grove Abjuration: Hands",}, opens_menu=true, ki="Asida's gel" },
+	{ mob="Bia", npc="Dremi", items={["Steel Ingot"]=2}, content="Tier I", zone="Escha - Ru'Aun", loot={"Albin Bane","Reti Pendant","Cronian Abjuration: Hands","Grove Abjuration: Feet",}, opens_menu=true, ki="Bia's glove" },
+	{ mob="Emputa", npc="Dremi", items={["Steel Ingot"]=2}, content="Tier I", zone="Escha - Ru'Aun", loot={"Fortified Ring","Assuage Earring","Cyllenian Abjuration: Hands",}, opens_menu=true, ki="Emputa's wing" },
+	{ mob="Khon", npc="Dremi", items={["Steel Ingot"]=2}, content="Tier I", zone="Escha - Ru'Aun", loot={"Sokolski Mantle","Caro Necklace","Abyssal Abjuration: Hands","Venerian Abjuration: Feet",}, opens_menu=true, ki="Khon's scepter" },
+	{ mob="Khun", npc="Dremi", items={["Steel Ingot"]=2}, content="Tier I", zone="Escha - Ru'Aun", loot={"Grunfeld Rope","Halasz Earring","Shinryu Abjuration: Feet","Vale Abjuration: Hands",}, opens_menu=true, ki="Khun's crown" },
+	{ mob="Ma", npc="Dremi", items={["Steel Ingot"]=2}, content="Tier I", zone="Escha - Ru'Aun", loot={"Giuoco Grip","Philidor Mantle","Triton Abjuration: Hands","Cronian Abjuration: Feet",}, opens_menu=true, ki="Ma's lance" },
+	{ mob="Met", npc="Dremi", items={["Steel Ingot"]=2}, content="Tier I", zone="Escha - Ru'Aun", loot={"Amar Cluster","Evans Earring","Venerian Abjuration: Hands","Vale Abjuration: Feet",}, opens_menu=true, ki="Met's ring" },
+	{ mob="Peirithoos", npc="Dremi", items={["Steel Ingot"]=2}, content="Tier I", zone="Escha - Ru'Aun", loot={"Ishvara Earring","Hydrocera","Cyllenian Abjuration: Feet","Jovian Abjuration: Hands",}, opens_menu=true, ki="Peirithoos's hoof" },
+	{ mob="Ruea", npc="Dremi", items={["Steel Ingot"]=2}, content="Tier I", zone="Escha - Ru'Aun", loot={"Petrov Ring","Diemer Gorget","Bushin Abjuration: Hands","Abyssal Abjuration: Feet",}, opens_menu=true, ki="Ruea's stone" },
+	{ mob="Sava Savanovic", npc="Dremi", items={["Steel Ingot"]=2}, content="Tier I", zone="Escha - Ru'Aun", loot={"Nodens Gorget","Evanescence Ring","Arean Abjuration: Feet","Jovian Abjuration: Feet",}, opens_menu=true, ki="Sava Savanovic's cape" },
+	{ mob="Tenodera", npc="Dremi", items={["Steel Ingot"]=2}, content="Tier I", zone="Escha - Ru'Aun", loot={"Sulla Belt","Mantoptera Eye","Shinryu Abjuration: Hands","Triton Abjuration: Feet",}, opens_menu=true, ki="Tenodera's scythe" },
+	{ mob="Wasserspeier", npc="Dremi", items={["Steel Ingot"]=2}, content="Tier I", zone="Escha - Ru'Aun", loot={"Porous Rope","Quarrel Mantle","Arean Abjuration: Hands",}, opens_menu=true, ki="Wasserspeier's horn" },
+	-- Escha - Ru'Aun Tier II
+	{ mob="Amymone", npc="Dremi", items={["Mhuufya's Beak"]=5}, content="Tier II", zone="Escha - Ru'Aun", loot={"Compensator","Deathbane","Shijo","Bidenhander","Venerian Abjuration: Head","Jovian Abjuration: Legs","Grove Abjuration: Legs","Triton Abjuration: Head",}, ki="Amymone's tooth" },
+	{ mob="Hanbi", npc="Dremi", items={["Azrael's Eye"]=5}, content="Tier II", zone="Escha - Ru'Aun", loot={"Enchufla","Espiritus","Akademos","Rhomphaia","Arean Abjuration: Head","Bushin Abjuration: Legs","Vale Abjuration: Head","Cronian Abjuration: Legs",}, ki="Hanbi's nail" },
+	{ mob="Kammavaca", npc="Dremi", items={["Vedrfolnir's Wing"]=5}, content="Tier II", zone="Escha - Ru'Aun", loot={"Kali","Ichigohitofuri","Midnights","Shinryu Abjuration: Legs","Cyllenian Abjuration: Legs","Abyssal Abjuration: Head",}, ki="Kammavaca's binding" },
+	{ mob="Naphula", npc="Dremi", items={["Camahueto's Fur"]=5}, content="Tier II", zone="Escha - Ru'Aun", loot={"Solstice","Skullrender","Vijaya Bow","Cyllenian Abjuration: Head","Shinryu Abjuration: Head","Triton Abjuration: Legs","Venerian Abjuration: Legs",}, ki="Naphula's bracelet" },
+	{ mob="Palila", npc="Dremi", items={["Vidmapire's Claw"]=5}, content="Tier II", zone="Escha - Ru'Aun", loot={"Nixxer","Aizushintogo","Hammerfists","Instigator","Abyssal Abjuration: Legs","Bushin Abjuration: Head","Cronian Abjuration: Head",}, ki="Palila's talon" },
+	{ mob="Yilan", npc="Dremi", items={["Centurio's Armor"]=5}, content="Tier II", zone="Escha - Ru'Aun", loot={"Iris","Lathi","Emissary","Queller Rod","Arean Abjuration: Legs","Grove Abjuration: Head","Jovian Abjuration: Head","Vale Abjuration: Legs",}, ki="Yilan's scale" },
+	-- Escha - Ru'Aun Tier III
+	{ mob="Duke Vepar", npc="Dremi", items={["Yggdreant Root"]=1}, content="Tier III", zone="Escha - Ru'Aun", loot={"Eshus","Obatala Subligar","Shango Robe","Yemaya Belt","Shinryu Abjuration: Body","Cronian Abjuration: Body","Cyllenian Abjuration: Body","Vale Abjuration: Body",}, ki="Duke Vepar's signet" },
+	{ mob="Pakecet", npc="Dremi", items={["Waktza Crest"]=1}, content="Tier III", zone="Escha - Ru'Aun", loot={"Xucau Mantle","Tutyr Sabots","Uac Jerkin","Kurys Gloves","Bushin Abjuration: Body","Jovian Abjuration: Body","Triton Abjuration: Body","Venerian Abjuration: Body",}, ki="Pakecet's blubber" },
+	{ mob="Vir'ava", npc="Dremi", items={["Cehuetzi Pelt"]=1}, content="Tier III", zone="Escha - Ru'Aun", loot={"Sucellus","Lempo Earring","Abnoba Kaftan","Selvans Subligar","Abyssal Abjuration: Body","Arean Abjuration: Body","Grove Abjuration: Body",}, ki="Vir'ava's stalk" },
+	-- Escha - Ru'Aun Ark Angel
+	{ mob="AAEV", npc="Dremi", items={["Parchment"]=1,["Illuminink"]=1,["Ashen Crayfish"]=1,["Ashweed"]=1}, content="Ark Angel", zone="Escha - Ru'Aun", loot={"Deacon Sword","Elis Tome",}, ki="Ark Angel EV's sash" },
+	{ mob="AAGK", npc="Dremi", items={["Parchment"]=1,["Illuminink"]=1,["Ashen Crayfish"]=1,["Gravewood Log"]=1}, content="Ark Angel", zone="Escha - Ru'Aun", loot={"Deacon Blade","Seki Shuriken Pouch",}, ki="Ark Angel GK's bangle" },
+	{ mob="AAHM", npc="Dremi", items={["Parchment"]=1,["Illuminink"]=1,["Ashweed"]=1,["Gravewood Log"]=1}, content="Ark Angel", zone="Escha - Ru'Aun", loot={"Deacon Saber","Kerygma Belt",}, ki="Ark Angel HM's coat" },
+	{ mob="AAMR", npc="Dremi", items={["Parchment"]=1,["Illuminink"]=1,["Ashen Crayfish"]=1,["Duskcrawler"]=1}, content="Ark Angel", zone="Escha - Ru'Aun", loot={"Deacon Tabar","Enuma Mantle",}, ki="Ark Angel MR's buckle" },
+	{ mob="AATT", npc="Dremi", items={["Parchment"]=1,["Illuminink"]=1,["Duskcrawler"]=1,["Gravewood Log"]=1}, content="Ark Angel", zone="Escha - Ru'Aun", loot={"Deacon Scythe","Rahab Ring",}, ki="Ark Angel TT's necklace" },
+	-- Escha - Ru'Aun Heavenly Beast
+	{ mob="Byakko", npc="Dremi", items={["Byakko Scrap"]=3}, content="Heavenly Beast", zone="Escha - Ru'Aun", loot={"Jokushunoibuki","Jokushuono","Jokushu Haidate","Jokushu Chain",}, ki="Byakko's Pride" },
+	{ mob="Genbu", npc="Dremi", items={["Genbu Scrap"]=3}, content="Heavenly Beast", zone="Escha - Ru'Aun", loot={"Genmeinoibuki","Genmei Shield","Genmei Kabuto","Genmei Earring",}, ki="Genbu's Honor" },
+	{ mob="Kirin", npc="Dremi", items={["Byakko Scrap"]=5,["Genbu Scrap"]=5,["Seiryu Scrap"]=5,["Suzaku Scrap"]=5}, content="Heavenly Beast", zone="Escha - Ru'Aun", loot={"Reiki Cloak","Reikiono","Reikikon","Reikiko","Reiki Yotai","Reiki Osode",}, ki="Kirin's Fervor" },
+	{ mob="Seiryu", npc="Dremi", items={["Seiryu Scrap"]=3}, content="Heavenly Beast", zone="Escha - Ru'Aun", loot={"Kobonoibuki","Koboto","Kobo Kote","Kobo Obi",}, ki="Seiryu's Nobility" },
+	{ mob="Suzaku", npc="Dremi", items={["Suzaku Scrap"]=3}, content="Heavenly Beast", zone="Escha - Ru'Aun", loot={"Shukuyunoibuki","Shukuyukama","Shukuyu Sune-Ate","Shukuyu Ring",}, ki="Suzaku's Benefaction" },
+	-- Escha - Ru'Aun Nazar NM
+	{ mob="Warder of Courage", npc="Dremi", items={["Primary Nazar"]=1,["Secondary Nazar"]=1,["Tertiary Nazar"]=1,["Quaternary Nazar"]=1,["Quinary Nazar"]=1,["Senary Nazar"]=1,["Septenary Nazar"]=1,["Octonary Nazar"]=1,["Nonary Nazar"]=1,["Denary Nazar"]=1}, content="Nazar NM", zone="Escha - Ru'Aun", loot={"Alber Strap","Dacnomania","Habile Mazrak","Molybdosis","Telos Earring","Zendik Robe",}, ki="Primal nazar" },
+	
+	-- Reisenjima Tier I
+	{ mob="Belphegor", npc="Shiftrix", items={["Darksteel Buckler"]=1}, content="Tier I", zone="Reisenjima", loot={"Asklepian Belt","Odyssean Cuisses","Herculean Boots",}, opens_menu=true, ki="Belphegor's crown" },
+	{ mob="Crom Dubh", npc="Shiftrix", items={["Darksteel Buckler"]=1}, content="Tier I", zone="Reisenjima", loot={"Channeler's Stone","Merlinic Shalwar","Odyssean Gauntlets",}, opens_menu=true, ki="Crom Dubh's helm" },
+	{ mob="Dazzling Dolores", npc="Shiftrix", items={["Darksteel Buckler"]=1}, content="Tier I", zone="Reisenjima", loot={"Merlinic Hood","Niobid Strap","Odyssean Greaves",}, opens_menu=true, ki="Dazzling Dolores's vine" },
+	{ mob="Golden Kist", npc="Shiftrix", items={["Darksteel Buckler"]=1}, content="Tier I", zone="Reisenjima", loot={"Tantalic Cape","Valorous Greaves",}, opens_menu=true, ki="Golden Kist's key" },
+	{ mob="Kabandha", npc="Shiftrix", items={["Darksteel Buckler"]=1}, content="Tier I", zone="Reisenjima", loot={"Merlinic Dastanas","Scintillating Cape",}, opens_menu=true, ki="Kabandha's wing" },
+	{ mob="Mauve-wristed Gomberry", npc="Shiftrix", items={["Darksteel Buckler"]=1}, content="Tier I", zone="Reisenjima", loot={"Chironic Hat","Valorous Mitts","Begrudging Ring",}, opens_menu=true, ki="Mauve-wristed Gomberry's knife" },
+	{ mob="Oryx", npc="Shiftrix", items={["Darksteel Buckler"]=1}, content="Tier I", zone="Reisenjima", loot={"Potent Grip","Herculean Helm",}, ki="Oryx's plumage" },
+	{ mob="Sabotender Royal", npc="Shiftrix", items={["Darksteel Buckler"]=1}, content="Tier I", zone="Reisenjima", loot={"Chironic Slippers","Deino Collar","Odyssean Helm",}, opens_menu=true, ki="Sabotender Royal's needle" },
+	{ mob="Sang Buaya", npc="Shiftrix", items={["Darksteel Buckler"]=1}, content="Tier I", zone="Reisenjima", loot={"Chironic Gloves","Thureous Earring","Valorous Mask",}, opens_menu=true, ki="Sang Buaya's tusk" },
+	{ mob="Selkit", npc="Shiftrix", items={["Darksteel Buckler"]=1}, content="Tier I", zone="Reisenjima", loot={"Apate Ring","Herculean Trousers","Merlinic Crackows",}, opens_menu=true, ki="Selkit's pincer" },
+	{ mob="Taelmoth the Diremaw", npc="Shiftrix", items={["Darksteel Buckler"]=1}, content="Tier I", zone="Reisenjima", loot={"Clotharius Torque","Herculean Gloves","Valorous Hose",}, opens_menu=true, ki="Taelmoth's staff" },
+	{ mob="Zduhac", npc="Shiftrix", items={["Darksteel Buckler"]=1}, content="Tier I", zone="Reisenjima", loot={"Chironic Hose","Expeditious Pinion",}, opens_menu=true, ki="Zduhac's talon" },
+	-- Reisenjima Tier II
+	{ mob="Bashmu", npc="Shiftrix", items={["Gramk-Droog's Grand Coffer"]=1}, content="Tier II", zone="Reisenjima", loot={"Aganoshe","Grioavolr","Sarissaphoroi Belt",}, ki="Bashmu's trinket" },
+	{ mob="Gajasimha", npc="Shiftrix", items={["Ignor-Mnt's Grand Coffer"]=2}, content="Tier II", zone="Reisenjima", loot={"Condemners","Obschine","Persis Ring","Teller",}, ki="Gajasimha's mane" },
+	{ mob="Ironside", npc="Shiftrix", items={["Durs-Vike's Grand Coffer"]=2}, content="Tier II", zone="Reisenjima", loot={"Colada","Homeric Gorget","Kanaria",}, ki="Ironside's maul" },
+	{ mob="Old Shuck", npc="Shiftrix", items={["Liij-Vok's Grand Coffer"]=2}, content="Tier II", zone="Reisenjima", loot={"Digirbalag","Gada","Phalangite Mantle",}, ki="Old Shuck's tuft" },
+	{ mob="Sarsaok", npc="Shiftrix", items={["Tryl-Wuj's Grand Coffer"]=2}, content="Tier II", zone="Reisenjima", loot={"Pemphredo Tathlum","Umaru","Zulfiqar",}, ki="Sarsaok's hoard" },
+	{ mob="Strophadia", npc="Shiftrix", items={["Ymmr-Ulvid's Grand Coffer"]=2}, content="Tier II", zone="Reisenjima", loot={"Holliday","Reienkyo","Skinflayer","Dignitary's Earring",}, ki="Strophadia's pearl" },
+	-- Reisenjima Tier III
+	{ mob="Maju", npc="Shiftrix", items={["Sovereign's Hide"]=1}, content="Tier III", zone="Reisenjima", loot={"Hetairoi Ring","Merlinic Jubbah","Odyssean Chestplate","Perimede Cape",}, ki="Maju's claw" },
+	{ mob="Neak", npc="Shiftrix", items={["Tolba's Shell"]=1}, content="Tier III", zone="Reisenjima", loot={"Agema Cape","Herculean Vest","Luminary Sash",}, ki="Neak's treasure" },
+	{ mob="Yakshi", npc="Shiftrix", items={["Hidhaegg's Scale"]=1}, content="Tier III", zone="Reisenjima", loot={"Ainia Collar","Chironic Doublet","Thrace Strap","Valorous Mail",}, ki="Yakshi's scroll" },
+	-- Reisenjima HELM
+	{ mob="Albumen", npc="Shiftrix", items={["Ashweed"]=3, ["Void Grass"]=3, ["Vermihumus"]=1, ["Coalition Humus"]=1}, content="HELM", zone="Reisenjima", loot={"Skaoi Boots","Ynglinga Sallet","Freydis","Steinthor",}, ki="Albumen's flower" },
+	{ mob="Erinys", npc="Shiftrix", items={["Ashweed"]=3, ["Voidsnapper"]=3, ["Mistmelt"]=1, ["Tornado"]=1}, content="HELM", zone="Reisenjima", loot={"Hodadenon","Iktomi Dastanas","Wochowsen","Sayadio's Kaftan",}, ki="Erinys's beak" },
+	{ mob="Onychophora", npc="Shiftrix", items={["Void Crystal"]=3, ["Void Grass"]=3, ["Titanite"]=10, ["Worm Mulch"]=1}, content="HELM", zone="Reisenjima", loot={"Firangi","Gozuki Mezuki","Lembing","Navon Crackows",}, ki="Onychophora's soil" },
+	{ mob="Schah", npc="Shiftrix", items={["Voidsnapper"]=3, ["Gravewood Log"]=3, ["Leisure Table"]=1, ["Trump Card Case"]=1}, content="HELM", zone="Reisenjima", loot={"Takoba","Oranyan","Nzingha Cuirass","Ahosi Leggings",}, ki="Schah's gambit" },
+	{ mob="Teles", npc="Shiftrix", items={["Void Crystal"]=3, ["Voidsnapper"]=3, ["Siren's Hair"]=1, ["Maiden's Virelai"]=1}, content="HELM", zone="Reisenjima", loot={"Composer's Mitts","Composer's Sabots","Misanthropy","Sangoma",}, ki="Teles's hymn" },
+	{ mob="Vinipata", npc="Shiftrix", items={["Void Crystal"]=3, ["Duskcrawler"]=3, ["Bone Chip"]=10, ["Scarletite Ingot"]=1}, content="HELM", zone="Reisenjima", loot={"Shishio","Taka","Izcalli","Ipoca Beret",}, ki="Vinipata's blade" },
+	{ mob="Zerde", npc="Shiftrix", items={["Void Grass"]=3, ["Ashen Crayfish"]=3, ["Flan Meat"]=10, ["Black Pudding"]=1}, content="HELM", zone="Reisenjima", loot={"Arjuna Breeches","Mrigavyadha Gloves","Suwaiyas","Vedic Coat",}, ki="Zerde's cup" },
+}
+
+return pops_by_mob

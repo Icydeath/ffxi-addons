@@ -112,6 +112,10 @@ The same is true regarding Itemizer. Commands will be issued, but nothing will h
 
 Version History
 ---------------
+v.1.8.1 - by icy
+2019.11.29
+* Neo Nyzul: Trades ??? +1 & +2 items to Drahbah with loop support.
+
 v.1.8.0
 2018.09.28
 * Geas Fete: Key Item detection added. QuickTrade will not try to trade for a Key Item you already posses.

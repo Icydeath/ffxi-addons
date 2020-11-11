@@ -1,5 +1,30 @@
 local song_timers = {}
 
+local song_buffs = {
+    [195] = 'paeon',
+    [196] = 'ballad',
+    [197] = 'minne',
+    [198] = 'minuet',
+    [199] = 'madrigal',
+    [200] = 'prelude',
+    [201] = 'mambo',
+    [202] = 'aubade',
+    [203] = 'pastoral',
+    [205] = 'fantasia',
+    [206] = 'operetta',
+    [207] = 'capriccio',
+    [209] = 'round',
+    [210] = 'gavotte',
+    [214] = 'march',
+    [215] = 'etude',
+    [216] = 'carol',
+    [218] = 'hymnus',
+    [219] = 'mazurka',
+    [220] = 'sirvente',
+    [221] = 'dirge',
+    [222] = 'scherzo',
+    }
+
 local equip_mods = {
     [18342] = {0.2},            -- 'Gjallarhorn',    -- 75
     [18577] = {0.2},            -- 'Gjallarhorn',    -- 80
@@ -24,7 +49,7 @@ local equip_mods = {
     [20586] = {0.5},            -- 'Carnwenhan',     -- 119-3
     [21398] = {0.5},            -- 'Marsyas',
     [21400] = {0.1},            -- 'Blurred Harp',
-    [21401] = {0.2,Ballad=2},   -- 'Blurred Harp +1',
+    [21401] = {0.2,Ballad=0.2}, -- 'Blurred Harp +1',
     [21405] = {0.2} ,           -- 'Eminent Flute',
     [20629] = {0.05},           -- 'Legato Dagger',
     [20599] = {0.05},           -- 'Kali',
@@ -60,6 +85,14 @@ local equip_mods = {
     [27429] = {Scherzo=0.1},    -- 'Fili Cothurnes',
     [27430] = {Scherzo=0.1},    -- 'Fili Cothurnes +1',
     [26255] = {Madrigal=0.1,Prelude=0.1}, -- 'Intarabus\'s Cape',
+    [25561] = {Etude=0.1},      -- 'Mousai Turban',
+    [25562] = {Etude=0.2},      -- 'Mousai Turban +1',
+    [25988] = {Carol=0.1},      -- 'Mousai Gages',
+    [25989] = {Carol=0.2},      -- 'Mousai Gages +1',
+    [25901] = {Minne=0.1},      -- 'Mousai Seraweels',
+    [25902] = {Minne=0.2},      -- 'Mousai Seraweels +1',
+    [25968] = {Mambo=0.1},      -- 'Mousai Crackows',
+    [25969] = {Mambo=0.2},      -- 'Mousai Crackows +1',
     }
 
 local slots = {'main','sub','range','head','neck','body','hands','legs','feet','back'}
@@ -77,14 +110,27 @@ function song_timers.duration(name,buffs)
             end
         end
     end
+    local dur = 0
+    if get.jp_mods.mult then mult = mult + 0.05 end
+    if buffs['clarion call'] then dur = dur + get.jp_mods.clarion end
+    if buffs.marcato then dur = dur + get.jp_mods.marcato end
+    if buffs.tenuto then dur = dur + get.jp_mods.tenuto end
     if buffs.troubadour then mult = mult*2 end
-    if string.find(name,'Scherzo') then mult = buffs['soul voice'] and mult*2 or buffs.marcato and mult*1.5 or mult end
-    return math.floor(mult*120)
+    if string.find(name,'Scherzo') then 
+        if buffs['soul voice'] then
+            mult = mult*2 
+        elseif buffs.marcato then
+            mult = mult*1.5
+        end
+    end
+    return math.floor(mult*120+dur)
 end
 
-function song_timers.buff_lost(targ,buff)
-    local buff = get.songs[buff:lower()]
+function song_timers.buff_lost(targ_id,buff_id)
+    local buff = get.songs[song_buffs[buff_id]]
     if not buff or not timers[targ] then return end
+    local targ = windower.ffxi.get_mob_by_id(targ_id).name
+    if settings.ignore:contains(targ:lower()) then return end
     local minimum,song
     for k,song_name in pairs(buff) do
         local song_timer = timers[targ][song_name]
@@ -132,23 +178,19 @@ function song_timers.adjust(spell_name,targ,buffs)
         if timers[targ][spell_name].ts < (current_time + dur) then
             song_timers.create(spell_name,targ,dur,current_time,buffs)
         end
+    elseif table.length(timers[targ]) < get.maxsongs(targ,buffs) then
+        song_timers.create(spell_name,targ,dur,current_time,buffs)
     else
-        if table.length(timers[targ]) < get.maxsongs(targ,buffs) then
+        local rep,repsong
+        for song_name,expires in pairs(timers[targ]) do
+            if current_time + dur > expires.ts and (not rep or rep > expires.ts) then
+                rep = expires.ts
+                repsong = song_name
+            end
+        end
+        if repsong then
+            song_timers.delete(repsong,targ)
             song_timers.create(spell_name,targ,dur,current_time,buffs)
-        else
-            local rep,repsong
-            for song_name,expires in pairs(timers[targ]) do
-                if current_time + dur > expires.ts then
-                    if not rep or rep > expires.ts then
-                        rep = expires.ts
-                        repsong = song_name
-                    end
-                end
-            end
-            if repsong then
-                song_timers.delete(repsong,targ)
-                song_timers.create(spell_name,targ,dur,current_time,buffs)
-            end
         end
     end
 end

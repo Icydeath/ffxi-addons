@@ -1,8 +1,10 @@
 _addon.name = 'HealBot'
-_addon.author = 'Lorand'
+_addon.author = 'Lorand, modified by Icy'
 _addon.command = 'hb'
-_addon.lastUpdate = '2018.05.22.0'
+_addon.lastUpdate = '2020.10.24.0'
 _addon.version = _addon.lastUpdate
+
+-- now turns off when you leave a battlefield
 
 --[[
 TODO:
@@ -50,6 +52,9 @@ buffs = require('HealBot_buffHandling')
 require('HealBot_packetHandling')
 require('HealBot_queues')
 
+ignore_buff_loss_zones = L{291, 289, 288}
+zone_info = windower.ffxi.get_info()
+
 local ipc_req = serialua.encode({method='GET', pk='buff_ids'})
 local can_act_statuses = S{0, 1, 5, 85}    --0/1/5/85 = idle/engaged/chocobo/other_mount
 local dead_statuses = S{2, 3}
@@ -87,7 +92,7 @@ end)
 
 hb._events['zone'] = windower.register_event('zone change', function(new_id, old_id)
     healer.zone_enter = os.clock()
-    local zone_info = windower.ffxi.get_info()
+    zone_info = windower.ffxi.get_info()
     if zone_info ~= nil then
         if zone_info.zone == 131 then
             windower.send_command('lua unload healBot')
@@ -106,6 +111,13 @@ hb._events['job'] = windower.register_event('job change', function()
     hb.active = false
     healer:update_job()
     printStatus()
+end)
+
+hb._events['losebuff'] = windower.register_event('lose buff', function(buff_id)
+	if buff_id == 143 and not ignore_buff_loss_zones:contains(zone_info.zone) then
+		hb.active = false
+		printStatus()
+	end
 end)
 
 hb._events['inc'] = windower.register_event('incoming chunk', handle_incoming_chunk)

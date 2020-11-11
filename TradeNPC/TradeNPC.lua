@@ -1,11 +1,18 @@
+require('logger')
+require('lists')
 require('pack')
 bit = require('bit')
 res_items = require('resources').items
 
 _addon.name = 'TradeNPC'
-_addon.author = 'Ivaar'
-_addon.version = '1.19.09.26'
+_addon.author = 'Ivaar, modded by Icy'
+_addon.version = '1.20.09.27i'
 _addon.command = 'tradenpc'
+
+-- 1.20.09.24: Allows for a target id as its last arg (instead of a npc name)
+
+debugmode = false
+example = 'Command: tradenpc <quantity> <item name> <npc(optional)>\n   ie: //tradenpc 100 "1 byne bill" "Haggleblix"'
 
 function get_item_res(item)
     for k,v in pairs(res_items) do
@@ -36,18 +43,37 @@ end
 
 windower.register_event('addon command', function(...)
     local args = {...}
+	if debugmode then
+		log((L{...}):concat(' | '))
+	end
+	
     if #args < 2 then
-        print('tradenpc <quantity> <item name>\ne.g. //tradenpc 100 "1 byne bill"')
+        log(example)
         return
     end
-    if windower.ffxi.get_mob_by_target('me').status ~= 0 then return end
-    local target = windower.ffxi.get_mob_by_target('t')
-    
+	
+	local player = windower.ffxi.get_mob_by_target('me')
+    if player.status ~= 0 then return end
+	
+	local target = nil
+    local target_id = nil
     if #args%2 == 1 then
-        target = windower.ffxi.get_mob_by_name(args[#args])
-        args[#args] = nil
+		if tonumber(args[#args]) then
+			target = windower.ffxi.get_mob_by_id(tonumber(args[#args]))
+		else
+			target = windower.ffxi.get_mob_by_name(args[#args])
+		end
+		args[#args] = nil
+	else
+        target = windower.ffxi.get_mob_by_target('t')
     end
-    
+    if target then target_id = target.id end
+	if not target_id or target_id == player.id then
+		error('No target or too far away.')
+		return
+	end
+	
+	
     if target and target.is_npc and bit.band(target.spawn_type, 2) == 2 and target.valid_target and target.distance <= 35.9 then
         local ind = {}
         local qty = {}
@@ -55,7 +81,7 @@ windower.register_event('addon command', function(...)
         if args[2]:lower() == 'gil' then
             local units = format_price(args[1])
             if not units or units > windower.ffxi.get_items('gil') then
-                print('Invalid gil amount')
+                log('Invalid gil amount')
                 return
             end
             ind[1] = 0
@@ -73,18 +99,18 @@ windower.register_event('addon command', function(...)
             local name = windower.convert_auto_trans(args[x*2]):lower()
             local item = get_item_res(name)
             if not item or item.flags['Linkshell'] == true then
-                print('"%s" not a valid item name: arg %d':format(name, x*2))
+                log('"%s" not a valid item name: arg %d':format(name, x*2))
                 return
             end
             if not units or units < 1 then
-                print('Invalid quantity: arg %d':format(x*2-1))
+                log('Invalid quantity: arg %d':format(x*2-1))
                 return
             end
             while units > 0 do
                 local count = units > item.stack and item.stack or units
                 local index = find_item(inventory, item.id, count, exclude)
                 if not index then
-                    print('%s x%s not found in inventory.':format(item.name, args[x*2-1]))
+                    log('%s x%s not found in inventory.':format(item.name, args[x*2-1]))
                     return
                 end
                 exclude[index] = true
@@ -105,10 +131,10 @@ windower.register_event('addon command', function(...)
                 target.index,num)
             windower.packets.inject_outgoing(0x36, menu_item)
         else
-            print('Too many items')
+            log('Too many items')
         end
     else
-        print('No target or too far away.')
+		log('No target or too far away. '..(target_id and tostring(target_id) or ''))
     end
 end)
 --[[

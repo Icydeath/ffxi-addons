@@ -190,13 +190,21 @@ windower.register_event('incoming text', function(original, modified, mode)
     end
 end)
 
-windower.register_event('addon command',function(command)
-    command = command and command:lower() or 'help'
-    if texts.visible(image) then
-        image:hide()
-    else
-        image:show()
-    end
+windower.register_event('addon command',function(...)
+    commands = {...}
+	commands[1] = commands[1] and commands[1]:lower() or 'help'
+    if commands[1] == 'pos' and tonumber(commands[2]) and tonumber(commands[3]) then
+		settings.pos_x = tonumber(commands[2])
+		settings.pos_y = tonumber(commands[3])
+		settings:save('all')
+		windower.send_command('lua r omen')
+	else
+		if texts.visible(image) then
+			image:hide()
+		else
+			image:show()
+		end
+	end
 end)
 
 messages = {

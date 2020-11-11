@@ -1,47 +1,64 @@
-_addon.author = 'Ivaar'
+_addon.author = 'Ivaar, modified by Icy'
 _addon.commands = {'Singer','sing'}
 _addon.name = 'Singer'
-_addon.version = '1.18.10.05'
+_addon.version = '1.20.01.20i'
 
+--[[
+[1.20.01.20i] 
+	- added sleeping functionality
+	- ability to set your Weaponskill via settings
+	- ability to set a gearswap command when casting a dummy song.
+	- add the ability to sing songs even if not all members are present.
+
+]]
 require('luau')
 require('pack')
 packets = require('packets')
 texts = require('texts')
 config = require('config')
+res_items = require('resources').items
 
-ids = require('sing_ids')
 get = require('sing_get')
 cast = require('sing_cast')
 song_timers = require('song_timers')
 
 default = {
-    delay=5,
-    --dummy=L{'Knight\'s Minne','Knight\'s Minne II'},
-	dummy=L{'Valor Minuet V',''},
+    delay=4,
+    dummy=L{'Shining Fantasia','Fowl Aubade'},
     buffs={['haste']=L{},['refresh']=L{}},
-    marcato='Valor Minuet V',
-    clarion={aoe=''},
+    marcato='Sentinel\'s Scherzo',
+    clarion={aoe='minuet'},
     actions=false,
     pianissimo=false,
-    recast={song={min=10,max=15},buff={min=5,max=10}},
+    nightingale=true,
+    troubadour=true,
+	lullaby=false,
+	lullaby_song='Horde Lullaby II',
+	lullaby_partyclaimed=true,
+	members_required=false,
+    recast={song={min=20,max=25},buff={min=5,max=10}},
     active=true,
     timers=true,
     ignore=L{},
     song={},
-    songs={},
+    songs={march=2, minuet=2},
     use_ws=false,
     min_ws=20,
     max_ws=99,
+	ws_name='Evisceration',
+	aftermath=false,
+	gearswap_dummy_cmd = "set ExtraSongsMode Dummy", -- 'gs c' is automatically prepended to the command.
     box={text={size=10}}
-    }
+}
 
 settings = config.load(default)
 
 del = 0
 counter = 0
-interval = 0.2
+interval = 0.1
 timers = {AoE={},buffs={Haste={},Refresh={}}}
 last_coords = 'fff':pack(0,0,0)
+buffs = get.buffs()
 
 local display_box = function()
     local str
@@ -55,7 +72,8 @@ local display_box = function()
         str = str..'\n %s:[x%d]':format(k:ucfirst(),v)
     end
     str = str..'\n Clarion:[%s]\n Marcato:\n   [%s]':format(settings.clarion.aoe:ucfirst(),settings.marcato)
-    str = str..'\n Dummy (Songs):\n   1:[%s]\n   2:[%s]\n Pianissimo:[%s]':format(settings.dummy[1],settings.dummy[2],settings.pianissimo and 'On' or 'Off')
+    str = str..'\n Dummy (Songs):\n   1:[%s]\n   2:[%s]':format(settings.dummy[1],settings.dummy[2])
+	str = str..'\n Members Req:[%s]\n Pianissimo:[%s]':format(settings.members_required and 'On' or 'Off', settings.pianissimo and 'On' or 'Off')
     for k,v in pairs(settings.song) do
         str = str..'\n %s:':format(k:ucfirst())
         for i,t in pairs(v) do
@@ -65,6 +83,9 @@ local display_box = function()
             str = str..'\n   Clarion:[%s]':format(settings.clarion[k]:ucfirst())
         end
     end
+	
+	str = str..'\n %s: [%s]%s':format(settings.lullaby_song, settings.lullaby and 'On' or 'Off', settings.lullaby_partyclaimed and '[Party]' or ' ') -- added by icy
+	
     for k,v in ipairs(settings.ignore) do
         str = str..'\n Ignore:[%s]':format(v:ucfirst())
     end
@@ -77,10 +98,10 @@ local display_box = function()
     for k,v in pairs(settings.recast) do
         str = str..'\n Recast %s:[%d-%d]':format(k:ucfirst(),v.min,v.max)
     end
-    --[[str = str..'\n Delay:[%d]':format(settings.delay)
+    str = str..'\n Delay:[%s]':format(settings.delay)
     if settings.use_ws then
-        str = str..'WS:[ > %d%%][ < %d%%]':format(settings.min_ws,settings.max_ws)
-    end]]--
+        str = str..'\n WS:[ > %d%%][ < %d%%]':format(settings.min_ws,settings.max_ws)
+    end
     return str
 end
 
@@ -90,27 +111,76 @@ bard_status:show()
 function do_stuff()
     if not settings.actions then return end
     counter = counter + interval
-    if counter > del then
+    if counter >= del then
         counter = 0
         del = interval
         for k,v in pairs(timers) do song_timers.update(k) end
         local play = windower.ffxi.get_player()
         if not play or play.main_job ~= 'BRD' or (play.status ~= 1 and play.status ~= 0) then return end
-        local JA_WS_lock,AM_start,goal_tp
-        local buffs = get.buffs(play.buffs)
+        local JA_WS_lock,goal_tp
         local spell_recasts = windower.ffxi.get_spell_recasts()
         local ability_recasts = windower.ffxi.get_ability_recasts()
         local recast = math.random(settings.recast.song.min,settings.recast.song.max)+math.random()
-        if is_moving or casting or buffs.stun or buffs.sleep or buffs.charm or buffs.terror or buffs.petrification then return end
+        if is_moving or is_casting or buffs.stun or buffs.sleep or buffs.charm or buffs.terror or buffs.petrification then return end
         if buffs.amnesia or buffs.impairment then JA_WS_lock = true end
-        if buffs.silence or buffs.mute or buffs.omerta then return end     
-        --if get.aoe_range() then
-            local song = cast.check_song(settings.songs,'AoE',buffs,spell_recasts,recast) 
-            if song then
-				cast.song(song,'<me>',buffs,ability_recasts,JA_WS_lock)
-				return 
+		
+		-- Weaponskill
+        if use_ws and not JA_WS_lock and play.status == 1 then
+            local targ = windower.ffxi.get_mob_by_target('t')
+            if aftermath and not buffs['aftermath: lv.3'] or buffs['aftermath: lv.3'] <= 5 then
+                goal_tp = 3000
+            else
+                goal_tp = 1000
+            end
+            if (get.eye_sight(windower.ffxi.get_mob_by_target('me'),targ) and play.vitals.tp >= goal_tp and 
+                targ and targ.valid_target and targ.is_npc and targ.hpp < settings.max_ws and targ.hpp > settings.min_ws and  
+                math.sqrt(targ.distance) <= 4) and (goal_tp == 1000 or not buffs['aftermath: lv.3']) then
+				local ws = settings.ws_name
+				if aftermath and goal_tp == 3000 then
+					ws = 'Mordant Rime'
+				end
+                windower.send_command('input /ws "'..ws..'" <t>')
+                del = 4.2
+                return
+            end
+        end
+		
+		-- Can't cast check
+        if buffs.silence or buffs.mute or buffs.omerta then return end
+		
+		-- Sleep
+		if settings.lullaby and settings.lullaby_song then
+			-- reapply sleep or find a new target to sleep.
+			local targid = get.sleep_target()
+			if not targid then targid = get.nearest_mob() end
+			
+			if targid and not get.monster_list[targid] then
+				local mob = windower.ffxi.get_mob_by_id(targid)
+				local targ = windower.ffxi.get_mob_by_target('t')
+				if mob and targ and math.sqrt(mob.distance) <= 20 and mob.id == targ.id then
+					
+					addon_message('Lullaby: '..mob.name..' Distance: '..tostring(math.sqrt(mob.distance)))
+					cast.MA(settings.lullaby_song, '<t>')
+					return
+				elseif mob and math.sqrt(mob.distance) <= 20 then
+					packets.inject(packets.new('incoming', 0x058, {
+						['Player'] = play.id,
+						['Target'] = mob.id,
+						['Player Index'] = play.index,
+					}))
+					return
+				end
 			end
-        --end
+		end
+		
+		-- Songs
+		local ok_to_cast = true
+        if settings.members_required and not get.aoe_range() then ok_to_cast = false end
+		if ok_to_cast then
+			local song = cast.check_song(settings.songs,'AoE',buffs,spell_recasts,recast) 
+            if song then cast.song(song,'<me>',buffs,ability_recasts,JA_WS_lock) return end
+		end
+		
         if settings.pianissimo then
             for targ,songs in pairs(settings.song) do
                 if get.valid_target(targ,20) then
@@ -121,6 +191,8 @@ function do_stuff()
             end
         end
         if table.length(settings.buffs.haste)+table.length(settings.buffs.refresh) == 0 then return end
+		
+		-- Buffs
         local recast = math.random(settings.recast.buff.min,settings.recast.buff.max)+math.random()
         for key,targets in pairs(settings.buffs) do
             local spell = get.spell(key)
@@ -138,59 +210,98 @@ end
 
 do_stuff:loop(interval)
 
+lullaby_ids = S{376, 377, 463, 471}
+last_spell_id = ''
 windower.register_event('incoming chunk', function(id,original,modified,injected,blocked)
     if id == 0x028 then
         local packet = packets.parse('incoming', original)
         if packet['Actor'] ~= windower.ffxi.get_mob_by_target('me').id then return false end
+		local now = os.clock()
+		
         if packet['Category'] == 8 then
+			last_spell_id = packet['Target 1 Action 1 Param'] -- tracking the last spell casted
+			
             if (packet['Param'] == 24931) then
             -- Begin Casting
-                casting = true
+                is_casting = true
             elseif (packet['Param'] == 28787) then
             -- Failed Casting
-                casting = false
+                is_casting = false
                 del = 2.5
             end
         elseif packet['Category'] == 4 then
             -- Finish Casting
-            casting = false
+            is_casting = false
             del = settings.delay
-            local spell = ids.spells[packet['Param']]
+            local spell = get.spell_by_id(packet['Param'])
+            local song = get.song_name(packet['Param'])
+			
             if spell then
                 timers.buffs[spell.enl][windower.ffxi.get_mob_by_id(packet['Target 1 ID']).name:lower()] = os.time()+spell.dur
-            elseif ids.songs[packet['Param']] then
-                local buffs = get.buffs(windower.ffxi.get_player().buffs)
-                local spell_name = ids.songs[packet['Param']]
+			elseif lullaby_ids:contains(last_spell_id) then -- lullaby
+				local numtargets = packet['Target Count']
+				local count = 0
+				while count < numtargets do
+					count = count + 1
+					local target_id = packet['Target '..count..' ID']
+					local spell_duration = get.lullaby_duration(last_spell_id)
+					local message = packet['Target '..count..' Action 1 Message']
+					if message == 270 or message == 236 then 
+						get.new_sleep(target_id, spell_duration)
+					end
+				end
+				
+            elseif song then
                 if packet['Target Count'] > 1 or packet['Target 1 ID'] == packet['Actor'] and get.aoe_range() then
-                    song_timers.adjust(spell_name,'AoE',buffs)
+                    song_timers.adjust(song,'AoE',buffs)
                 end
                 for x = 1,packet['Target Count'] do
                     local targ_name = windower.ffxi.get_mob_by_id(packet['Target '..x..' ID']).name
-                    song_timers.adjust(spell_name,targ_name,buffs)
+                    song_timers.adjust(song,targ_name,buffs)
                 end
             end
         elseif L{3,5}:contains(packet['Category']) then
-            casting = false
+            is_casting = false
         elseif L{7,9}:contains(packet['Category']) then
-            casting = true
+            is_casting = true
         end
+		
+		-- lullaby mob tracking/timers
+		if get.monster_list[packet.Actor] and ((now - get.monster_list[packet.Actor].start) > 5) then 
+			get.monster_list[packet.Actor] = {start=get.monster_list[packet.Actor].start,debuff_duration=0}
+		end
+		
     elseif id == 0x029 then
         local packet = packets.parse('incoming', original)
         --table.vprint(packet)
         if (packet.Message) == 206 and packet['Actor'] == windower.ffxi.get_mob_by_target('me').id then
-            local buff = ids.buffs[packet['Param 1']]
-            local targ = windower.ffxi.get_mob_by_id(packet['Target']).name
-            if buff and not settings.ignore:contains(targ:lower()) then
-                song_timers.buff_lost(targ,buff) 
+            song_timers.buff_lost(packet['Target'],packet['Param 1']) 
+        end
+    elseif id == 0x63 and original:byte(5) == 9 then
+        local set_buff = {}
+        for n=1,32 do
+            local buff_id = original:unpack('H', n*2+7)
+            local buff_ts = original:unpack('I', n*4+69)
+            if buff_ts == 0 then
+                break
+            elseif buff_id ~= 255 then
+                local buff_en = res.buffs[buff_id].en:lower()
+                if buff_id == 272 then
+                    set_buff[buff_en] = math.floor(buff_ts/60+1510890320)
+                else
+                    set_buff[buff_en] = (set_buff[buff_en] or 0) + 1
+                end
             end
         end
+        buffs = set_buff
     end
 end)
 
-windower.register_event('outgoing chunk', function(id,data,modified,is_injected,is_blocked)
+windower.register_event('outgoing chunk', function(id,original,modified,is_injected,is_blocked)
     if id == 0x015 then
-        is_moving = last_coords ~= modified:sub(5, 16)
-        last_coords = modified:sub(5, 16)
+        local coords = modified:sub(0x04+1, 0x0F+1)
+        is_moving = last_coords ~= coords
+        last_coords = coords
     end
 end)
 
@@ -209,141 +320,189 @@ windower.register_event('addon command', function(...)
         elseif commands[1] == 'off' then
             settings.actions = false
         end
-        addon_message('Actions %s':format(settings.actions and 'On' or 'Off'))
-    else
-        if commands[1] == 'save' then
-            settings:save()
-            addon_message('settings Saved.')
-        elseif commands[1] == 'ignore' and commands[3] then
-            local ind = settings.ignore:find(commands[2])
-            if ind and (not commands[3] or commands[3] and commands[3] == '-') then
-                settings.ignore:remove(ind)
-                addon_message('Will no longer ignore %s.':format(commands[2]:ucfirst()))
-           elseif not ind then
-                settings.ignore:append(commands[2])
-                addon_message('%s will now be ignored.':format(commands[2]:ucfirst()))
-            end
-        elseif commands[1] == 'recast' and commands[2] and S{'buff','song'}:contains(commands[2]) then
-            if commands[3] and tonumber(commands[3]) then
-                settings.recast[commands[2]].min = tonumber(commands[3])
-            end
-            if commands[4] and tonumber(commands[4]) then
-                settings.recast[commands[2]].max = tonumber(commands[4])
-            end
-            addon_message('%s recast set to min: %s max: %s':format(commands[2],settings.recast[commands[2]].min,settings.recast[commands[2]].max))
-        elseif commands[1] == 'clarion' and commands[2] and get.songs[commands[2]] then
-            if commands[3] and settings.song[commands[3]] then
-                settings.clarion[commands[3]] = commands[2]
-                addon_message('Clarion song for %s set to %s':format(commands[3],commands[2]))
-            else
-                settings.clarion.aoe = commands[2]
-                addon_message('Clarion AoE song set to %s':format(commands[2]))
-            end
-        elseif commands[1] == 'ws' and commands[3] then
-            if commands[3] == 'on' then
-                settings.use_ws = true
-            elseif commands[3] == 'off' then
-                settings.use_ws = false
-            elseif tonumber(commands[3]) then
-                if commands[2] == '<' then
-                    settings.max_ws = tonumber(commands[3])
-                elseif commands[2] == '>' then
-                    settings.min_ws = tonumber(commands[3])
-                end
-            end
-       elseif commands[1]:startswith('dummy') then
-            local ind = tonumber(commands[1]:sub(6)) or 1
-            local song = get.song(table.concat(commands, ' ',2))
-            if song and ind <= 2 then
-                settings.dummy[ind] = song.enl
-                addon_message('Dummy song #%d set to %s':format(ind,song.enl))
-            else
-                addon_message('Invalid song name.')
-            end
-        elseif S{'haste','refresh'}:contains(commands[1]) and commands[2] then
-            local ind = settings.buffs[commands[1]]:find(commands[2])
-            if not commands[3] then
-                if ind then
-                   settings.buffs[commands[1]]:remove(ind)
-                else
-                    settings.buffs[commands[1]]:append(commands[2])
-                end
-            elseif commands[3] == 'on' then
-                settings.buffs[commands[1]]:append(commands[2])
-            elseif commands[3] == 'off' then
-               settings.buffs[commands[1]]:remove(ind)
-            end
-        elseif get.songs[commands[1]] and commands[2] then
-            local n = tonumber(commands[2])
-            if n and n ~= 0 and n <= #get.songs[commands[1]] then
-                if commands[3] then
-                    if not settings.song[commands[3]] then settings.song[commands[3]] = {} end
-                    settings.song[commands[3]][commands[1]] = n
-                    addon_message('Will now Pianissimo %s x%d for %s.':format(commands[1],n,commands[3]))
-                else
-                    settings.songs[commands[1]] = n
-                    addon_message('%s x%d':format(commands[1],n))
-                end
-            elseif commands[2] == '0' or commands[2] == 'off' then
-                if not commands[3] then              
-                    settings.songs[commands[1]] = nil
-                    addon_message('%s Off':format(commands[1]))
-                elseif settings.song[commands[3]] then 
-                    settings.song[commands[3]][commands[1]] = nil
-                    if table.length(settings.song[commands[3]]) == 0 then settings.song[commands[3]] = nil end
-                    addon_message('Will no longer Pianissimo %s for %s.':format(commands[1],commands[3]))
-                end
-            elseif n then
-                addon_message('Error: %d exceeds the maximum value for %s.':format(n,commands[1]))
-            end
-        elseif type(settings[commands[1]]) == 'string' and commands[2] then
-            local song = get.song(table.concat(commands, ' ',2))
-            if song then
-                settings[commands[1]] = song.enl
-                addon_message('%s is now set to %s':format(commands[1],song.enl))
-            else
-                addon_message('Invalid song name.')
-            end
-       elseif type(settings[commands[1]]) == 'number' and commands[2] and tonumber(commands[2]) then
-            settings[commands[1]] = tonumber(commands[2])
-            addon_message('%s is now set to %d':format(commands[1],settings[commands[1]]))
-        elseif type(settings[commands[1]]) == 'boolean' then
-            if (not commands[2] and settings[commands[1]] == true) or (commands[2] and commands[2] == 'off') then
-                settings[commands[1]] = false
-                if commands[1] == 'timers' then song_timers.reset(true) end
-            elseif (not commands[2]) or (commands[2] and commands[2] == 'on') then
-                settings[commands[1]] = true
-            end
-            addon_message('%s %s':format(commands[1],settings[commands[1]] and 'On' or 'Off'))
-        elseif commands[1] == 'eval' then
-            assert(loadstring(table.concat(commands, ' ',2)))()
+        if settings.actions then
+            del = 0
+            initialize()
+            do_stuff()
+		else
+			get.monster_list = {}
         end
+        addon_message('Actions %s':format(settings.actions and 'On' or 'Off'))
+    elseif commands[1] == 'save' then
+        settings:save('all')
+        addon_message('settings Saved.')
+    elseif commands[1] == 'ignore' and commands[3] then
+        local ind = settings.ignore:find(commands[2])
+        if not ind and commands[3] == '-' then
+            settings.ignore:append(commands[2])
+            addon_message('%s will now be ignored.':format(commands[2]:ucfirst()))
+        elseif ind and commands[3] == '+' then
+            settings.ignore:remove(ind)
+            addon_message('Will no longer ignore %s.':format(commands[2]:ucfirst()))
+        end
+    elseif commands[1] == 'recast' and commands[2] and S{'buff','song'}:contains(commands[2]) then
+        if commands[3] and tonumber(commands[3]) then
+            settings.recast[commands[2]].min = tonumber(commands[3])
+        end
+        if commands[4] and tonumber(commands[4]) then
+            settings.recast[commands[2]].max = tonumber(commands[4])
+        end
+        addon_message('%s recast set to min: %s max: %s':format(commands[2],settings.recast[commands[2]].min,settings.recast[commands[2]].max))
+    elseif commands[1] == 'clarion' and commands[2] and get.songs[commands[2]] then
+        if commands[3] and settings.song[commands[3]] then
+            settings.clarion[commands[3]] = commands[2]
+            addon_message('Clarion song for %s set to %s':format(commands[3],commands[2]))
+        else
+            settings.clarion.aoe = commands[2]
+            addon_message('Clarion AoE song set to %s':format(commands[2]))
+        end
+	elseif commands[1] == 'req' then
+		settings.members_required = not settings.members_required
+    elseif commands[1] == 'ws' and commands[3] then
+        if commands[3] == 'on' then
+            settings.use_ws = true
+        elseif commands[3] == 'off' then
+            settings.use_ws = false
+        elseif tonumber(commands[3]) then
+            if commands[2] == '<' then
+                settings.max_ws = tonumber(commands[3])
+            elseif commands[2] == '>' then
+                settings.min_ws = tonumber(commands[3])
+            end
+        end
+   elseif commands[1]:startswith('dummy') then
+        local ind = tonumber(commands[1]:sub(6)) or 1
+        local song = get.song_by_name(table.concat(commands, ' ',2))
+        if song and ind <= 2 then
+            settings.dummy[ind] = song.enl
+            addon_message('Dummy song #%d set to %s':format(ind,song.enl))
+        else
+            addon_message('Invalid song name.')
+        end
+    elseif S{'haste','refresh'}:contains(commands[1]) and commands[2] then
+        local ind = settings.buffs[commands[1]]:find( commands[2])
+        if not commands[3] then
+            if ind then
+               settings.buffs[commands[1]]:remove(ind)
+            else
+                settings.buffs[commands[1]]:append(commands[2])
+            end
+        elseif commands[3] == 'on' then
+            settings.buffs[commands[1]]:append( commands[2])
+        elseif commands[3] == 'off' then
+           settings.buffs[commands[1]]:remove(ind)
+        end
+	elseif commands[1] == 'clear' then -- added by icy, easy way to clear out songs/buffs
+		settings.songs = {}
+		settings.buffs["haste"] = L{}
+		settings.buffs["refresh"] = L{}
+		get.monster_list = {}
+		addon_message('songs and sleep list cleared')
+	elseif commands[1] == 'lullaby' then	
+		if not commands[2] then
+			settings.lullaby = not settings.lullaby
+		elseif commands[2] and commands[2] == 'on' then
+            settings.lullaby = true
+        elseif commands[2] and commands[2] == 'off' then
+           settings.lullaby = false
+		elseif commands[2] and commands[2] == 'party' then
+           settings.lullaby_partyclaimed = not settings.lullaby_partyclaimed
+		elseif commands[2] and commands[2] == 'use' or commands[2] == 'set' and commands[3] then
+			if commands[4] and commands[5] then
+				commands[3] = commands[3]..' '..commands[4]..' '..commands[5]
+			elseif commands[4] then
+				commands[3] = commands[3]..' '..commands[4]
+			end
+			settings.lullaby_song = commands[3]
+        end
+		if not settings.lullaby then get.monster_list = {} end
+		
+    elseif get.songs[commands[1]] and commands[2] then
+        local n = tonumber(commands[2])
+        local buff = commands[1]
+        local name = commands[3]
+        if n and n ~= 0 and n <= #get.songs[buff] then
+            if commands[3] then
+                if not settings.song[name] then settings.song[name] = {} end
+                settings.song[name][buff] = n
+                addon_message('Will now Pianissimo %s x%d for %s.':format(buff,n,name:ucfirst()))
+            else
+                settings.songs[buff] = n
+                addon_message('%s x%d':format(buff,n))
+            end
+        elseif commands[2] == '0' or commands[2] == 'off' then
+            if not name then              
+                settings.songs[buff] = nil
+                addon_message('%s Off':format(commands[1]))
+            elseif settings.song[name] then 
+                settings.song[name][buff] = nil
+                if table.length(settings.song[name]) == 0 then settings.song[name] = nil end
+                addon_message('Will no longer Pianissimo %s for %s.':format(buff,name:ucfirst()))
+            end
+        elseif n then
+            addon_message('Error: %d exceeds the maximum value for %s.':format(n,commands[1]))
+        end
+    elseif type(settings[commands[1]]) == 'string' and commands[2] then
+        local song = get.song_by_name(table.concat(commands, ' ',2))
+        if song then
+            settings[commands[1]] = song.enl
+            addon_message('%s is now set to %s':format(commands[1],song.enl))
+        else
+            addon_message('Invalid song name.')
+        end
+   elseif type(settings[commands[1]]) == 'number' and commands[2] and tonumber(commands[2]) then
+        settings[commands[1]] = tonumber(commands[2])
+        addon_message('%s is now set to %s':format(commands[1],settings[commands[1]]))
+    elseif type(settings[commands[1]]) == 'boolean' then
+        if commands[1] == 'actions' then
+            initialize()
+        end
+        if not commands[1] then
+            settings[commands[1]] = not settings[commands[1]]
+        elseif commands[2] == 'on' then
+            settings[commands[1]] = true
+        elseif commands[2] == 'off' then
+            settings[commands[1]] = false
+        end
+        if commands[1] == 'timers' and not settings.timers then
+            song_timers.reset(true)
+        end
+        addon_message('%s %s':format(commands[1],settings[commands[1]] and 'On' or 'Off'))
+    elseif commands[1] == 'eval' then
+        assert(loadstring(table.concat(commands, ' ',2)))()
     end
     bard_status:text(display_box())
 end)
 
-function event_change()
-    settings.actions = false
-    casting = false
-    song_timers.reset()
-    bard_status:text(display_box())
-end
-
-function status_change(new,old)
-    casting = false
-    if new == 2 or new == 3 then
-        event_change()
-    end
-end
-
-function has_value (tab, val)
-    for index, value in ipairs(tab) do
+function has_value(tbl, val)
+    for index, value in ipairs(tbl) do
         if value == val then
             return true
         end
     end
 
     return false
+end
+
+function reset_monster_list()
+	for i,v in pairs(get.monster_list) do
+		get.monster_list[i] = nil
+	end
+end
+
+function event_change()
+    settings.actions = false
+    is_casting = false
+    song_timers.reset()
+	reset_monster_list()
+    bard_status:text(display_box())
+end
+
+function status_change(new,old)
+    is_casting = false
+    if new == 2 or new == 3 then
+        event_change()
+    end
 end
 
 windower.register_event('unload', song_timers.reset)

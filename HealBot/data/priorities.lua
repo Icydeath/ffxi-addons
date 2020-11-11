@@ -6,7 +6,7 @@ return {
         ['Light Arts'] = 0,
         ['Haste'] = 1,
         ['Refresh'] = 1,
-        ['Reraise'] = 2
+        ['Reraise'] = 2,
     },
     ['debuffs'] = {
         ['addle'] = 5,
@@ -38,7 +38,7 @@ return {
         ['silence'] = 2,
         ['sleep'] = 0,
         ['slow'] = 4,
-        ['stun'] = -1
+        ['stun'] = -1,
     },
     ['default'] = 5,
     ['dispel'] = {
@@ -80,7 +80,7 @@ return {
         ['shell'] = 0,
         ['shock_spikes'] = 2,
         ['str_boost'] = 5,
-        ['vit_boost'] = 5
+        ['vit_boost'] = 5,
     },
     ['jobs'] = {
         ['blm'] = 2,
@@ -104,11 +104,12 @@ return {
         ['smn'] = 3,
         ['thf'] = 2,
         ['war'] = 2,
-        ['whm'] = 4
+        ['whm'] = 2,
     },
     ['players'] = {
-        ['Mipha'] = 1,
-		['Urbosa'] = 1
+        ['Rythor'] = 1,
+        ['Icydeath'] = 1,
+        ['Clubfoot'] = 1,
     },
     ['status_removal'] = {
         ['addle'] = 2,
@@ -126,6 +127,6 @@ return {
         ['poison'] = 4,
         ['silence'] = 1,
         ['slow'] = 1,
-        ['weight'] = 4
-    }
+        ['weight'] = 4,
+    },
 }

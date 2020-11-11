@@ -1,17 +1,17 @@
 _addon.name = 'spellSpammer'
-_addon.author = 'Lorand'
+_addon.author = 'Lorand, modded by icy'
 _addon.commands = {'spam','spellSpammer'}
-_addon.version = '1.2.1'
+_addon.version = '1.2.2'
 
 local res = require('resources')
 local config = require('config')
 local aliases = config.load('..\\shortcuts\\data\\aliases.xml')
 --local spellToSpam = 'Stone'
-local spellsToSpam = {'Indi-Poison','Indi-Voidance','Indi-Precision'}
+local spellsToSpam = {'Bio'}
 local lastIndex = 0
 local keepSpamming = false
 local spamDelay = 0.8
-local spammer = {name='',actionStart=0,actionEnd=0}
+local spammer = {name='Icybreath',actionStart=0,actionEnd=0}
 
 local settings = {actionDelay = 2.75}
 
@@ -56,6 +56,10 @@ end)
 
 windower.register_event('load', function()
 	lastAttempt = os.clock()
+end)
+
+windower.register_event('zone change', function()
+	keepSpamming = false
 end)
 
 windower.register_event('prerender', function()

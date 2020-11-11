@@ -13,7 +13,7 @@ ADDING|REMOVING HOMEPOINT WARP TO WINDOW
 ADDING|REMOVING SURVIVAL GUIDE WARP TO WINDOW
   //wm win1 a gusgen mines
   //wm win1 r gusgen mines
-TOGGLE WARPALL
+TOGGLE WARP ALL 
   //wm warpall
 SETTINGS [...\\WarpMenu\\data\\settings.xml]
   //wm save

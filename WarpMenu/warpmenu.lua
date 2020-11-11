@@ -29,7 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 _addon.author = 'Icy'
 _addon.name = 'WarpMenu'
 _addon.commands = {'warpmenu', 'wm'}
-_addon.version = '1.0.0.0'
+_addon.version = '1.0.0'
 
 require('pack')
 require('lists')
