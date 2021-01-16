@@ -1,126 +1,193 @@
---[[
-Copyright © 2017, Sammeh of Quetzalcoatl
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in the
-      documentation and/or other materials provided with the distribution.
-    * Neither the name of JobChange nor the
-      names of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL Sammeh BE LIABLE FOR ANY
-DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-]]
+-- Credit: 
+-- 	Semmeh (original creator)
+--	AkadenTK (Windower5 conversion)
 
 _addon.name = 'Job Change'
-_addon.author = 'Sammeh'
-_addon.version = '1.0.3'
+_addon.author = 'Sammeh, modded by icy'
+_addon.version = '1.0.4'
 _addon.command = 'jc'
-
--- 1.0.1 first release
--- 1.0.2 added 'reset' command to simply reset to existing job.  Changes sub job to a random starting job and back.
--- 1.0.3 Code clean-up
 
 require('tables')
 packets = require('packets')
 res = require ('resources')
+config = require('config')
 
-function jobchange(job,main_sub)
-    windower.add_to_chat(4,"JobChange: Changing "..main_sub.." job to:"..res.jobs[job].ens)
-    if job and main_sub then 
+defaults = {
+	show_logging = true
+}
+settings = config.load(defaults)
+
+local temp_jobs = L{13, 19, 1, 2, 3, 4, 5}
+local moogle_zones = S{'Selbina', 'Mhaura', 'Tavnazian Safehold', 'Nashmau', 'Rabao', 'Kazham', 'Norg'}
+local moogle_names = S{'Moogle', 'Nomad Moogle', 'Green Thumb Moogle'}
+
+function jobchange(job, main)
+	job_type = main and 'Main Job' or 'Sub Job'
+    if job and job_type then 
         local packet = packets.new('outgoing', 0x100, {
-            [main_sub:sub(1,1):upper()..main_sub:sub(2)..' Job'] = job,
+            [job_type] = job,
         })
         packets.inject(packet)
-        coroutine.sleep(0.5)
     end    
+	
+	coroutine.sleep(0.5)
 end
 
-windower.register_event('addon command', function(command, ...)
-    local self = windower.ffxi.get_player()
-    local args = L{...}
-    local job = ''
-    if args[1] then 
-        job = args[1]:lower()
-    end
-    local main_sub = ''
-    if command:lower() == 'main' then
-        main_sub = 'main'
-    elseif command:lower() == 'sub' then
-        main_sub = 'sub'
-    elseif command:lower() == 'reset' then
-        windower.add_to_chat(4,"JobChange: Resetting Job")
-        main_sub = 'sub'
-        job = windower.ffxi.get_player().sub_job:lower()
-    else
-        windower.add_to_chat(4,"JobChange Syntax: //jc main|sub JOB  -- Chnages main or sub to target JOB")
-        windower.add_to_chat(4,"JobChange Syntax: //jc reset -- Resets Current Job")
-        return
-    end
-    local conflict = find_conflict(job,self)
-    local jobid = find_job(job,self)
-    if jobid then 
-        local npc = find_job_change_npc()
-        if npc then
-            if not conflict then 
-                jobchange(jobid,main_sub)
-            else
-                local temp_job = find_temp_job(self)            
-                windower.add_to_chat(4,"JobChange: Conflict with "..conflict)
-                if main_sub == conflict then 
-                    jobchange(temp_job,main_sub)
-                    jobchange(jobid,main_sub)
-                else
-                    jobchange(temp_job,conflict)
-                    jobchange(jobid,main_sub)
-                end
-            end
-        else
-            windower.add_to_chat(4,"JobChange: Not close enough to a Moogle!")
-        end        
-    else
-        windower.add_to_chat(4,"JobChange: Could not change "..command.." to "..job:upper().." ---Mistype|NotUnlocked")
-    end
-    
+windower.register_event('addon command', function(...)
+	local args = {...}
+	args[1] = args[1] and args[1]:lower()
+	args[2] = args[2] and args[2]:lower()
+	
+	local player = windower.ffxi.get_player()
+	
+	local mj = ''
+	local sj = ''
+	if args[1] == "h" or args[1] == "help" then
+		print_help()
+		return
+	elseif args[1] == 'main' then
+		mj = args[2]
+	elseif args[1] == 'sub' then
+		sj = args[2]
+	elseif args[1] == 'reset' or args[1] == 'r' then
+		logger("Resetting subjob")
+		solve_jobchange(mainid, player.sub_job_id, player)
+		return
+	else
+		if args[1] and args[2] then -- setting both main and sub
+			mj = args[1]
+			sj = args[2]
+		elseif args[1] then
+			mj = args[1]
+			if mj:contains('/') then
+				local splat = mj:split('/')
+				mj = splat[1]
+				sj = splat[2]
+			end
+		else
+			print_help()
+			return
+		end
+	end
+	
+	handle_jobchange(mj, sj, player)
 end)
 
-function find_conflict(job,self)
-    if self.main_job == job:upper() then
+function print_help()
+	windower.add_to_chat(204, "JobChange ".._addon.version)
+	windower.add_to_chat(204, " Change MAIN: //jc war       [or]    //jc main war")
+	windower.add_to_chat(204, " Change SUB: //jc /sam       [or]    //jc sub sam")
+	windower.add_to_chat(204, " Change BOTH: //jc war/sam  [or]    //jc war sam")
+	windower.add_to_chat(204, " Reset subjob: //jc (r)eset")
+end
+
+function logger(msg)
+	if settings.show_logging then
+		windower.add_to_chat(4, "JobChange: "..msg)
+	end
+end
+
+function handle_jobchange(main, sub, player)
+	local mainid = find_job(main, player)	
+	if main ~= '' and mainid == nil then 
+        logger("Could not change main job to "..main:upper().." ---Mistype|NotUnlocked")
+        return
+    end
+    local subid = find_job(sub, player)
+    if sub ~= '' and subid == nil then 
+        logger("Could not change sub job to "..sub:upper().." ---Mistype|NotUnlocked")
+        return
+    end
+
+    if mainid == player.main_job_id then 
+        mainid = nil 
+    end
+	
+    if subid == player.sub_job_id then 
+        subid = nil 
+    end
+  
+	if mainid == nil and subid == nil then
+        logger("No change required.")
+        return
+    end
+	
+    solve_jobchange(mainid, subid, player)
+end
+
+function solve_jobchange(mainid, subid, player)
+	local changes = T{}
+	
+	if mainid ~= nil and mainid == player.sub_job_id then
+        if subid ~= nil and subid == player.main_job_id then
+            changes:insert({job=find_temp_job(player), conflict=true, main=false})
+            changes:insert({job=mainid, main=true})
+            changes:insert({job=subid, main=false})
+        else
+            if subid ~= nil then
+                changes:insert({job=subid, main=false})
+            else
+                changes:insert({job=find_temp_job(player), conflict=true, main=false})
+            end
+            changes:insert({job=mainid, main=true})
+        end
+    elseif subid ~= nil and subid == player.main_job_id then
+        if mainid ~= nil then
+            changes:insert({job=mainid, main=true})
+        else
+            changes:insert({job=find_temp_job(player), conflict=true, main=true})
+        end
+        changes:insert({job=subid, main=false})
+    else
+        if mainid ~= nil then
+            if mainid == player.main_job_id then
+                changes:insert({job=find_temp_job(player), conflict=true, main=true})
+            end
+            changes:insert({job=mainid, main=true})
+        end
+        if subid ~= nil then
+            if subid == player.sub_job_id then
+                changes:insert({job=find_temp_job(player), conflict=true, main=false})
+            end
+            changes:insert({job=subid, main=false})
+        end
+    end
+  
+    local npc = find_job_change_npc()
+    if npc then
+        for i, change in ipairs(changes) do
+            if change.conflict then
+                logger("Conflict with "..(change.main and 'main' or 'sub')..' job. Changing to: '..res.jobs[change.job].ens)
+            else
+                logger("Changing "..(change.main and 'main' or 'sub').." job to: "..res.jobs[change.job].ens)
+            end
+            jobchange(change.job, change.main)
+  
+            coroutine.sleep(1)
+        end
+    else
+        logger("Not close enough to a Moogle!")
+    end
+end
+
+function find_conflict(job, self)
+    if self.main_job_id == job then
         return "main"
     end
-    if self.sub_job == job:upper() then
+    if self.sub_job_id == job then
         return "sub"
     end
 end
 
 function find_temp_job(self)
-    local starting_jobs = S { 'WAR', 'MNK', 'WHM', 'BLM', 'RDM', 'THF' } 
-    for i in pairs(starting_jobs) do
-        if not find_conflict(i,self) then 
-            for index,value in pairs(res.jobs) do
-                if value.ens == i then
-                    return index
-                end
-            end
+    for _, i in pairs(temp_jobs) do -- check temp jobs (nin, dnc, war, mnk, whm, blm, rdm, thf)
+        if not find_conflict(i, self) then 
+            return i
         end
     end
 end
 
-function find_job(job,self)
+function find_job(job, self)
     local jobLevel = self.jobs[job:upper()]
     for index,value in pairs(res.jobs) do
         if value.ens:lower() == job and jobLevel > 0 then 
@@ -129,16 +196,15 @@ function find_job(job,self)
     end
 end
 
-
 function find_job_change_npc()
     local info = windower.ffxi.get_info()
-    if not (info.mog_house or S{'Selbina', 'Mhaura', 'Tavnazian Safehold', 'Nashmau', 'Rabao', 'Kazham', 'Norg'}:contains(res.zones[info.zone].english)) then
-        windower.add_to_chat(4,'JobChange: Not in a zone with a Change NPC')
+    if not (info.mog_house or moogle_zones:contains(res.zones[info.zone].english)) then
+        logger("Not in a zone with a Change NPC")
         return
     end
 
     for i, v in pairs(windower.ffxi.get_mob_array()) do
-        if v.distance < 36 and S{'Moogle', 'Nomad Moogle', 'Green Thumb Moogle'}:contains(v.name) then
+        if v.distance < 36 and moogle_names:contains(v.name) then
             return v
         end
     end
