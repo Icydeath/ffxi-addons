@@ -1,5 +1,5 @@
 ## Some of my other repositories
-- [Addon_Manager](https://github.com/Icydeath/ffxi-addon-manager) 4/24/2020
+- [Addon_Manager](https://github.com/Icydeath/ffxi-addon-manager)
 - [PartyBars](https://github.com/Icydeath/ffxi-partybars-addon)
 - [WarpMenu](https://github.com/Icydeath/ffxi-warpmenu-addon)
 - [XIVPetBars](https://github.com/Icydeath/ffxi-xivpetbar-addon)
@@ -66,23 +66,7 @@ _List of custom addons. Some have been modified by me to suit my own needs, full
 
 **unm** by [Darkdoom]()
 
-**MagicAssistant** by [Valok] -Automated magic bursting script
-  //lua load MagicAssistant
-  Syntax: maa nap [spell/helix/ga/ja/ra/nin] [tier]
-  Example for auto magic bursting with tier 5 spells
-	//maa nap spell 5
-
-  There is a small popup window you can drag and move around to a spot where you want it.
-	//maa example
-  then click and drag the box where you want it.
-
-  Sends a command to Gearswap that you can use to instruct Gearswap to perform a certain action, such as equipping magic burst gear
-  Examples:
-	A Fusion skillchain will send:  MAABurst LightFire
-	A Darkness skillchain will send: MAABurst DarkEarthWaterIce
-	A Scission skillchain will sent: MAABurst Earth
-
-... some new additions below ...
+**MagicAssistant** by [Valok] -Automated magic bursting script //maa nap [spell/helix/ga/ja/ra/nin] [tier]
 
 **tonic** - use a set list of escha temp items
 
@@ -114,16 +98,6 @@ _List of custom addons. Some have been modified by me to suit my own needs, full
 
 **canteen** - When in Omen this will run your toon to the goblin and grab a canteen. (within 50 yalms)
 
-**Quetz** - Updated quetz script. Very robuse version that focuses on multiboxing. It can be problematic getting it to work correctly. Check out quetz2 if you are having issues.
-
-.. more new additions ..
-
-**Quetz2** - A reworked quetz script - less buggy, more consistant version. See the readme
-
-**Naga** - Like Quetz script but for Naga. I've added config settings to the script so you can customize it for each toon.
-
-**Azi** - Like Quetz script but for Azi. I've added config settings to the script so you can customize it for each toon.
-
 **furrow** - A modified version of the original furrow script by me. See furrow2 for even more features.
 
 **furrow2** - A more robuse version of furrow, still based off the original script but with more options. Note: Some features may still not be finished.
@@ -137,6 +111,43 @@ _List of custom addons. Some have been modified by me to suit my own needs, full
 **MAGA** - Modified maga to play alarms when augment requirements are met & when you run out of stones.
 
 **PorterPacker** - by Ivaar, Stores and Retrieves gear from the porter moogle.
+
+**update 1/17/2021**
+autowatch (by Langly) : I've had some success with this one. Personally I wouldn't afk though.
+
+charmed (by wes, modded by me) : shows a small heart icon next to the persons name in the party list.
+
+Currencies (by Ivaar) : use commands to find the amount of something that is listed your currency/currency2 in-game menus.
+
+Dupefind (by Lili, modded by me) : Find and lists duplicate items. modded to use get/put commands to stack duplicate items.
+
+EschaChest (by me) : a first attempt at automate opening of chests in escha zones. Improvements to come.
+
+ffxikeys (by Tny5989, modded by me) : automate trading gobbie keys for rewards.
+
+followme (by yyoshisaur, modded by me) : alt following, get omen canteen, get SR KI, get DI KI
+
+Locke (by me) : experimental thf TH Gear swapper. Requires additional gear sets to be created, see locke.lua
+
+MAGA (by Cairthenn, modded by me) : Added some QoL changes.
+
+MagicAssistant (by Valok) : updated //maa help for more info
+
+RunicPortal (by icy) : Warping via runic portal, get sanction, get assault tag, get assault orders/armband and more.
+
+schskillchain (by yyoshisaur, modded by me) : single commands to perform sch skillchains.
+
+smarttarget (by anonymous) : helper addon for targeting specific mobs (ie: dynamis D)
+
+stars (by chiaia, modded by me) : yell/shout filter, added the ability to filter specific player names
+
+targetplus (pastebin) : //tar - target nearest mob, //tar spider - targets nearst spider mob. etc...
+
+triggers (by Mujihina) : Lets you set a text trigger and command response to it.
+
+valkyrie (by Areint/Alzade) : Einherjar helper. register chamber, enter chamber, drop lamp
+
+----
 
 If you need further information be sure to check out the addons readme file, otherwise you can skim the addons .lua to get an idea of how it works.
 

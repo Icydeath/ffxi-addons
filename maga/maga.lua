@@ -25,9 +25,15 @@
 -- SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 _addon.name = 'MAGA'
-_addon.author = 'Cair'
+_addon.author = 'Cair, modified by Icy'
 _addon.commands = {'MAGA'}
-_addon.version = '1.0.0.4'
+_addon.version = '1.0.0.5'
+
+--[[ Mods by Icy
+ - Added audio alerts for when you run out of stones and when your augment condition has been met.
+ - Added to the display to show the augments you've added by set.
+ - Adjusted delset cmd, it now removes the set # passed in and empties set #1 if passed in to be deleted.
+]]
 
 packets = require('packets')
 texts = require('texts')
@@ -71,25 +77,27 @@ defaults.display.padding = 3
 text_base_string = L{
     'Augment #: ${_index|-}',
     '${_augment|-}',
-    }:concat('\n')
-    
+	'',
+	'Added Sets:',
+	'${_augmentsets|-}'
+}:concat('\n')
+	
 settings = config.load(defaults)
 
 maga_tb = texts.new(text_base_string,settings.display)
 maga_tb._index = history:length()
 maga_tb._augment = nil
-
+maga_tb._augmentsets = nil
 maga_tb:show()
 
 status = {
-
-taupe = 0,
-fern = 0,
-pellucid = 0,
-gear = nil,
-paused = false,
-finished = false,
-waiting_for_augment = false
+	taupe = 0,
+	fern = 0,
+	pellucid = 0,
+	gear = nil,
+	paused = false,
+	finished = false,
+	waiting_for_augment = false
 }
 
 constants = {
@@ -458,20 +466,18 @@ function search(str)
     
     notice("Matched the following augments: " .. augs:concat(", "))
     
-
 end
 
 function add_aug(aug,val,set)
     
     if not augments[set] then error('Augment set #%d does not currently exist.':format(set)) return end
-
+	
     if augments:length() >= 6 and not augments:containskey(aug) then
         error("No more than 6 augments can be compared.")
     else
         augments[set][aug] = val
         notice("Augment Set #%d : [%s] = %s":format(set,aug,val))
     end
-
 end
 
 function display()
@@ -503,6 +509,7 @@ function add(aug,minval,set)
         error("The specified augment was not found.")
     end    
 
+	
 end
 
 function remove(aug, set)
@@ -531,15 +538,21 @@ function delset(num)
     num = num and tonumber(num) or nil
     
     if not num then
-    
+		notice('Invalid set #. Please pass in the sets # you wish to remove. Example: //maga delset 2')
     elseif num > augments:length() or num ==  1 then
-    
+		if num == 1 then
+			for k,v in pairs(augments[1]) do
+				augments[1][k] = nil
+			end
+			notice('All entries removed from Set #1.')
+		else
+			notice('Invalid set # provided.')
+		end
     else
-        augments:delete(num)
+        augments[num] = nil
         notice('Deleted augments set #%d.':format(num))
     end
-
-
+	
 end
 
 local helpers = {}
@@ -625,6 +638,47 @@ function delay(del)
 
 end
 
+function table_print (tt, indent, done)
+  done = done or {}
+  indent = indent or 0
+  if type(tt) == "table" then
+    local sb = {}
+    for key, value in pairs (tt) do
+	  if key ~= 'n' then -- Added this check to not show the total number of entries.
+		  table.insert(sb, string.rep (" ", indent)) -- indent it
+		  if type (value) == "table" and not done [value] then
+			done [value] = true
+			table.insert(sb, key .. " = {\n");
+			table.insert(sb, table_print (value, indent + 2, done))
+			table.insert(sb, string.rep (" ", indent)) -- indent it
+			table.insert(sb, "}\n");
+		  elseif "number" == type(key) then
+			table.insert(sb, string.format("\"%s\"\n", tostring(value)))
+		  else
+			table.insert(sb, string.format(
+				"%s = \"%s\"\n", tostring (key), tostring(value)))
+		  end
+	  end
+    end
+    return table.concat(sb)
+  else
+    return tt .. "\n"
+  end
+end
+
+function to_string( tbl )
+    if  "nil"       == type( tbl ) then
+        return tostring(nil)
+    elseif  "table" == type( tbl ) then
+        return table_print(tbl)
+    elseif  "string" == type( tbl ) then
+        return tbl
+    else
+        return tostring(tbl)
+    end
+end
+
+
 function help()
 
     print('MAGA will automatically augment items for you after you trade them to Oseem.')
@@ -640,8 +694,6 @@ function help()
     print(' - add <augment name> <minimum value>')
     print(' - remove <augment name>')
     
-
-
 end
 
 
@@ -684,4 +736,6 @@ windower.register_event('addon command', function (...)
     else
         error("unknown command %s":format(cmd or ""))
     end
+	
+	maga_tb._augmentsets = to_string(augments)
 end)

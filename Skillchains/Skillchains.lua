@@ -28,10 +28,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 _addon.author = 'Ivaar'
 _addon.command = 'sc'
 _addon.name = 'SkillChains'
-_addon.version = '2.19.09.27'
+_addon.version = '2.20.08.25'
 
 require('luau')
 require('pack')
+require('actions')
 texts = require('texts')
 skills = require('skills')
 
@@ -46,11 +47,10 @@ default.display = {text={size=12,font='Consolas'},pos={x=0,y=0},bg={visible=true
 
 settings = config.load(default)
 skill_props = texts.new('',settings.display,settings)
-aeonic_ids = S{20515,20594,20695,20843,20890,20935,20977,21025,21082,21147,21485,21694,21753,22117}
-message_ids = S{2,110,161,162,185,187,317}
+message_ids = S{110,185,187,317,802}
+skillchain_ids = S{288,289,290,291,292,293,294,295,296,297,298,299,300,301,385,386,387,388,389,390,391,392,393,394,395,396,397,767,768,769,770}
 buff_dur = {[163]=40,[164]=30,[470]=60}
-pet_commands = {[110]=true,[317]=true}
-info = {member = {}}
+info = {}
 resonating = {}
 buffs = {}
 
@@ -79,33 +79,51 @@ colors.Detonation =    colors.Wind
 colors.Liquefaction =  colors.Fire
 colors.Impaction =     colors.Lightning
 
-skillchain = {'Light','Darkness','Gravitation','Fragmentation','Distortion','Fusion','Compression','Liquefaction','Induration','Reverberation','Transfixion','Scission','Detonation','Impaction','Radiance','Umbra'}
+skillchains = {'Light','Darkness','Gravitation','Fragmentation','Distortion','Fusion','Compression','Liquefaction','Induration','Reverberation','Transfixion','Scission','Detonation','Impaction','Radiance','Umbra'}
 
 sc_info = {
-    Radiance = {ele={'Fire','Wind','Lightning','Light'}, lvl=4},
-    Umbra = {ele={'Earth','Ice','Water','Dark'}, lvl=4},
-    Light = {ele={'Fire','Wind','Lightning','Light'}, Light='Light', aeonic='Radiance', lvl=3},
-    Darkness = {ele={'Earth','Ice','Water','Dark'}, Darkness='Darkness', aeonic='Umbra', lvl=3},
-    Gravitation = {ele={'Earth','Dark'}, Distortion='Darkness', Fragmentation='Fragmentation', lvl=2},
-    Fragmentation = {ele={'Wind','Lightning'}, Fusion='Light', Distortion='Distortion', lvl=2},
-    Distortion = {ele={'Ice','Water'}, Gravitation='Darkness', Fusion='Fusion', lvl=2},
-    Fusion = {ele={'Fire','Light'}, Fragmentation='Light', Gravitation='Gravitation', lvl=2},
-    Compression = {ele={'Darkness'}, Transfixion='Transfixion', Detonation='Detonation', lvl=1},
-    Liquefaction = {ele={'Fire'}, Impaction='Fusion', Scission='Scission', lvl=1},
-    Induration = {ele={'Ice'}, Reverberation='Fragmentation', Compression='Compression', Impaction='Impaction', lvl=1},
-    Reverberation = {ele={'Water'}, Induration='Induration', Impaction='Impaction', lvl=1},
-    Transfixion = {ele={'Light'}, Scission='Distortion', Reverberation='Reverberation', Compression='Compression', lvl=1},
-    Scission = {ele={'Earth'}, Liquefaction='Liquefaction', Reverberation='Reverberation', Detonation='Detonation', lvl=1},
-    Detonation = {ele={'Wind'}, Compression='Gravitation', Scission='Scission', lvl=1},
-    Impaction = {ele={'Lightning'}, Liquefaction='Liquefaction', Detonation='Detonation', lvl=1},
-    }
+    Radiance = {'Fire','Wind','Lightning','Light', lvl=4},
+    Umbra = {'Earth','Ice','Water','Dark', lvl=4},
+    Light = {'Fire','Wind','Lightning','Light', Light={4,'Light','Radiance'}, lvl=3},
+    Darkness = {'Earth','Ice','Water','Dark', Darkness={4,'Darkness','Umbra'}, lvl=3},
+    Gravitation = {'Earth','Dark', Distortion={3,'Darkness'}, Fragmentation={2,'Fragmentation'}, lvl=2},
+    Fragmentation = {'Wind','Lightning', Fusion={3,'Light'}, Distortion={2,'Distortion'}, lvl=2},
+    Distortion = {'Ice','Water', Gravitation={3,'Darkness'}, Fusion={2,'Fusion'}, lvl=2},
+    Fusion = {'Fire','Light', Fragmentation={3,'Light'}, Gravitation={2,'Gravitation'}, lvl=2},
+    Compression = {'Darkness', Transfixion={1,'Transfixion'}, Detonation={1,'Detonation'}, lvl=1},
+    Liquefaction = {'Fire', Impaction={2,'Fusion'}, Scission={1,'Scission'}, lvl=1},
+    Induration = {'Ice', Reverberation={2,'Fragmentation'}, Compression={1,'Compression'}, Impaction={1,'Impaction'}, lvl=1},
+    Reverberation = {'Water', Induration={1,'Induration'}, Impaction={1,'Impaction'}, lvl=1},
+    Transfixion = {'Light', Scission={2,'Distortion'}, Reverberation={1,'Reverberation'}, Compression={1,'Compression'}, lvl=1},
+    Scission = {'Earth', Liquefaction={1,'Liquefaction'}, Reverberation={1,'Reverberation'}, Detonation={1,'Detonation'}, lvl=1},
+    Detonation = {'Wind', Compression={2,'Gravitation'}, Scission={1,'Scission'}, lvl=1},
+    Impaction = {'Lightning', Liquefaction={1,'Liquefaction'}, Detonation={1,'Detonation'}, lvl=1},
+}
 
-local aeonic_weapon = {}
+chainbound = {}
+chainbound[1] = L{'Compression','Liquefaction','Induration','Reverberation','Scission'}
+chainbound[2] = L{'Gravitation','Fragmentation','Distortion'} + chainbound[1]
+chainbound[3] = L{'Light','Darkness'} + chainbound[2]
 
-for id in pairs(aeonic_ids) do
-    aeonic_weapon[id] = res.items[id].english
-end
-    
+local aeonic_weapon = {
+    [20515] = 'Godhands',
+    [20594] = 'Aeneas',
+    [20695] = 'Sequence',
+    [20843] = 'Chango',
+    [20890] = 'Anguta',
+    [20935] = 'Trishula',
+    [20977] = 'Heishi Shorinken',
+    [21025] = 'Dojikiri Yasutsuna',
+    [21082] = 'Tishtrya',
+    [21147] = 'Khatvanga',
+    [21485] = 'Fomalhaut',
+    [21694] = 'Lionheart',
+    [21753] = 'Tri-edge',
+    [22117] = 'Fail-Not',
+    [22131] = 'Fail-Not',
+    [22143] = 'Fomalhaut'
+}
+
 initialize = function(text, settings)
     if not windower.ffxi.get_info().logged_in then
         return
@@ -120,7 +138,7 @@ initialize = function(text, settings)
         properties:append('${timer}')
     end
     if settings.Show.step[info.job] then
-        properties:append('Step: ${step} → ${en}')
+        properties:append('Step: ${step} → ${name}')
     end
     if settings.Show.props[info.job] then
         properties:append('[${props}] ${elements}')
@@ -139,7 +157,7 @@ function update_weapon()
     end
     local main_weapon = windower.ffxi.get_items(info.main_bag, info.main_weapon).id
     if main_weapon ~= 0 then
-        info.aeonic = aeonic_weapon[main_weapon] or aeonic_weapon[windower.ffxi.get_items(info.range_bag, info.range).id]
+        info.aeonic = aeonic_weapon[main_weapon] or info.range and aeonic_weapon[windower.ffxi.get_items(info.range_bag, info.range).id]
         return
     end
     if not check_weapon or coroutine.status(check_weapon) ~= 'suspended' then
@@ -157,33 +175,41 @@ function aeonic_am(step)
 end
 
 function aeonic_prop(ability, actor)
-    if ability.aeonic and (info.aeonic == ability.en and actor == info.player or settings.aeonic and info.player ~= actor) then
+    if ability.aeonic and (ability.weapon == info.aeonic and actor == info.player or settings.aeonic and info.player ~= actor) then
         return {ability.skillchain[1], ability.skillchain[2], ability.aeonic}
     end
     return ability.skillchain
 end
 
 function check_props(old, new)
-    local n = #old < 4 and #new or 1
-    for k=1,#old do
-        for i=1,n do local v = sc_info[old[k]][new[i]]
-            if v then
-                return sc_info[v].lvl == 3 and old[k] == new[i] and 4 or sc_info[v].lvl, v
+    for k = 1, #old do
+        local first = old[k]
+        local combo = sc_info[first]
+        for i = 1, #new do
+            local second = new[i]
+            local result = combo[second]
+            if result then
+                return unpack(result)
+            end
+            if #old > 3 and combo.lvl == sc_info[second].lvl then
+                break
             end
         end
     end
 end
 
-function add_skills(t, abilities, active, cat, aeonic)
+function add_skills(t, abilities, active, resource, AM)
     local tt = {{},{},{},{}}
-    for k=1,#abilities do local ability = skills[cat][abilities[k]]
-        if ability then
-            local lv, prop = check_props(active, aeonic_prop(ability, info.player))
+    for k=1,#abilities do
+        local ability_id = abilities[k]
+        local skillchain = skills[resource][ability_id]
+        if skillchain then
+            local lv, prop, aeonic = check_props(active, aeonic_prop(skillchain, info.player))
             if prop then
-                prop = aeonic and lv == 4 and sc_info[prop].aeonic or prop
+                prop = AM and aeonic or prop
                 tt[lv][#tt[lv]+1] = settings.color and
-                    '%-16s → Lv.%d %s%-14s\\cr':format(ability.en, lv, colors[prop], prop) or
-                    '%-16s → Lv.%d %-14s':format(ability.en, lv, prop)
+                    '%-16s → Lv.%d %s%-14s\\cr':format(res[resource][ability_id].name, lv, colors[prop], prop) or
+                    '%-16s → Lv.%d %-14s':format(res[resource][ability_id].name, lv, prop)
             end
         end
     end
@@ -198,14 +224,14 @@ end
 function check_results(reson)
     local t = {}
     if settings.Show.spell[info.job] and info.job == 'SCH' then
-        t = add_skills(t, {1,2,3,4,5,6,7,8}, reson.active, 20)
+        t = add_skills(t, {0,1,2,3,4,5,6,7}, reson.active, 'elements')
     elseif settings.Show.spell[info.job] and info.job == 'BLU' then
-        t = add_skills(t, windower.ffxi.get_mjob_data().spells, reson.active, 4)
+        t = add_skills(t, windower.ffxi.get_mjob_data().spells, reson.active, 'spells')
     elseif settings.Show.pet[info.job] and windower.ffxi.get_mob_by_target('pet') then
-        t = add_skills(t, windower.ffxi.get_abilities().job_abilities, reson.active, 13)
+        t = add_skills(t, windower.ffxi.get_abilities().job_abilities, reson.active, 'job_abilities')
     end
     if settings.Show.weapon[info.job] then
-        t = add_skills(t, windower.ffxi.get_abilities().weapon_skills, reson.active, 3, info.aeonic and aeonic_am(reson.step))
+        t = add_skills(t, windower.ffxi.get_abilities().weapon_skills, reson.active, 'weapon_skills', info.aeonic and aeonic_am(reson.step))
     end
     return _raw.table.concat(t, '\n')
 end
@@ -221,39 +247,51 @@ function colorize(t)
     return _raw.table.concat(temp or t, ',')
 end
 
-function do_stuff()
-    local targ = windower.ffxi.get_mob_by_target('t', 'bt')
-    local now = os.time()
-    for k,v in pairs(resonating) do
-        if v.ts and now-v.ts > v.dur then
+local next_frame = os.clock()
+
+windower.register_event('prerender', function()
+    local now = os.clock()
+
+    if now < next_frame then
+        return
+    end
+
+    next_frame = now + 0.1
+
+    for k, v in pairs(resonating) do
+        if v.times - now + 10 < 0 then
             resonating[k] = nil
         end
     end
-    if targ and targ.hpp > 0 and resonating[targ.id] and resonating[targ.id].dur-(now-resonating[targ.id].ts) > 0 then
-        local timediff = now-resonating[targ.id].ts
-        local timer = resonating[targ.id].dur-timediff
-        if not resonating[targ.id].closed then
-            resonating[targ.id].disp_info = resonating[targ.id].disp_info or check_results(resonating[targ.id])
-            resonating[targ.id].timer = timediff < resonating[targ.id].wait and 
-                '\\cs(255,0,0)Wait  %d\\cr':format(resonating[targ.id].wait-timediff) or
-                '\\cs(0,255,0)Go!   %d\\cr':format(timer)
+
+    local targ = windower.ffxi.get_mob_by_target('t', 'bt')
+    targ_id = targ and targ.id
+    local reson = resonating[targ_id]
+    local timer = reson and (reson.times - now) or 0
+
+    if targ and targ.hpp > 0 and timer > 0 then
+        if not reson.closed then
+            reson.disp_info = reson.disp_info or check_results(reson)
+            local delay = reson.delay
+            reson.timer = now < delay and
+                '\\cs(255,0,0)Wait  %.1f\\cr':format(delay - now) or
+                '\\cs(0,255,0)Go!   %.1f\\cr':format(timer)
         elseif settings.Show.burst[info.job] then
-            resonating[targ.id].disp_info = ''
-            resonating[targ.id].timer = 'Burst %d':format(timer)
+            reson.disp_info = ''
+            reson.timer = 'Burst %d':format(timer)
         else
-            resonating[targ.id] = nil
+            resonating[targ_id] = nil
             return
         end
-        resonating[targ.id].props = resonating[targ.id].props or
-            not resonating[targ.id].bound and colorize(resonating[targ.id].active) or 'Chainbound Lv.%d':format(resonating[targ.id].bound)
-        resonating[targ.id].elements = resonating[targ.id].elements or
-            resonating[targ.id].step > 1 and settings.Show.burst[info.job] and '(%s)':format(colorize(sc_info[resonating[targ.id].active[1]].ele)) or ''
-        skill_props:update(resonating[targ.id])
+        reson.name = res[reson.res][reson.id].name
+        reson.props = reson.props or not reson.bound and colorize(reson.active) or 'Chainbound Lv.%d':format(reson.bound)
+        reson.elements = reson.elements or reson.step > 1 and settings.Show.burst[info.job] and '(%s)':format(colorize(sc_info[reson.active[1]])) or ''
+        skill_props:update(reson)
         skill_props:show()
     elseif not visible then
         skill_props:hide()
     end
-end
+end)
 
 function check_buff(t, i)
     if t[i] == true or t[i] - os.time() > 0 then
@@ -271,32 +309,77 @@ function chain_buff(t)
     return t[163] and check_buff(t, 163)
 end
 
-windower.register_event('incoming chunk', function(id, data)
-    if id == 0x28 then
-        local actor,targets,category,param = data:unpack('Ib10b4b16', 6)
-        local effect = data:unpack('b17', 27, 6)
-        local msg = data:unpack('b10', 29, 7)
-        local prop = skillchain[data:unpack('b6', 35)]
-        category = pet_commands[msg] and 13 or category
-        local ability = skills[category] and skills[category][param]
+categories = S{
+    'weaponskill_finish',
+    'spell_finish',
+    'job_ability',
+    'mob_tp_finish',
+    'avatar_tp_finish',
+    'job_ability_unblinkable',
+}
 
-        if ability and (category ~= 4 or buffs[actor] and chain_buff(buffs[actor]) or prop) then
-            local mob = data:unpack('b32', 19, 7)
-            if prop then
-                local step = (resonating[mob] and resonating[mob].step or 1) + 1
-                local closed = step > 5 or sc_info[prop].lvl > 2 and 
-                    (sc_info[prop].lvl == 4 or resonating[mob] and check_props(resonating[mob].active, aeonic_prop(ability, actor)) == 4)
-                resonating[mob] = {en=ability.en, active={prop}, ts=os.time(), dur=11-step, wait=3, step=step, closed=closed}
-            elseif message_ids[msg] then
-                resonating[mob] = {en=ability.en, active=aeonic_prop(ability, actor), ts=os.time(), dur=10, wait=3, step=1}
-            elseif msg == 529 then
-                resonating[mob] = {en=ability.en, active=ability.skillchain, ts=os.time(), dur=ability.dur, wait=1, step=1, bound=effect}
-            end
-        elseif category == 6 and buff_dur[effect] then
-            buffs[actor] = buffs[actor] or {}
-            buffs[actor][effect] = buff_dur[effect] + os.time()
+function apply_properties(target, resource, action_id, properties, delay, step, closed, bound)
+    local clock = os.clock()
+    resonating[target] = {
+        res=resource,
+        id=action_id,
+        active=properties,
+        delay=clock+delay,
+        times=clock+delay+8-step,
+        step=step,
+        closed=closed,
+        bound=bound
+    }
+    if target == targ_id then
+        next_frame = clock
+    end
+end
+
+function action_handler(act)
+    local actionpacket = ActionPacket.new(act)
+    local category = actionpacket:get_category_string()
+
+    if not categories:contains(category) or act.param == 0 then
+        return
+    end
+
+    local actor = actionpacket:get_id()
+    local target = actionpacket:get_targets()()
+    local action = target:get_actions()()
+    local message_id = action:get_message_id()
+    local add_effect = action:get_add_effect()
+    --local basic_info = action:get_basic_info()
+    local param, resource, action_id, interruption, conclusion = action:get_spell()
+    local ability = skills[resource] and skills[resource][action_id]
+
+    if add_effect and conclusion and skillchain_ids:contains(add_effect.message_id) then
+        local skillchain = add_effect.animation:ucfirst()
+        local level = sc_info[skillchain].lvl
+        local reson = resonating[target.id]
+        local delay = ability and ability.delay or 3
+        local step = (reson and reson.step or 1) + 1
+
+        if level == 3 and reson and ability then
+            level = check_props(reson.active, aeonic_prop(ability, actor))
         end
-    elseif id == 0x29 and data:unpack('H', 25) == 206 and data:unpack('I', 9) == info.player then
+
+        local closed = step > 5 or level == 4
+
+        apply_properties(target.id, resource, action_id, {skillchain}, delay, step, closed)
+    elseif ability and (message_ids:contains(message_id) or message_id == 2 and buffs[actor] and chain_buff(buffs[actor])) then
+        apply_properties(target.id, resource, action_id, aeonic_prop(ability, actor), ability.delay or 3, 1)
+    elseif message_id == 529 then
+        apply_properties(target.id, resource, action_id, chainbound[param], 2, 1, false, param)
+    elseif message_id == 100 and buff_dur[param] then
+        buffs[actor] = buffs[actor] or {}
+        buffs[actor][param] = buff_dur[param] + os.time()
+    end
+end
+
+ActionPacket.open_listener(action_handler)
+
+windower.register_event('incoming chunk', function(id, data)
+    if id == 0x29 and data:unpack('H', 25) == 206 and data:unpack('I', 9) == info.player then
         buffs[info.player][data:unpack('H', 13)] = nil
     elseif id == 0x50 and data:byte(6) == 0 then
         info.main_weapon = data:byte(5)
@@ -311,36 +394,10 @@ windower.register_event('incoming chunk', function(id, data)
         for n=1,32 do
             local buff = data:unpack('H', n*2+7)
             if buff_dur[buff] or buff > 269 and buff < 273 then
-            --if buff_dur[buff] then
-            --    set_buff[buff] = math.floor(data:unpack('I', n*4+69)/60+1510890319.1)
-            --elseif buff > 269 and buff < 273 then
                 set_buff[buff] = true
             end
         end
         buffs[info.player] = set_buff
-    --[[elseif id == 0x076 then
-        local pos = 5
-        for i = 1,5 do
-            local id = data:unpack('I', pos)
-            if id == 0 then
-                if not info.member[i] then
-                    break
-                end
-        ]]--        buffs[info.member[i]] = nil
-        --[[        info.member[i] = nil
-            else
-                info.member[i] = id
-                local set_buff = {}
-                for n=0,31 do
-                    local buff = data:byte(pos+16+n)+256*(math.floor(data:byte(pos+8+math.floor(n/4))/4^(n%4))%4)
-                    if buff_dur[buff] then
-                        set_buff[buff] = true
-                    end
-                end
-                buffs[id] = set_buff
-            end
-            pos = pos + 48
-        end]]
     end
 end)
 
@@ -403,18 +460,16 @@ windower.register_event('load', function()
         update_weapon()
         buffs[info.player] = {}
     end
-    do_loop = do_stuff:loop(settings.UpdateFrequency)
 end)
 
 windower.register_event('unload', function()
     coroutine.close(check_weapon)
-    coroutine.close(do_loop)
 end)
 
 windower.register_event('logout', function()
     coroutine.close(check_weapon)
     check_weapon = nil
-    info = {member = {}}
+    info = {}
     resonating = {}
     buffs = {}
 end)

@@ -128,9 +128,7 @@ local function zone(val)
 end
 
 local function item(val)
-    return val ~= 0 and res.items[val]
-            and res.items[val].name
-        or '-'
+    return val ~= 0 and res.items[val] and res.items[val].name or '-'
 end
 
 local function server(val)
@@ -194,12 +192,7 @@ local function inv(bag, val)
         return '-'
     end
 
-    local items = windower.ffxi.get_items()[res.bags[bag].english:lower()]
-    if not items[val] then
-        return '-'
-    end
-
-    return item(items[val].id)
+    return item(windower.ffxi.get_items(bag, val).id)
 end
 
 local function invp(index, val, data)
@@ -1445,8 +1438,8 @@ fields.incoming[0x017] = L{
     {ctype='unsigned char',     label='Mode',               fn=chat},           -- 04
     {ctype='bool',              label='GM'},                                    -- 05
     {ctype='unsigned short',    label='Zone',               fn=zone},           -- 06   Set only for Yell
-    {ctype='char[0x10]',        label='Sender Name'},                           -- 08
-    {ctype='char*',             label='Message'},                               -- 18   Max of 150 characters
+    {ctype='char[0xF]',         label='Sender Name'},                           -- 08
+    {ctype='char*',             label='Message'},                               -- 17   Max of 150 characters
 }
 
 -- Job Info
@@ -2579,6 +2572,28 @@ fields.incoming[0x051] = L{
     {ctype='unsigned short',    label='_unknown1'},                             -- 16   May varying meaningfully, but it's unclear
 }
 
+enums[0x052] = {
+    [0x00] = 'Standard',
+    [0x01] = 'Event',
+    [0x02] = 'Event Skipped',
+    [0x03] = 'String Event',
+    [0x04] = 'Fishing',
+}
+
+func.incoming[0x052] = {}
+func.incoming[0x052].base = L{
+    {ctype='unsigned char',     label='Type',               fn=e+{0x052}},      -- 04
+}
+
+func.incoming[0x052][0x02] = L{
+    {ctype='unsigned short',    label='Menu ID'},                               -- 05
+}
+
+-- NPC Release
+fields.incoming[0x052] = function(data, type)
+    return func.incoming[0x052].base + (func.incoming[0x052][type or data:byte(5)] or L{})
+end
+
 -- Logout Time
 -- This packet is likely used for an entire class of system messages,
 -- but the only one commonly encountered is the logout counter.
@@ -3044,6 +3059,12 @@ fields.incoming[0x068] = L{
     {ctype='char*',             label='Pet Name'},                              -- 18
 }
 
+types.synth_skills = L{
+    {ctype='bit[6]',            label='Skill'},                                 -- 1A - 1D:0
+    {ctype='boolbit',           label='Skillup Allowed'},                       -- 1A - 1D:6
+    {ctype='boolbit',           label='Desynth'},                               -- 1A - 1D:7
+}
+
 -- Self Synth Result
 fields.incoming[0x06F] = L{
     {ctype='unsigned char',     label='Result',             fn=e+{'synth'}},    -- 04
@@ -3052,7 +3073,7 @@ fields.incoming[0x06F] = L{
     {ctype='unsigned char',     label='_junk1'},                                -- 07
     {ctype='unsigned short',    label='Item',               fn=item},           -- 08
     {ctype='unsigned short[8]', label='Lost Item',          fn=item},           -- 0A
-    {ctype='unsigned char[4]',  label='Skill',              fn=skill},          -- 1A
+    {ref=types.synth_skills,    count=4},
     {ctype='unsigned char[4]',  label='Skillup',            fn=div+{10}},       -- 1E
     {ctype='unsigned short',    label='Crystal',            fn=item},           -- 22
 }
@@ -3065,7 +3086,7 @@ fields.incoming[0x070] = L{
     {ctype='unsigned char',     label='_junk1'},                                -- 07
     {ctype='unsigned short',    label='Item',               fn=item},           -- 08
     {ctype='unsigned short[8]', label='Lost Item',          fn=item},           -- 0A
-    {ctype='unsigned char[4]',  label='Skill',              fn=skill},          -- 1A   Unsure about this
+    {ref=types.synth_skills,    count=4},
     {ctype='char*',             label='Player Name'},                           -- 1E   Name of the player
 }
 

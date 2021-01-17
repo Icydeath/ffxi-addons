@@ -28,6 +28,17 @@ packets = require('packets')
 
 ]]
 
+spell_priorities = {
+	'Lightning',
+	'Ice',
+	'Fire',
+	'Wind',
+	'Water',
+	'Earth',
+	'Dark',
+	'Light',
+}
+
 --[[ DEBUGGING ]]--
 debug_exampleOnly = false -- Setting this to true will prevent all /maa macros from actually casting spells!!! You will only see the final output printed in the console
 debug_level = 0  -- 0: Disabled, 1: user, 2: dev, 3: experimental
@@ -224,9 +235,10 @@ windower.register_event('addon command', function(...)
 
 	elseif arg[1] == 'help' then
 		print('- MagicAssistant (maa) main commands -')
-		print('-  maa ["spell base name"] [tier]                Example:  maa Fire 4,        maa Cure 3 t,   maa Aspir 3 bt')
-		print('-  maa mb [spell/helix/ga/ja/ra/nin] [tier]      Example:  maa mb spell 4 t,    maa mb nin 2,    maa mb helix 2')
-		print('-  maa force [spell/helix/ga/ja/ra/nin] [tier]   Example:  maa force spell 4, maa force nin 3, maa force helix 2')
+		print('-  maa ["spell base name"] [tier] [t](optional) Example:  maa Fire 4, maa Cure 3 t, maa Aspir 3 bt')
+		print('-  maa mb [spell/helix/ga/ja/ra/nin] [tier] [t](optional) Example:  maa mb spell 4 t, maa mb nin 2, maa mb helix 2')
+		print('-  maa force [spell/helix/ga/ja/ra/nin] [tier] [t](optional) Example:  maa force spell 4, maa force nin 3, maa force helix 2')
+		print('-  maa nap [spell/helix/ga/ja/ra/nin] [tier] [t](optional) Example:  maa mb spell 4 t, maa mb nin 2, maa mb helix 2')
 		print(' - Other commands: maa [example], ')
 	elseif arg[1] == 'example' then
 		local sc  = math.random(1, 16)
@@ -1201,17 +1213,6 @@ anyNuke = {
 	english = 'AnyElement', elements = {'Lightning', 'Ice', 'Fire', 'Wind', 'Water', 'Earth'}
 }
 
-spell_priorities = {
-	'Lightning',
-	'Ice',
-	'Fire',
-	'Wind',
-	'Water',
-	'Earth',
-	'Dark',
-	'Light',
-}
-
 spell_strengths = {
 	['Fire'] = {weakness = 'Water'},
 	['Ice'] = {weakness = 'Fire'},
@@ -1235,14 +1236,14 @@ storms = {
 }
 
 elementSpellTypes = {
-	['Lightning'] = {spell = 'Thunder', helix = 'Ionohelix', ga = 'Thundaga', ja = 'Thundaja', ra = 'Thundara', nin = 'Raiton'},
-	['Ice'] = {spell = 'Blizzard', helix = 'Cryohelix', ga = 'Blizzaga', ja = 'Blizzaja', ra = 'Blizzara', nin = 'Hyoton'},
-	['Fire'] = {spell = 'Fire', helix = 'Pyrohelix', ga = 'Firaga', ja = 'Firaja', ra = 'Fira', nin = 'Katon'},
-	['Wind'] = {spell = 'Aero', helix = 'Anemohelix', ga = 'Aeroga', ja = 'Aeroja', ra = 'Aera', nin = 'Huton'},
-	['Water'] = {spell = 'Water', helix = 'Hydrohelix', ga = 'Waterga', ja = 'Waterja', ra = 'Watera', nin = 'Suiton'},
-	['Earth'] = {spell = 'Stone', helix = 'Geohelix', ga = 'Stonega', ja = 'Stoneja', ra = 'Stonera', nin = 'Doton'},
-	['Dark'] = {spell = nil, helix = 'Noctohelix', ga = nil, ja = nil, ra = nil, nin = nil},
-	['Light'] = {spell = nil, helix = 'Luminohelix', ga = nil, ja = nil, ra = nil, nin = nil},
+	['Fire'] = {spell = 'Fire', helix = 'Pyrohelix', ga = 'Firaga', ja = 'Firaja', ra = 'Fira', nin = 'Katon'}, -- 3
+	['Ice'] = {spell = 'Blizzard', helix = 'Cryohelix', ga = 'Blizzaga', ja = 'Blizzaja', ra = 'Blizzara', nin = 'Hyoton'}, -- 2
+	['Lightning'] = {spell = 'Thunder', helix = 'Ionohelix', ga = 'Thundaga', ja = 'Thundaja', ra = 'Thundara', nin = 'Raiton'}, -- 1
+	['Wind'] = {spell = 'Aero', helix = 'Anemohelix', ga = 'Aeroga', ja = 'Aeroja', ra = 'Aera', nin = 'Huton'}, -- 4
+	['Water'] = {spell = 'Water', helix = 'Hydrohelix', ga = 'Waterga', ja = 'Waterja', ra = 'Watera', nin = 'Suiton'}, -- 5
+	['Earth'] = {spell = 'Stone', helix = 'Geohelix', ga = 'Stonega', ja = 'Stoneja', ra = 'Stonera', nin = 'Doton'}, -- 6
+	['Dark'] = {spell = nil, helix = 'Noctohelix', ga = nil, ja = nil, ra = nil, nin = nil}, -- 7
+	['Light'] = {spell = nil, helix = 'Luminohelix', ga = nil, ja = nil, ra = nil, nin = nil}, -- 8
 }
 
 validMBMacroTargets = {

@@ -1,10 +1,12 @@
 _addon.author = 'Ivaar, modified by icy'
 _addon.commands = {'AutoGEO','geo','ageo'}
 _addon.name = 'AutoGEO'
-_addon.version = '2020.5.25'
+_addon.version = '2020.11.15'
 
 --[[ 
-5/25: Some QoL changes added
+12/15/2020: Automatically uses full circle when out of range of bubble.
+10/24/2020: Automatically turns off when you leave a battlefield
+5/25/2020: Some QoL changes added
 	- updated the help info [//ageo]
 	- added the [set] command, see help for info
 	- added support for partial spell names ie: [//ageo indi attun]  will set indi to Indi-Attunement
@@ -21,6 +23,8 @@ default = {
     geo = 'Geo\-Precision',
     indi = 'Indi\-Precision',
 	blaze = false,
+	fullcircle = true,
+	fullcircle_dist = 39,
     entrust = {},
     min_ws_hp = 20,
     max_ws_hp = 99,
@@ -45,6 +49,9 @@ is_moving = false
 nexttime = os.clock()
 del = 0
 timers = {entrust={},haste={},refresh={}}
+
+ignore_buff_loss_zones = L{291, 289, 288}
+zone = nil
 
 equipment = L{
     [27192] = 'Bagua Pants',
@@ -178,9 +185,23 @@ function prerender()
         local target = windower.ffxi.get_mob_by_target('bt')
         local recast = math.random(settings.recast.indi.min,settings.recast.indi.max)
 
-        local geo = settings.geo and geo_spells:with('en', settings.geo)
+		-- FULL CIRCLE
+		local geo = settings.geo and geo_spells:with('en', settings.geo)
+		if geo and settings.fullcircle and luopan then
+			if not settings.fullcircle_dist then
+				settings.fullcircle_dist = 39
+			end
+			
+			if luopan.distance:sqrt() > settings.fullcircle_dist then
+				use_JA('Full Circle','<me>')
+				return
+			end
+		end
+		
+		-- GEO SPELL
         if geo and not luopan and spell_recasts[geo.id] <= 0 and play.vitals.mp >= geo.mp_cost and (geo.targets == 5 or target and target.hpp > 0) then
-            if settings.blaze and abil_recasts[247] and abil_recasts[247] <= 0 then -- use blaze
+            -- BLAZE
+			if settings.blaze and abil_recasts[247] and abil_recasts[247] <= 0 then
 				use_JA('Blaze of Glory','<me>')
 			else
 				use_MA(geo.en, geo.targets == 5 and '<me>' or '<bt>')
@@ -188,12 +209,14 @@ function prerender()
             return
         end
 
+		-- INDI SPELL
         local indi = settings.indi and geo_spells:with('en', settings.indi)
         if indi and spell_recasts[indi.id] <= 0 and play.vitals.mp >= indi.mp_cost and (not timers.indi or timers.indi.spell ~= indi.en or os.time()-timers.indi.ts+recast>0) then
             use_MA(indi.en,'<me>')
             return
         end
 
+		-- ENTRUST PLAYER
         local entrust = settings.entrust.target and geo_spells:with('en', settings.entrust.ma)
         if not JA_WS_lock and entrust and valid_target(settings.entrust.target,20) and abil_recasts[93] and spell_recasts[entrust.id] <= 0 and play.vitals.mp >= entrust.mp_cost and 
             (not timers.entrust[settings.entrust.target] or timers.entrust[settings.entrust.target].spell ~= entrust.en or os.time()-timers.entrust[settings.entrust.target].ts+recast>0) then
@@ -205,6 +228,7 @@ function prerender()
             return
         end
 
+		-- BUFFS
         if settings.buffs.haste:length()+settings.buffs.refresh:length() ~= 0 then
             recast = math.random(settings.recast.buff.min,settings.recast.buff.max)
             for key,targets in pairs(settings.buffs) do
@@ -260,6 +284,12 @@ function addon_command(...)
 				settings.blaze = true
 			elseif commands[2] == 'off' then
 				settings.blaze = false
+			end
+		elseif (commands[1] == 'fullcircle' or commands[1] == 'fc') and commands[2] then
+			if commands[2] == 'on' then
+				settings.fullcircle = true
+			elseif commands[2] == 'off' then
+				settings.fullcircle = false
 			end
         elseif commands[1] == 'entrust' and commands[2] then
             if commands[3] then
@@ -451,6 +481,8 @@ function help()
 	addon_message()
 	addon_message('OTHER', 200)
 	addon_message(' //ageo active - display settings in textbox')
+	addon_message(' //ageo blaze [on/off] - toggle the use of ability "Blaze of Glory"')
+	addon_message(' //ageo fullcircle [on/off] - (default: on) toggle the use of "Full Circle" when you are 40+ yalms away.')
 	addon_message(' //ageo save -- saves settings')
 	addon_message(' //ageo [on/off] -- turn actions on/off')
 end
@@ -569,11 +601,14 @@ function unloaded()
 end
 
 function loaded()
+	zone = windower.ffxi.get_info().zone
+	
     if not user_events then
         user_events = {}
         user_events.prerender = windower.register_event('prerender', prerender)
         user_events.zone_change = windower.register_event('zone change', reset)
         user_events.status_change = windower.register_event('status change', status_change)
+		--user_events.lose_buff = windower.register_event('lose buff', status_change)
         geo_status:text(display_box())
         geo_status:show()
         coroutine.schedule(load_chunk_event,0.1)
@@ -587,6 +622,12 @@ function check_job()
     else
         unloaded()
     end
+end
+
+function lose_buff(buff_id)
+	if buff_id == 143 and not ignore_buff_loss_zones:contains(zone) then
+		reset()
+	end
 end
 
 windower.register_event('addon command', addon_command)

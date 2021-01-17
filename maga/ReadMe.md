@@ -1,9 +1,12 @@
-**Author:**  Cairthenn - modded by Icy<br>
+**Author:**  Cairthenn - modified by Icy<br>
 **Version:**  1.0.0.5<br>
-**Date:** 10/6/2019<br>
+**Date:** 11/9/2019<br>
 
 #### UPDATED BY ICY ####
 * Added .wav alarms for when you run out of stones and when your required augments are met and its waiting for you to respond.
+* Added to the display window to show the augment added by sets.
+* Adjusted delset cmd, it now removes the set # passed in and empties set #1 if passed in to be deleted.
+----
 
 # MAGA (Make Augments Great Again) #
 
