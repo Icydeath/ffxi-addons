@@ -43,7 +43,7 @@
             </text>
         </display>
         <fern>true</fern>
-        <pellucid>true</pellucid>
+        <pellucid>false</pellucid>
         <profiles>
             <default>
 
@@ -89,6 +89,6 @@
             </text>
         </seeking>
         <style>melee</style>
-        <taupe>false</taupe>
+        <taupe>true</taupe>
     </global>
 </settings>

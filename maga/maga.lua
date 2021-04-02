@@ -25,9 +25,9 @@
 -- SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 _addon.name = 'MAGA'
-_addon.author = 'Cair, modified by Icy'
+_addon.author = 'Cair, modded by Icy'
 _addon.commands = {'MAGA'}
-_addon.version = '1.0.0.5'
+_addon.version = '1.0.0.6'
 
 --[[ Mods by Icy
  - Added audio alerts for when you run out of stones and when your augment condition has been met.
@@ -75,10 +75,12 @@ defaults.display.bg.blue = 0
 defaults.display.padding = 3
 
 text_base_string = L{
-    'Augment #: ${_index|-}',
+    'Augment #: ${_index|-} | Delay: ${_delay|-}',
     '${_augment|-}',
 	'',
-	'Added Sets:',
+	'Style: ${_style|-}',
+	'Pellucid: ${_pellucid|-} | Taupe: ${_taupe|-} | Fern: ${_fern|-}',
+	'Sets:',
 	'${_augmentsets|-}'
 }:concat('\n')
 	
@@ -88,6 +90,11 @@ maga_tb = texts.new(text_base_string,settings.display)
 maga_tb._index = history:length()
 maga_tb._augment = nil
 maga_tb._augmentsets = nil
+maga_tb._style = settings.style
+maga_tb._pellucid = settings.pellucid
+maga_tb._taupe = settings.taupe
+maga_tb._fern = settings.fern
+maga_tb._delay = settings.delay
 maga_tb:show()
 
 status = {
@@ -696,8 +703,6 @@ function help()
     
 end
 
-
-
 handlers = {
     cancel = cancel,
     continue = continue,
@@ -724,7 +729,6 @@ handlers = {
 
 
 windower.register_event('unload', cancel)
-
 windower.register_event('addon command', function (...)
     local cmd  = (...) and (...):lower()
     local args = {select(2, ...)}
@@ -736,6 +740,10 @@ windower.register_event('addon command', function (...)
     else
         error("unknown command %s":format(cmd or ""))
     end
-	
+	maga_tb._style = to_string(settings.style)
+	maga_tb._pellucid = to_string(settings.style)
+	maga_tb._taupe = to_string(settings.taupe)
+	maga_tb._fern = to_string(settings.fern)
+	maga_tb._delay = to_string(settings.delay)
 	maga_tb._augmentsets = to_string(augments)
 end)
