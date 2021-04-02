@@ -54,6 +54,8 @@ settings = config.load(defaults)
 
 tracker = texts.new(settings.Track, settings.Tracker, settings)
 
+slim = false
+
 do
     config.register(settings, function(settings)
         tracker:text(settings.Track)
@@ -290,8 +292,10 @@ function search(query, export)
                end
           end
      end
-
-    log('Searching: '..query:concat(' '))
+	
+	if not slim then
+		log('Searching: '..query:concat(' '))
+	end
 
     local no_results   = true
     local sorted_names = global_storages:keyset():sort()
@@ -380,7 +384,7 @@ function search(query, export)
         end
     end
 
-    if total_quantity > 0 then
+    if not slim and total_quantity > 0 then
         log('Total: ' .. total_quantity)
     end
 
@@ -598,7 +602,12 @@ handle_command = function(...)
 end
 
 windower.register_event('unhandled command', function(command, ...)
-    if command:lower() == 'find' then
+    if command:lower() == 'find' or  command:lower() == 'findslim' then
+		if command:lower() == 'findslim' then
+			slim = true
+			command = 'find'
+		end
+		
         local me = windower.ffxi.get_mob_by_target('me')
         if me then
             handle_command(':%s':format(me.name), ...)

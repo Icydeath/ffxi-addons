@@ -9,8 +9,17 @@ bit = require('bit')
 config = require('config')
 
 default = {}
-default.buy_list = {20,} -- key items will be purchased in this order until you are unable to buy more
+default.buy_list = T{ -- key items will be purchased in this order until you are unable to buy more
+	{id = 23, name = 'Maiden phantom gem'},
+} 
 settings = config.load(default)
+
+function print_buylist()
+	windower.add_to_chat(100, '==CURRENT BUY LIST==')
+	for i, e in ipairs(settings.buy_list) do
+		windower.add_to_chat(100, tostring(e.id)..' : '..e.name) --htmb_map[e.id].name
+	end
+end
 
 htmb_map = {
      [0] = {name = 'Shadow Lord phantom gem',      cost = 10},
@@ -54,8 +63,9 @@ math.has_bit = function(mask, offset)
 end
 
 function get_option_index()
-    for x = 1, #settings.buy_list do
-        local option = settings.buy_list[x]
+	if #settings.buy_list == 0 then return end
+    for x,e in pairs(settings.buy_list) do
+        local option = settings.buy_list[x].id
         if htmb_map[option] and htmb_map[option].cost <= merit_points and menu_options:has_bit(option) then
             return option
         end
@@ -81,13 +91,6 @@ function print_help()
 	--windower.add_to_chat(170, '')
 end
 
-function print_buylist()
-	windower.add_to_chat(100, '==CURRENT BUY LIST==')
-	for key,val in ipairs(settings.buy_list) do
-		windower.add_to_chat(100, val..' : '..htmb_map[val].name)
-	end
-end
-
 function print_options()
 	windower.add_to_chat(200, '==OPTIONS==')
 	for key,val in ipairs(htmb_map) do
@@ -110,10 +113,12 @@ windower.register_event('outgoing chunk', function(id, data, modified, injected,
         local zone_id, menu_id = data:unpack('H2', 17)
         if htmb_npcs[zone_id] and menu_id == htmb_npcs[zone_id].menu_id and data:byte(15) == 0 then
             local new_option = get_option_index()
-            if data:unpack('I', 9) == 0x40000000 and new_option then
-                initiate_npc(htmb_npcs[zone_id].name)
-                return data:sub(1,8)..string.char(0x02,new_option,0,0)..data:sub(13)
-            end
+			if new_option then
+				if data:unpack('I', 9) == 0x40000000 and new_option then
+					initiate_npc(htmb_npcs[zone_id].name)
+					return data:sub(1,8)..string.char(0x02,new_option,0,0)..data:sub(13)
+				end
+			end
         end
     end
 end)
@@ -123,34 +128,7 @@ windower.register_event('addon command', function(...)
 	if commands[1] then
 		commands[1] = commands[1]:lower()
 		
-		if tonumber(commands[2]) then 
-			if commands[1] == 'add' or commands[1] == 'a' then
-				local has_item = false
-				for key,val in ipairs(settings.buy_list) do
-					if val == tonumber(commands[2]) then
-						has_item = true
-					end
-				end
-				if not has_item then
-					table.insert(settings.buy_list, tonumber(commands[2]))
-					settings:save()
-					windower.add_to_chat(100, 'HTMB: Added "' .. htmb_map[tonumber(commands[2])].name .. '"')
-				end
-			elseif commands[1] == 'remove' or commands[1] == 'r' then
-				local r_key
-				for key,val in ipairs(settings.buy_list) do
-					if val == tonumber(commands[2]) then
-						r_key = key
-					end
-				end
-				if r_key then
-					settings.buy_list[r_key] = nil
-					settings:save()
-					windower.add_to_chat(100, 'HTMB: Removed "' .. htmb_map[tonumber(commands[2])].name .. '"')
-				end
-			end
-			
-		elseif commands[1] == 'help' or commands[1] == 'h' then
+		if commands[1] == 'help' or commands[1] == 'h' then
 			print_help()
 			
 		elseif commands[1] == 'list' or commands[1] == 'l' then
@@ -158,6 +136,47 @@ windower.register_event('addon command', function(...)
 				print_buylist()
 			else
 				print_options()
+			end
+		elseif commands[2] then 
+			if commands[1] == 'add' or commands[1] == 'a' then
+				if tonumber(commands[2]) and not settings.buy_list:with('id', commands[2]) then
+					settings.buy_list:append({id=tonumber(commands[2]), name=htmb_map[tonumber(commands[2])].name})
+					settings:save()
+					windower.add_to_chat(100, 'HTMB: Added "' .. htmb_map[tonumber(commands[2])].name .. '"')
+				else
+					for i,e in ipairs(htmb_map) do
+						if e.name:lower():startswith(commands[2]:lower()) then
+							if not settings.buy_list:with('id', i) then
+								settings.buy_list:append({id=i, name=e.name})
+								settings:save('All')
+								windower.add_to_chat(100, 'HTMB: Added "' .. e.name .. '"')
+								break
+							end
+						end
+					end
+				end
+				
+			elseif commands[1] == 'remove' or commands[1] == 'r' then
+				if tonumber(commands[2]) then
+					local entry = settings.buy_list:with('id', tonumber(commands[2]))
+					if entry then
+						settings.buy_list:delete(entry)
+						settings:save()
+						windower.add_to_chat(100, 'HTMB: Removed "' .. entry.name .. '"')
+					end
+				else
+					for i,e in ipairs(htmb_map) do
+						if e.name:lower():startswith(commands[2]:lower()) then
+							local entry = settings.buy_list:with('id', i)
+							if entry then
+								settings.buy_list:delete(entry)
+								settings:save('All')
+								windower.add_to_chat(100, 'HTMB: Removed "' .. entry.name .. '"')
+								break
+							end
+						end
+					end
+				end
 			end
 		end
 	else

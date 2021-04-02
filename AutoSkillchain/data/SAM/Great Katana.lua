@@ -1,16 +1,16 @@
 return {
 	{
-		['name'] = 'radiance',
-		['repeat'] = false,
+		['name'] = '4step radiance',
+		['repeat'] = true,
 		['ws'] = L{'Tachi: Fudo','Tachi: Kasha','Tachi: Shoha','Tachi: Fudo'}
 	},
 	{
-		['name'] = '3step',
+		['name'] = '3step radiance',
 		['repeat'] = true,
 		['ws'] = L{'Tachi: Shoha','Tachi: Kasha','Tachi: Fudo'}
 	},
 	{
-		['name'] = 'long radiance',
+		['name'] = '5step radiance',
 		['repeat'] = true,
 		['ws'] = L{'Tachi: Shoha','Tachi: Gekko','Tachi: Kasha','Tachi: Shoha','Tachi: Fudo'}
 	},
@@ -31,7 +31,7 @@ return {
 	},
 	{
 		['name'] = 'distortion',
-		['repeat'] = false,
+		['repeat'] = true,
 		['ws'] = L{'Tachi: Enpi','Tachi: Enpi'}
 	},
 	{

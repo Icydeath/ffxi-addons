@@ -10,6 +10,7 @@ function parse_action_packet(act)
     end
     act.actor = player_info(act.actor_id)
     act.action = get_spell(act) -- Pulls the resources line for the action
+    act.actor.name = act.actor and act.actor.name and string.gsub(act.actor.name,'-', string.char(0x81,0x7C)) --fix for ffxi chat splits on trusts with -
     
     if not act.action then
         return act
@@ -53,7 +54,7 @@ function parse_action_packet(act)
                         if r.message ~= 0 and m.message ~= 0 then
                             if m.message == r.message or (condensecrits and S{1,67}:contains(m.message) and S{1,67}:contains(r.message)) then 
                                 if (m.effect == r.effect) or (S{1,67}:contains(m.message) and S{0,2,4}:contains(m.effect) and S{0,2,4}:contains(r.effect)) then  -- combine kicks and crits
-                                     if m.reaction == r.reaction or (S{8,10}:contains(m.reaction) and S{8,10}:contains(r.reaction)) then  -- combine hits and guards
+                                     if m.reaction == r.reaction then --or (S{8,10}:contains(m.reaction) and S{8,10}:contains(r.reaction)) then  -- combine hits and guards
 --                                        windower.add_to_chat(8, 'Condensed: '..m.message..':'..r.message..' - '..m.effect..':'..r.effect..' - '..m.reaction..':'..r.reaction)
                                         r.number = r.number + 1
                                         if not sumdamage then
@@ -144,7 +145,7 @@ function parse_action_packet(act)
         if condensetargets and i > 1 then
             for n=1,i-1 do
                 local m = act.targets[n]
---                windower.add_to_chat(8,m.actions[1].message..'  '..v.actions[1].message)
+                --windower.add_to_chat(8,m.actions[1].message..'  '..v.actions[1].message)
                 if (v.actions[1].message == m.actions[1].message and v.actions[1].param == m.actions[1].param) or
                     (message_map[m.actions[1].message] and message_map[m.actions[1].message]:contains(v.actions[1].message) and v.actions[1].param == m.actions[1].param) or
                     (message_map[m.actions[1].message] and message_map[m.actions[1].message]:contains(v.actions[1].message) and v.actions[1].param == m.actions[1].param) then
@@ -159,17 +160,18 @@ function parse_action_packet(act)
     for i,v in pairs(act.targets) do
         for n,m in pairs(v.actions) do
             if m.message ~= 0 and res.action_messages[m.message] ~= nil then
+                local col = res.action_messages[m.message].color
                 local targ = assemble_targets(act.actor,v.target,act.category,m.message)
-                local color = color_filt(res.action_messages[m.message].color,v.target[1].id==Self.id)
+                local color = color_filt(col,v.target[1].id==Self.id)
                 if m.reaction == 11 and act.category == 1 then m.simp_name = 'parried by'
-                elseif m.reaction == 12 and act.category == 1 then m.simp_name = 'blocked by'
-                elseif m.message == 1 then m.simp_name = 'hit'
+                --elseif m.reaction == 12 and act.category == 1 then m.simp_name = 'blocked by'
+                elseif m.message == 1 and (act.category == 1 or act.category == 11) then m.simp_name = 'hit'
                 elseif m.message == 15 then m.simp_name = 'missed'
                 elseif m.message == 29 or m.message == 84 then m.simp_name = 'is paralyzed'
                 elseif m.message == 30 then m.simp_name = 'anticipated by'
                 elseif m.message == 31 then m.simp_name = 'absorbed by'
                 elseif m.message == 32 then m.simp_name = 'dodged by'
-                elseif m.message == 67 then m.simp_name = 'critical hit'
+                elseif m.message == 67 and (act.category == 1 or act.category == 11) then m.simp_name = 'critical hit'
                 elseif m.message == 106 then m.simp_name = 'intimidated by'
                 elseif m.message == 153 then m.simp_name = act.action.name..' fails'
                 elseif m.message == 244 then m.simp_name = 'Mug fails'
@@ -181,6 +183,7 @@ function parse_action_packet(act)
                 elseif m.message == 576 then m.simp_name = 'RA hit squarely'
                 elseif m.message == 577 then m.simp_name = 'RA struck true'
                 elseif m.message == 157 then m.simp_name = 'Barrage'
+                elseif m.message == 76 then m.simp_name = 'No targets within range'
                 elseif m.message == 77 then m.simp_name = 'Sange'
                 elseif m.message == 360 then m.simp_name = act.action.name..' (JA reset)'
                 elseif m.message == 426 or m.message == 427 then m.simp_name = 'Bust! '..act.action.name
@@ -188,7 +191,7 @@ function parse_action_packet(act)
                 elseif m.message == 437 or m.message == 438 then m.simp_name = act.action.name..' (JAs and TP)'
                 elseif m.message == 439 or m.message == 440 then m.simp_name = act.action.name..' (SPs, JAs, TP, and MP)'
                 elseif T{252,265,268,269,271,272,274,275,379,650}:contains(m.message) then m.simp_name = 'Magic Burst! '..act.action.name
-                elseif not act.action then 
+                elseif not act.action then
                    m.simp_name = ''
                    act.action = {}
                 else m.simp_name = act.action.name or ''
@@ -220,7 +223,13 @@ function parse_action_packet(act)
                 if m.message == 93 or m.message == 273 then
                     m.status=color_it('Vanish',color_arr['statuscol'])
                 elseif m.message == 522 and simplify then
-                    targ = targ..' (stunned)'
+                    targ = targ..' ('..color_it('stunned',color_arr['statuscol'])..')'
+                elseif m.message == 416 and simplify then
+                    targ = targ..' ('..color_it('Magic Attack Boost and Magic Defense Boost',color_arr['statuscol'])..')'
+                elseif m.message == 1023 and simplify then
+                    targ = targ..' ('..color_it('attacks and defenses enhanced',color_arr['statuscol'])..')'
+                elseif m.message == 762 and simplify then
+                    targ = targ..' ('..color_it('all status parameters boosted',color_arr['statuscol'])..')'
                 elseif T{158,188,245,324,592,658}:contains(m.message) and simplify then
                     -- When you miss a WS or JA. Relevant for condensed battle.
                     m.status = 'Miss' --- This probably doesn't work due to the if a==nil statement below.
@@ -229,7 +238,11 @@ function parse_action_packet(act)
                 elseif m.message == 655 or m.message == 656 then
                     m.status = color_it('Completely Resists',color_arr['statuscol'])
                 elseif m.message == 85 or m.message == 284 then
-                    m.status = color_it('Resists',color_arr['statuscol'])
+                    if m.unknown == 2 then
+                        m.status = color_it('Resists!',color_arr['statuscol'])
+                    else
+                        m.status = color_it('Resists',color_arr['statuscol'])
+                    end
                 elseif m.message == 351 then
                     m.status = color_it('status ailments',color_arr['statuscol'])
                     m.simp_name = color_it('remedy',color_arr['itemcol'])
@@ -245,7 +258,7 @@ function parse_action_packet(act)
                 end
                 local msg,numb = simplify_message(m.message)
                 if not color_arr[act.actor.owner or act.actor.type] then windower.add_to_chat(123,'Battlemod error, missing filter:'..tostring(act.actor.owner)..' '..tostring(act.actor.type)) end
-                if m.fields.status then numb = m.status else numb = pref_suf((m.cparam or m.param),m.message) end
+                if m.fields.status then numb = m.status else numb = pref_suf((m.cparam or m.param),m.message,act.actor.damage,col) end
     
                 if msg and m.message == 70 and not simplify then -- fix pronoun on parry
                     if v.target[1].race == 0 then
@@ -254,7 +267,24 @@ function parse_action_packet(act)
                         msg = msg:gsub(' his ',' her ')
                     end
                 end
-                local prefix = (bit.band(m.unknown,1)==1 and "Cover! " or "")..(bit.band(m.unknown,2)==1 and "Resist! " or "")..(bit.band(m.unknown,4)==1 and "Magic Burst! " or "")..(bit.band(m.unknown,8)==1 and "Immunobreak! " or "")..(bit.band(m.unknown,16)==1 and "Critical Hit! " or "")
+                
+                local reaction_lookup = reaction_offsets[act.category] and (m.reaction - reaction_offsets[act.category]) or 0
+                local has_line_break = string.find(res.action_messages[m.message].en, '${lb}') and true or false
+                local prefix = (not has_line_break or simplify) and S{1,3,4,6,11,13,14,15}:contains(act.category) and (bit.band(m.unknown,1)==1 and "Cover! " or "")
+                                ..(bit.band(m.unknown,4)==4 and "Magic Burst! " or "") --Used on Swipe/Lunge MB
+                                ..(bit.band(m.unknown,8)==8 and "Immunobreak! " or "") --Unused? Displayed directly on message
+                                ..(bit.band(m.unknown,16)==16 and "Critical Hit! " or "") --Unused? Crits have their own message
+                                ..(reaction_lookup == 4 and "Blocked! " or "")
+                                ..(reaction_lookup == 2 and "Guarded! " or "")
+                                ..(reaction_lookup == 3 and S{3,4,6,11,13,14,15}:contains(act.category) and "Parried! " or "") or "" --Unused? They are send the same as missed
+                local prefix2 = has_line_break and S{1,3,4,6,11,13,14,15}:contains(act.category) and (bit.band(m.unknown,1)==1 and "Cover! " or "")
+                                ..(bit.band(m.unknown,2)==2 and "Resist! " or "")
+                                ..(bit.band(m.unknown,4)==4 and "Magic Burst! " or "") --Used on Swipe/Lunge MB
+                                ..(bit.band(m.unknown,8)==8 and "Immunobreak! " or "") --Unused? Displayed directly on message
+                                ..(bit.band(m.unknown,16)==16 and "Critical Hit! " or "") --Unused? Crits have their own message
+                                ..(reaction_lookup == 4 and "Blocked! " or "")
+                                ..(reaction_lookup == 2 and "Guarded! " or "")
+                                ..(reaction_lookup == 3 and S{3,4,6,11,13,14,15}:contains(act.category) and "Parried! " or "") or "" --Unused? They are send the same as missed
                 windower.add_to_chat(color,prefix..make_condensedamage_number(m.number)..( (msg or tostring(m.message))
                     :gsub('${spell}',color_it(act.action.spell or 'ERROR 111',color_arr.spellcol))
                     :gsub('${ability}',color_it(act.action.ability or 'ERROR 112',color_arr.abilcol))
@@ -265,7 +295,7 @@ function parse_action_packet(act)
                     :gsub('${numb}',numb or 'ERROR 116')
                     :gsub('${actor}',color_it((act.actor.name or 'ERROR 117' ) .. (act.actor.owner_name or "") ,color_arr[act.actor.owner or act.actor.type]))
                     :gsub('${target}',targ)
-                    :gsub('${lb}','\7')
+                    :gsub('${lb}','\7'..prefix2)
                     :gsub('${number}',act.action.number or m.param)
                     :gsub('${status}',m.status or 'ERROR 120')
                     :gsub('${gil}',m.param..' gil')))
@@ -275,7 +305,8 @@ function parse_action_packet(act)
             end
             if m.has_add_effect and m.add_effect_message ~= 0 and add_effect_valid[act.category] then
                 local targ = assemble_targets(act.actor,v.target,act.category,m.add_effect_message)
-                local color = color_filt(res.action_messages[m.add_effect_message].color,v.target[1].id==Self.id)
+                local col = res.action_messages[m.add_effect_message].color
+                local color = color_filt(col,v.target[1].id==Self.id)
                 if m.add_effect_message > 287 and m.add_effect_message < 303 then m.simp_add_name = skillchain_arr[m.add_effect_message-287]
                 elseif m.add_effect_message > 384 and m.add_effect_message < 399 then m.simp_add_name = skillchain_arr[m.add_effect_message-384]
                 elseif m.add_effect_message > 766 and m.add_effect_message < 769 then m.simp_add_name = skillchain_arr[m.add_effect_message-752]
@@ -285,7 +316,7 @@ function parse_action_packet(act)
                 else m.simp_add_name = 'AE'
                 end
                 local msg,numb = simplify_message(m.add_effect_message)
-                if m.add_effect_fields.status then numb = m.add_effect_status else numb = pref_suf((m.cadd_effect_param or m.add_effect_param),m.add_effect_message) end
+                if m.add_effect_fields.status then numb = m.add_effect_status else numb = pref_suf((m.cadd_effect_param or m.add_effect_param),m.add_effect_message,act.actor.damage,col) end
                 if not act.action then
 --                    windower.add_to_chat(color, 'act.action==nil : '..m.message..' - '..m.add_effect_message..' - '..msg)
                 else
@@ -308,24 +339,29 @@ function parse_action_packet(act)
             end
             if m.has_spike_effect and m.spike_effect_message ~= 0 and spike_effect_valid[act.category] then
                 local targ = assemble_targets(act.actor,v.target,act.category,m.spike_effect_message)
-                local color = color_filt(res.action_messages[m.spike_effect_message].color,act.actor.id==Self.id)
+                local col = res.action_messages[m.spike_effect_message].color
+                local color = color_filt(col,act.actor.id==Self.id)
                 
+                local actor = act.actor
                 if m.spike_effect_message == 14 then 
                     m.simp_spike_name = 'from counter'
                 elseif T{33,606}:contains(m.spike_effect_message) then
                     m.simp_spike_name = 'counter'
+                    actor = v.target[1] --Counter dmg is done by the target, fix for coloring the dmg
                 elseif m.spike_effect_message == 592 then
                     m.simp_spike_name = 'missed counter'
                 elseif m.spike_effect_message == 536 then
                     m.simp_spike_name = 'retaliation'
+                    actor = v.target[1] --Retaliation dmg is done by the target, fix for coloring the dmg
                 elseif m.spike_effect_message == 535 then
                     m.simp_spike_name = 'from retaliation'
                 else
                     m.simp_spike_name = 'spikes'
+                    actor = v.target[1] --Spikes dmg is done by the target, fix for coloring the dmg
                 end
 
                 local msg = simplify_message(m.spike_effect_message)
-                if m.spike_effect_fields.status then numb = m.spike_effect_status else numb = pref_suf((m.cspike_effect_param or m.spike_effect_param),m.spike_effect_message) end
+                if m.spike_effect_fields.status then numb = m.spike_effect_status else numb = pref_suf((m.cspike_effect_param or m.spike_effect_param),m.spike_effect_message,actor.damage,col) end
                 windower.add_to_chat(color,make_condensedamage_number(m.spike_effect_number)..(msg
                     :gsub('${spell}',act.action.spell or 'ERROR 142')
                     :gsub('${ability}',act.action.ability or 'ERROR 143')
@@ -348,8 +384,8 @@ function parse_action_packet(act)
     return act
 end
 
-function pref_suf(param,msg_ID)
-    local outstr = tostring(param)
+function pref_suf(param,msg_ID,actor_dmg,col)
+    local outstr = (col == 'D' or dmg_drain_msg:contains(msg_ID)) and color_it(tostring(param),color_arr[actor_dmg]) or tostring(param)
     if res.action_messages[msg_ID] and res.action_messages[msg_ID].prefix then
         outstr = res.action_messages[msg_ID].prefix..' '..outstr
     end
@@ -367,11 +403,11 @@ function simplify_message(msg_ID)
         if T{93,273,522,653,654,655,656,85,284,75,114,156,189,248,283,312,323,336,351,355,408,422,423,425,453,659,158,245,324,658}:contains(msg_ID) then
             fields.status = true
         end
-        if msg_ID == 31 then
+        if msg_ID == 31 or msg_ID == 798 or msg_ID == 799 then
             fields.actor = true
-        end    
+        end
         if (msg_ID > 287 and msg_ID < 303) or (msg_ID > 384 and msg_ID < 399) or (msg_ID > 766 and msg_ID < 771) or
-            T{129,152,161,162,163,165,229,384,453,603,652}:contains(msg_ID) then
+            T{129,152,161,162,163,165,229,384,453,603,652,798}:contains(msg_ID) then
                 fields.ability = true
         end
         
@@ -410,6 +446,14 @@ function simplify_message(msg_ID)
             msg = line_noactor
         elseif line_noability and not fields.actor then
             msg = line_noability
+        elseif line_notarget and fields.actor and fields.number then
+            if msg_ID == 798 then --Maneuver message
+                msg = line_notarget.."%"
+            elseif msg_ID == 799 then --Maneuver message with overload
+                msg = line_notarget.."% (${actor} overloaded)"
+            else
+                msg = line_notarget
+            end
         end
     end
     return msg
@@ -417,28 +461,40 @@ end
 
 function assemble_targets(actor,targs,category,msg)
     local targets = {}
+    local samename = {}
+    local total = 0
     for i,v in pairs(targs) do
     -- Done in two loops so that the ands and commas don't get out of place.
     -- This loop filters out unwanted targets.
-        if check_filter(actor,v,category,msg) then
-            targets[#targets+1] = v
+        if check_filter(actor,v,category,msg) or check_filter(v,actor,category,msg) then
+            if samename[v.name] and condensetargetname then
+                samename[v.name] = samename[v.name] + 1
+            else 
+                targets[#targets+1] = v
+                samename[v.name] = 1
+            end
+            total = total + 1
         end
     end
-    
     local out_str
-    if targetnumber and #targets > 1 then
-        out_str = '{'..#targets..'} '
+    if targetnumber and total > 1 then
+        out_str = '{'..total..'}: '
     else
         out_str = ''
     end
     
     for i,v in pairs(targets) do
+        local name
+        local numb = condensetargetname and samename[v.name] > 1 and ' {'..samename[v.name]..'}' or ''
         if i == 1 then
-            out_str = out_str..color_it(v.name,color_arr[v.owner or v.type]) 
+            name = color_it(v.name,color_arr[v.owner or v.type])
+            out_str = out_str..name..numb
         else
-            out_str = conjunctions(out_str,color_it(v.name,color_arr[v.owner or v.type]),#targets,i)
+            name = color_it(v.name,color_arr[v.owner or v.type])
+            out_str = conjunctions(out_str,name..numb,#targets,i)
         end
     end
+    out_str =  string.gsub(out_str,'-', string.char(0x81,0x7C)) --fix for ffxi chat splits on trusts with -
     return out_str
 end
 
@@ -452,7 +508,7 @@ end
 
 function player_info(id)
     local player_table = windower.ffxi.get_mob_by_id(id)
-    local typ,owner,filt,owner_name
+    local typ,dmg,owner,filt,owner_name
     
     if player_table == nil then
         return {name=nil,id=nil,is_npc=nil,type='debug',owner=nil, owner_name=nil,race=nil}
@@ -463,10 +519,13 @@ function player_info(id)
             typ = i
             if i == 'p0' then
                 filt = 'me'
+                dmg = 'mydmg'
             elseif i:sub(1,1) == 'p' then
                 filt = 'party'
+                dmg = 'partydmg'
             else
                 filt = 'alliance'
+                dmg = 'allydmg'
             end
         end
     end
@@ -477,28 +536,32 @@ function player_info(id)
                 typ = 'other_pets'
                 filt = 'other_pets'
                 owner = 'other'
+                dmg = 'otherdmg'
                 for i,v in pairs(windower.ffxi.get_party()) do
                     if type(v) == 'table' and v.mob and v.mob.pet_index and v.mob.pet_index == player_table.index then
                         if i == 'p0' then
                             typ = 'my_pet'
                             filt = 'my_pet'
+                            dmg = 'mydmg'
                         end
                         owner = i
-                        owner_name = showownernames and '(' .. v.mob.name .. ')'
+                        owner_name = showownernames and ' (' .. v.mob.name .. ')'
                         break
                     elseif type(v) == 'table' and v.mob and v.mob.fellow_index and v.mob.fellow_index == player_table.index then
                         if i == 'p0' then
                             typ = 'my_fellow'
                             filt = 'my_fellow'
+                            dmg = 'mydmg'
                         end
                         owner = i
-                        owner_name = showownernames and '(' .. v.mob.name .. ')'
+                        owner_name = showownernames and ' (' .. v.mob.name .. ')'
                         break
                     end
                 end
             else
                 typ = 'mob'
                 filt = 'monsters'
+                dmg = 'mobdmg'
                 
                 if filter.enemies then
                     for i,v in pairs(Self.buffs) do
@@ -523,10 +586,11 @@ function player_info(id)
         else
             typ = 'other'
             filt = 'others'
+            dmg = 'otherdmg'
         end
     end
     if not typ then typ = 'debug' end
-    return {name=player_table.name,id=id,is_npc = player_table.is_npc,type=typ,filter=filt,owner=(owner or nil), owner_name=(owner_name or nil),race = player_table.race}
+    return {name=player_table.name,id=id,is_npc = player_table.is_npc,type=typ,damage=dmg,filter=filt,owner=(owner or nil), owner_name=(owner_name or nil),race = player_table.race}
 end
 
 function get_spell(act)

@@ -2,14 +2,14 @@
 <settings>
     <global>
         <KeyItemDisplay>true</KeyItemDisplay>
-        <Track />
+        <Track>[Echo Drops: ${all:echo drops}] [Remedy: ${all:remedy}] [Silent Oil: ${all:silent oil}] [Prism Powder: ${all:prism powder}]</Track>
         <Tracker>
             <bg>
                 <alpha>255</alpha>
                 <blue>0</blue>
                 <green>0</green>
                 <red>0</red>
-                <visible>true</visible>
+                <visible>false</visible>
             </bg>
             <flags>
                 <bold>false</bold>
@@ -20,8 +20,8 @@
             </flags>
             <padding>0</padding>
             <pos>
-                <x>0</x>
-                <y>0</y>
+                <x>884</x>
+                <y>21</y>
             </pos>
             <text>
                 <alpha>255</alpha>
@@ -32,7 +32,7 @@
                 </fonts>
                 <green>255</green>
                 <red>255</red>
-                <size>12</size>
+                <size>10</size>
                 <stroke>
                     <alpha>255</alpha>
                     <blue>0</blue>

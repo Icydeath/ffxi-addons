@@ -18,20 +18,20 @@ return {
     ['textBoxes'] = {
         ['actionInfo'] = {
             ['visible'] = true,
-            ['x'] = 1000,
-            ['y'] = 800
+            ['x'] = 1170,
+            ['y'] = 802
         },
         ['actionQueue'] = {
             ['font'] = 'Arial',
             ['size'] = 10,
-            ['visible'] = true,
+            ['visible'] = false,
             ['x'] = -125,
             ['y'] = 300
         },
         ['montoredBox'] = {
             ['font'] = 'Arial',
             ['size'] = 10,
-            ['visible'] = true,
+            ['visible'] = false,
             ['x'] = -150,
             ['y'] = 600
         },

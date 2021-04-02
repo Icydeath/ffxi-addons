@@ -46,6 +46,9 @@ return {
         2,
         28
     },
+    ["Bozzetto Defiler"] = S{
+        2
+    },
     ["Bozzetto Elemental"] = S{
         2
     },
@@ -69,6 +72,7 @@ return {
     },
     ["Bozzetto Monarch"] = S{
         2,
+        7,
         28
     },
     ["Bozzetto Necronura"] = S{
@@ -93,6 +97,10 @@ return {
     },
     ["Bozzetto Sharpshooter"] = S{
         10
+    },
+    ["Bozzetto Slicer"] = S{
+        2,
+        28
     },
     ["Bozzetto Songstress"] = S{
         2
@@ -151,6 +159,9 @@ return {
     ["Dragua"] = S{
         2,
         6
+    },
+    ["Dvali Jonah"] = S{
+        2
     },
     ["Earth Circle"] = S{
         194
@@ -314,6 +325,9 @@ return {
     },
     ["Thunder Circle"] = S{
         194
+    },
+    ["Tumult Curator"] = S{
+        2
     },
     ["Ulhuadshi"] = S{
         2

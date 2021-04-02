@@ -2,14 +2,14 @@
 <settings>
     <global>
         <bg>
-            <alpha>255</alpha>
+            <alpha>225</alpha>
             <blue>0</blue>
             <green>0</green>
             <red>0</red>
         </bg>
         <extents>
-            <x>600</x>
-            <y>314</y>
+            <x>2100</x>
+            <y>316</y>
         </extents>
         <pos>
             <x>1</x>

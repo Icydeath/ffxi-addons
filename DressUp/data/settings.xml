@@ -2,6 +2,9 @@
 <settings>
     <global>
         <autoupdate>true</autoupdate>
+        <bishamonten>
+
+        </bishamonten>
         <blinking>
             <all>
                 <always>true</always>
@@ -9,9 +12,9 @@
                 <target>true</target>
             </all>
             <follow>
-                <always>false</always>
-                <combat>false</combat>
-                <target>false</target>
+                <always>true</always>
+                <combat>true</combat>
+                <target>true</target>
             </follow>
             <others>
                 <always>true</always>
@@ -20,8 +23,8 @@
             </others>
             <party>
                 <always>true</always>
-                <combat>false</combat>
-                <target>false</target>
+                <combat>true</combat>
+                <target>true</target>
             </party>
             <self>
                 <always>true</always>
@@ -29,18 +32,30 @@
                 <target>true</target>
             </self>
         </blinking>
+        <bmilker>
+
+        </bmilker>
         <clubfoot>
             <race>8</race>
         </clubfoot>
+        <combat>
+
+        </combat>
         <eldiablo>
             <race>8</race>
         </eldiablo>
         <gorby>
 
         </gorby>
+        <icybreath>
+
+        </icybreath>
         <icydeath>
 
         </icydeath>
+        <informer>
+            <race>8</race>
+        </informer>
         <others>
             <race>6</race>
         </others>

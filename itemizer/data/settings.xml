@@ -31,7 +31,19 @@
     <chocoforcocopuf>
         <version>3.0.1.2</version>
     </chocoforcocopuf>
+    <clubfoot>
+        <version>3.0.1.2</version>
+    </clubfoot>
+    <icybreath>
+        <version>3.0.1.2</version>
+    </icybreath>
     <icydeath>
         <version>3.0.1.2</version>
     </icydeath>
+    <icylife>
+        <version>3.0.1.2</version>
+    </icylife>
+    <rythor>
+        <version>3.0.1.2</version>
+    </rythor>
 </settings>

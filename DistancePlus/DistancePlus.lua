@@ -149,33 +149,33 @@ function displayabilities(distance,master_pet_distance,s,t)
 end
 
 function check_job()
-    windower.add_to_chat(8,'*****DP Job Selection:'..self.main_job..'*****')
+    --windower.add_to_chat(8,'*****DP Job Selection:'..self.main_job..'*****')
     if self.main_job == 'RDM' or self.main_job == 'BLM' or self.main_job == 'GEO' or self.main_job == 'SCH' or self.main_job == 'WHM' or self.main_job == 'BRD'  then
         option = "Magic"
-        windower.add_to_chat(8,'Mode: Magic.')
-        windower.add_to_chat(8,' White = Can not cast.')
-        windower.add_to_chat(8,' Green = Casting Range')
+        --windower.add_to_chat(8,'Mode: Magic.')
+        --windower.add_to_chat(8,' White = Can not cast.')
+        --windower.add_to_chat(8,' Green = Casting Range')
         MaxDistance = 20     
     elseif self.main_job == 'COR' then
-        windower.add_to_chat(8,'Mode: Gun.')
-        windower.add_to_chat(8,' White  = Can not shoot.')
-        windower.add_to_chat(8,' Yellow = Ranged Attack Capable (No Buff)')
-        windower.add_to_chat(8,' Green  = Shoots Squarely (Good)')
-        windower.add_to_chat(8,' Blue   = True Shot (Best)')
+        --windower.add_to_chat(8,'Mode: Gun.')
+        --windower.add_to_chat(8,' White  = Can not shoot.')
+        --windower.add_to_chat(8,' Yellow = Ranged Attack Capable (No Buff)')
+        --windower.add_to_chat(8,' Green  = Shoots Squarely (Good)')
+        --windower.add_to_chat(8,' Blue   = True Shot (Best)')
         option = "Gun"
         MaxDistance = 25
     elseif self.main_job == 'RNG' then
-        windower.add_to_chat(8,'RANGER should do //dp Bow, //dp XBow, or //dp Gun')
-        windower.add_to_chat(8,'Mode: Default.')
+        --windower.add_to_chat(8,'RANGER should do //dp Bow, //dp XBow, or //dp Gun')
+        --windower.add_to_chat(8,'Mode: Default.')
         option = "Default"
         MaxDistance = 25
     elseif self.main_job == 'NIN' then
         option = "Ninjutsu"
-        windower.add_to_chat(8,'Mode: Ninjutsu.')
-        windower.add_to_chat(8,' White = Can not cast.')
-        windower.add_to_chat(8,' Green = Casting Range')
+        --windower.add_to_chat(8,'Mode: Ninjutsu.')
+        --windower.add_to_chat(8,' White = Can not cast.')
+        --windower.add_to_chat(8,' Green = Casting Range')
     else
-        windower.add_to_chat(8,'Mode: Default.')
+        --windower.add_to_chat(8,'Mode: Default.')
         option = "Default"
         MaxDistance = 25
     end

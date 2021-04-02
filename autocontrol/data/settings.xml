@@ -2,7 +2,7 @@
 <settings>
     <global>
         <AutoActivate>true</AutoActivate>
-        <AutoDeusExAutomata>true</AutoDeusExAutomata>
+        <AutoDeusExAutomata>false</AutoDeusExAutomata>
         <autosets>
             <blm>
                 <frame>stormwaker frame</frame>
@@ -90,7 +90,7 @@
                 <slot01>inhibitor</slot01>
                 <slot02>inhibitor ii</slot02>
                 <slot03>attuner</slot03>
-                <slot04>magniplug</slot04>
+                <slot04>auto-repair kit iv</slot04>
                 <slot05>magniplug ii</slot05>
                 <slot06>speedloader ii</slot06>
                 <slot07>truesights</slot07>
@@ -231,12 +231,28 @@
                 <slot11>optic fiber ii</slot11>
                 <slot12>scope iv</slot12>
             </spamdd>
+            <spamdd2>
+                <frame>sharpshot frame</frame>
+                <head>sharpshot head</head>
+                <slot01>inhibitor</slot01>
+                <slot02>inhibitor ii</slot02>
+                <slot03>attuner</slot03>
+                <slot04>magniplug</slot04>
+                <slot05>magniplug ii</slot05>
+                <slot06>truesights</slot06>
+                <slot07>barrage turbine</slot07>
+                <slot08>repeater</slot08>
+                <slot09>drum magazine</slot09>
+                <slot10>optic fiber</slot10>
+                <slot11>optic fiber ii</slot11>
+                <slot12>heat capacitor ii</slot12>
+            </spamdd2>
             <sstank>
                 <frame>sharpshot frame</frame>
                 <head>valoredge head</head>
                 <slot01>strobe</slot01>
                 <slot02>strobe ii</slot02>
-                <slot03>magniplug</slot03>
+                <slot03>Magniplug</slot03>
                 <slot04>magniplug ii</slot04>
                 <slot05>turbo charger</slot05>
                 <slot06>turbo charger ii</slot06>
@@ -287,6 +303,7 @@
             <red>0</red>
             <visible>true</visible>
         </bg>
+        <burdentracker>true</burdentracker>
         <flags>
             <bold>false</bold>
             <bottom>false</bottom>
@@ -297,8 +314,8 @@
         <maneuvertimers>true</maneuvertimers>
         <padding>0</padding>
         <pos>
-            <x>1440</x>
-            <y>875</y>
+            <x>2233</x>
+            <y>884</y>
         </pos>
         <text>
             <alpha>255</alpha>
