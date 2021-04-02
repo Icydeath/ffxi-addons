@@ -1,4 +1,10 @@
 return {
+	["Pakecet"]={
+		["Aetheric Pull"]={
+			["complete_reaction"]="", 
+            ["ready_reaction"]="turnaround"
+		}
+	},
 	["Kei"]={
         ["Dancing Fullers"]={
             ["complete_reaction"]="", 

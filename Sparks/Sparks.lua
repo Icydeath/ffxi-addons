@@ -25,6 +25,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 --[[
     Thank you to Brax and Sammeh for your work on the earlier version.
+	2.14.2021 - updated spark NPC's index
 --]]
 
 _addon.name = 'Sparks'
@@ -40,10 +41,10 @@ db = require('map')
 --res_items = require('resources').items
 
 valid_spark_zones = T{
-	[256] = {npc="Eternal Flame", menu=5081}, -- Western Adoulin
-	[230] = {npc="Rolandienne", menu=995}, -- Southern San d'Oria
-	[235] = {npc="Isakoth", menu=26}, -- Bastok Markets
-	[241] = {npc="Fhelm Jobeizat", menu=850}, -- Windurst Woods
+	[311] = {npc="Eternal Flame", menu=5081}, -- Western Adoulin
+	[342] = {npc="Rolandienne", menu=995}, -- Southern San d'Oria
+	[177] = {npc="Isakoth", menu=26}, -- Bastok Markets
+	[251] = {npc="Fhelm Jobeizat", menu=850}, -- Windurst Woods
 }
 valid_eschan_zones = T{
 	[288] = {npc="Affi", menu=9701},  -- Escha Zitah

@@ -1,0 +1,30 @@
+JSE Capes
+ - IDLE 
+	20 	Thread: HP +60					//ct prep geo thread hp
+										//ct go 20
+										
+	20 	Dust: 	EVA +20 / MEVA +20		//ct prep geo dust eva/meva
+										//ct go 20
+										
+	10 	Dye: 	MEVA +10				//ct prep geo dye meva
+										//ct go 10
+										
+	10 	Sap: 	Pet: Regen+10			//ct prep geo sap petregen
+										//ct go 10
+										
+	5 	Resin: 	Pet: Regen+5			
+		
+ - NUKE
+	20 	Thread: INT +20					//ct prep geo thread int
+										//ct go 20
+										
+	20 	Dust: 	MACC +20 / MDMG +20		//ct prep geo dust macc/mdmg
+										//ct go 20
+										
+	10 	Dye: 	INT +10					//ct prep geo dye int
+										//ct go 10
+										
+	10 	Sap: 	MAB +10					//ct prep geo sap mab
+										//ct go 10
+
+	

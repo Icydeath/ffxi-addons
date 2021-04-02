@@ -11,7 +11,7 @@
             <weapon>BST,GEO,WHM,DRG,NIN,COR,BLU,DRK,DNC,BLM,RDM,RNG,PUP,MNK,RUN,SAM,WAR,THF,SMN,BRD,PLD,SCH</weapon>
         </Show>
         <UpdateFrequency>0.2</UpdateFrequency>
-        <aeonic>false</aeonic>
+        <aeonic>true</aeonic>
         <color>false</color>
         <display>
             <bg>
@@ -30,8 +30,8 @@
             </flags>
             <padding>0</padding>
             <pos>
-                <x>713</x>
-                <y>592</y>
+                <x>711</x>
+                <y>454</y>
             </pos>
             <text>
                 <alpha>255</alpha>
@@ -54,26 +54,29 @@
         </display>
     </global>
     <clubfoot>
+        <aeonic>false</aeonic>
         <display>
             <pos>
-                <x>532</x>
-                <y>420</y>
+                <x>392</x>
+                <y>475</y>
             </pos>
         </display>
     </clubfoot>
     <icydeath>
+        <aeonic>false</aeonic>
         <display>
             <pos>
-                <x>501</x>
-                <y>521</y>
+                <x>499</x>
+                <y>445</y>
             </pos>
         </display>
     </icydeath>
     <rythor>
+        <aeonic>false</aeonic>
         <display>
             <pos>
-                <x>482</x>
-                <y>444</y>
+                <x>465</x>
+                <y>381</y>
             </pos>
         </display>
     </rythor>

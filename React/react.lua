@@ -269,14 +269,14 @@ function reaction(actor,category,ability,primarytarget)
 					elseif string.find(custom_reactions[actor.name][ability.en].ready_reaction:lower(), 'runaway') then 
 						local actionstring = custom_reactions[actor.name][ability.en].ready_reaction:lower()
 						local run_distance = string.match(actionstring,"%d+")
-						runaway(actor,math.floor(run_distance))
+						runaway(actor,math.floor(tonumber(run_distance)))
 						if showcmds == 1 then 
 							windower.add_to_chat(chatcolor,"----- React Action: Runaway "..run_distance.." yalms.")
 						end
 					elseif string.find(custom_reactions[actor.name][ability.en].ready_reaction:lower(), 'runto') then 
 						local actionstring = custom_reactions[actor.name][ability.en].ready_reaction:lower()
 						local run_distance = string.match(actionstring,"%d+")
-						runto(actor,math.floor(run_distance))
+						runto(actor,math.floor(tonumber(run_distance)))
 						if showcmds == 1 then 
 							windower.add_to_chat(chatcolor,"----- React Action: Runto "..run_distance.." yalms.")
 						end
@@ -303,14 +303,14 @@ function reaction(actor,category,ability,primarytarget)
 					elseif string.find(custom_reactions[actor.name][ability.en].complete_reaction:lower(), 'runaway') then 
 						local actionstring = custom_reactions[actor.name][ability.en].complete_reaction:lower()
 						local run_distance = string.match(actionstring,"%d+")
-						runaway(actor,math.floor(run_distance))
+						runaway(actor,math.floor(tonumber(run_distance)))
 						if showcmds == 1 then 
 							windower.add_to_chat(chatcolor,"----- React Action: Runaway "..run_distance.." yalms.")
 						end
 					elseif string.find(custom_reactions[actor.name][ability.en].complete_reaction:lower(), 'runto') then 
 						local actionstring = custom_reactions[actor.name][ability.en].complete_reaction:lower()
 						local run_distance = string.match(actionstring,"%d+")
-						runto(actor,math.floor(run_distance))
+						runto(actor,math.floor(tonumber(run_distance)))
 						if showcmds == 1 then 
 							windower.add_to_chat(chatcolor,"----- React Action: Runto "..run_distance.." yalms.")
 						end

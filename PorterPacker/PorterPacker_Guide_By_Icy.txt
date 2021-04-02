@@ -1,0 +1,116 @@
+Setting up jobs to utilize PorterPacker to keep your storage/inventory as clean as possible.
+
+	Addons you'll need:
+		PorterPacker - https://github.com/Ivaar/Windower-addons
+		Gearswap - Windower Launcher's Addons tab
+		Porter - Windower Launcher's Addons tab
+		Itemizer - Windower Launcher's Addons tab
+
+Storing a jobs gear via slips:
+	1. Run  [//get storage slip* all]  or manually pull out the slips that you want to utilize.
+		- Personally, I use the get command and when done I use the put command. IE: [//put storage slip* sack all]
+		
+	2. Get on the job you want store and stand next to the porter moogle.
+		- Personally, I use the Mog Gardens porter moogle
+		
+	3. pull out all the jobs AF/Relic/Empy gear from your wardrobes.
+	   ~ Tip: Load Porter and Run  [//porter find]   to identify the storable items in your Wardrobes.
+	 3A. Run  [//gs org]  to get all the gear that's used by the job
+	 3B. Manually store items that you wouldn't want porterpacker to pull out when regearing up, either into slips or somewhere that's not your inventory
+		
+	4. Load PorterPacker and run [//po export]
+		~ This will create a file in porterpacker's data folder. ie: 'export_{yourname}_{job}.lua'
+		  ^ The generated file is how it knows what item to retrieve when you want to pull them out of the slips later on.
+			
+	5. Rename the 'export_{yourname}_{job}.lua' to just '{yourname}_{job}.lua'
+
+	6. Run  [//po pack]  to store the job's storable gear into the slips.
+		Note: This command doesn't use the generated file, it will store ALL storable items within your inventory.
+		
+	7. Run the put command to place your slips back into your bags. [//put storage slip* sack all]
+DONE!
+
+
+Now when you want to retrieve the stored gear:
+	1. Get on the job you want to regear. 
+	2. Run  [//get storage slip* all]
+	3. Run  [//gs org]
+	4. Run  [//po unpack]
+		~ Tip: Run  [//gs validate]  to make sure you are not missing any gear.
+	5. Run  [//put storage slips* sack all]  ...or where ever you want to store them.
+DONE!
+
+
+You can now create the following windower scripts to streamline the process.
+
+
+Example Windower script for the retrieval process. 
+	1. Create a new text file in the scripts folder. 
+		ie: windower/scripts/GetGear.txt
+		
+	2. Add the following commands to the GetGear.txt file.
+
+//--------------------------START OF SCRIPT-------------------------------
+input /echo > Loading PorterPacker...;
+lua l PorterPacker
+wait 1;
+
+input /echo > Pulling out the slips from storage...;
+get storage slip* all;
+wait 3;
+
+input /echo > Pulling out the jobs gear from storage...;
+gs org;
+wait 5;
+
+input /echo > Pulling out the jobs gear from the slips... (15 sec);
+po unpack;
+wait 15;
+
+input /echo > Returning slips to storage...;
+put storage slip* sack all;
+wait 3;
+
+input /echo > Unloading PorterPacker...;
+lua unload PorterPacker;
+wait 1;
+
+input /echo ~~ DONE! ~~;
+//--------------------------END OF SCRIPT---------------------------------
+	
+	3. Change to the job you are gearing up and run  [//exec getgear]  to get your gear.
+
+
+
+Example Windower script for the storing any storable gear.
+	1. Create a new text file in the scripts folder. 
+		ie: windower/scripts/StoreGear.txt
+
+	2. Add the following commands to the StoreGear.txt file.
+
+//--------------------------START OF SCRIPT-------------------------------
+input /echo > Loading PorterPacker...;
+lua l PorterPacker
+wait 1;
+
+input /echo > Getting slips...;
+get storage slip* all;
+wait 5;
+
+input /echo > Storing gear with porter moogle...;
+po store
+wait 15;
+
+input /echo Storing slips...;
+put storage > slip* sack all;
+wait 5;
+
+input /echo > Unloading PorterPacker...;
+lua unload PorterPacker;
+wait 1;
+
+input /echo ~~ DONE! ~~;
+//--------------------------END OF SCRIPT---------------------------------
+
+	3. Run  [//exec storegear]  to store your jobs gear.
+

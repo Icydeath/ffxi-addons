@@ -1,4 +1,10 @@
 return {
+	["Pakecet"]={
+		["Aetheric Pull"]={
+			["complete_reaction"]="", 
+            ["ready_reaction"]="turnaround"
+		}
+	},
 	["Kei"]={
         ["Dancing Fullers"]={
             ["complete_reaction"]="", 
@@ -44,5 +50,21 @@ return {
             ["complete_reaction"]="", 
             ["ready_reaction"]="turnaround"
         }
-    }
+    },
+	["Lady Lilith"]={
+        ["Fatal Allure"]={
+            ["complete_reaction"]="", 
+            ["ready_reaction"]="turnaround"
+        },
+		["Dark Thorn"]={
+            ["complete_reaction"]="", 
+            ["ready_reaction"]="turnaround"
+        }
+    },
+	["Bozzetto Monarch"]={
+        ["Throat Stab"]={
+            ["complete_reaction"]="",
+            ["ready_reaction"]="runaway 6"
+        }
+    },
 }

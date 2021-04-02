@@ -13,10 +13,10 @@ windower.register_event('addon command',function (cmd,cmd2,...)
 		windower.ffxi.follow()
 	elseif cmd == 'alltarget' then
 		local target = windower.ffxi.get_mob_by_target('t')
-		windower.send_command('send @all sendalltarget target ' .. tostring(target.id))
+		windower.send_command('send @all st ' .. tostring(target.id))
 	elseif cmd == 'youtarget' then
 		local target = windower.ffxi.get_mob_by_target('t')
-		windower.send_command('send '..cmd2..' sendalltarget target ' .. tostring(target.id))
+		windower.send_command('send '..cmd2..' st ' .. tostring(target.id))
 	elseif cmd == 'target' then
 		local id = tonumber(cmd2)
 		local target = windower.ffxi.get_mob_by_id(id)
@@ -37,14 +37,16 @@ windower.register_event('addon command',function (cmd,cmd2,...)
 			if command == nil then
 				windower.send_command('send @all '..cmd2..' '..mobid.id..'')
 			elseif cmd2 then
-				windower.send_command('send @all '..cmd2..' '..command..' '..mobid.id..'')
+				windower.send_command('send @all '..cmd2..' '..command..' '..tostring(mobid.id))
 			end
 		end
 	elseif cmd == 'youcommand' then
 		local command = ...
 		local mobid = windower.ffxi.get_mob_by_target('t')
 		if mobid and mobid.id then
-			windower.send_command('send '..cmd2..' '..command..' '..mobid.id..'')
+			local str = 'send '..cmd2..' '..command..' '..tostring(mobid.id)
+			windower.send_command(str)
+			--windower.add_to_chat(10, 'Command Sent: '..str)
 		end
     end
 end)

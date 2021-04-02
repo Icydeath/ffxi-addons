@@ -232,6 +232,23 @@ profiles['junk'] = S{
 	'Slime Juice',
 	'Infinity Core',
 	'Acheron Shield',
+	'Hare Meat',
+	'Honey',
+	'Land Crab Meat',
+	'Bird Egg',
+	'Rabbit Hide',
+	'Beehive Chip',
+	'Flytrap Leaf',
+	'Colibri Beak',
+	'Chapuli Horn',
+	'Craklaw Pincer',
+	'Chapuli Wing',
+	'Tulfaire Feather',
+	'Snap. Tendril',
+	'Raaz Hide',
+	'Raaz Tusk',
+	'Matamata Shell',
+	'Snap. Secretion',
 }
 
 return profiles

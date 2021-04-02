@@ -1,6 +1,6 @@
 _addon.name = 'SendTarget'
 _addon.author = 'DiscipleOfEris'
-_addon.version = '1.0.1'
+_addon.version = '1.0.4'
 _addon.commands = {'sendtarget', 'sta'}
 
 require('tables')
@@ -33,11 +33,25 @@ windower.register_event('addon command', function(command, ...)
     log('Can also use the !mirror, !packets, !capture <char_name|@others|@all> commands.')
     log('In a macro, you should use "/con sta" rather than "//sta".')
   elseif command == '!mirror' then
-    mirroring = not mirroring
+    if not args[1] then mirroring = not mirroring
+    elseif args[1] == 'on' then mirroring = true
+    elseif args[1] == 'off' then mirroring = false
+    else
+      log('!mirror has valid arguments on/off/true/false. To toggle, pass no argument.')
+      return
+    end
+    
     if mirroring then log('Mirroring enabled. Will have all alts mimic this character.')
     else log('Mirroring disabled.') end
   elseif command == '!packets' then
-    send_packets = not send_packets
+    if not args[1] then send_packets = not send_packets
+    elseif args[1] == 'on' then send_packets = true
+    elseif args[1] == 'off' then send_packets = false
+    else
+      log('!packets has valid arguments on/off/true/false. To toggle, pass no argument.')
+      return
+    end
+    
     if send_packets then log('Packet injection enabled. This is necessary unless GearSwap is active with a profile loaded.')
     else log('Packet injection disabled. Do this for compatibility with GearSwap when you have an active profile.') end
   elseif command == '!capture' then
@@ -50,7 +64,7 @@ windower.register_event('addon command', function(command, ...)
     command_queue:insert({char=args[1]:lower(), ts=os.time(), handled=false})
   else
     if #args == 0 then
-      log('You must provide some input to send. For example, //sta @others /ma "Cure III" <stpc>')
+      log('You must provide some input to send. For example, //sta @all /ma \'Thunder IV\' <stnpc>')
       return
     end
     
@@ -133,7 +147,7 @@ windower.register_event('outgoing text', function(_, modified, blocked, typed, a
           windower.add_to_chat(0, 'SendTarget: Another addon is blocking commands; SendTarget must be loaded first. If you have GearSwap, put "lua reload GearSwap" after "lua load SendTarget" in your init.txt script.')
         end
         
-        return true
+        return ''
       end
     end
   end
@@ -231,7 +245,7 @@ function handle_command(input)
   
   local name = args:concat(' '):gsub('"', '')
   if name:sub(1,1) == "'" then name = name:sub(2) end
-  if name:sub(#name) == "'" then name = name:sub(1,-1) end
+  if name:sub(#name) == "'" then name = name:sub(1,-2) end
   
   local target = t_arg
   local self = windower.ffxi.get_player()
@@ -240,7 +254,6 @@ function handle_command(input)
   
   self = self.id
   local self_only = S{'Self'}
-  
   if spell_prefixes:contains(prefix) then
     local spell = spells:with('en', name)
     if spell.targets:equals(self_only) then target = self end
@@ -250,12 +263,12 @@ function handle_command(input)
     local ja = job_abilities:with('en', name)
     if ja.targets:equals(self_only) then target = self end
     
-    inject_action_packet(ACTION_CATEGORY.WEAPON_SKILL_USE, ws, target)
+    inject_action_packet(ACTION_CATEGORY.JOB_ABILITY_USE, ja, target)
   elseif weapon_skill_prefixes:contains(prefix) then
     local ws = weapon_skills:with('en', name)
     if ws.targets:equals(self_only) then target = self end
     
-    inject_action_packet(ACTION_CATEGORY.JOB_ABILITY_USE, ja, target)
+    inject_action_packet(ACTION_CATEGORY.WEAPON_SKILL_USE, ws, target)
   end
   -- TODO: /attack, /range, /check, /assist, /follow, emotes
 end

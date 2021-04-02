@@ -52,9 +52,9 @@ defaults = {
     SAM = 'store tp|double attack|triple attack|quadruple attack|weapon skill damage',
     NIN = 'store tp|double attack|triple attack|quadruple attack|subtle blow',
     DRG = 'store tp|double attack|triple attack|quadruple attack|weapon skill damage',
-    SMN = 'blood pact delay|blood pact delay ii|blood pact damage|avatar perpetuation cost|pet: magic attack bonus|pet: attack|pet: double attack|pet: accuracy|pet: magic accuracy|summoning magic skill|pet: blood pact damage|pet: magic damage',
-    BLU = 'store tp|double attack|triple attack|quadruple attack|critical hit rate|critical hit damage|weapon skill damage|fast cast|magic attack bonus|magic accuracy|cure potency',
-    COR = 'store tp|snapshot|rapid shot|fast cast|cure potency|magic accuracy|magic attack bonus|magic damage|weapon skill damage',
+    SMN = 'physical damage taken|magic damage taken|pet: physical damage taken|pet: magic damage taken|blood pact delay|blood pact delay ii|blood pact damage|avatar perpetuation cost|pet: magic attack bonus|pet: attack|pet: double attack|pet: accuracy|pet: magic accuracy|summoning magic skill|pet: blood pact damage|pet: magic damage',
+    BLU = 'physical damage taken|magic damage taken|haste|dual wield|store tp|double attack|triple attack|quadruple attack|critical hit rate|critical hit damage|weapon skill damage|fast cast|magic attack bonus|magic accuracy|cure potency',
+    COR = 'physical damage taken|magic damage taken|haste|dual wield|store tp|snapshot|rapid shot|fast cast|cure potency|magic accuracy|magic attack bonus|magic damage|weapon skill damage',
     PUP = 'pet: hp|pet: damage taken|pet: regen|martial arts|store tp|double attack|triple attack|quadruple attack',
     DNC = 'store tp|double attack|triple attack|quadruple attack',
     SCH = 'magic attack bonus|magic burst damage|magic burst damage ii|magic accuracy|magic damage|fast cast|elemental magic casting time|cure potency|enh mag eff dur|enhancing magic effect duration',
@@ -150,9 +150,13 @@ function split_text(id,text,arg)
         local key = arg and arg..key or key
         if key == "blood pact damage" then
             key = "pet: blood pact damage"
+        elseif key == "pet: damage taken" then
+            tbl['pet: physical damage taken'] = tonumber(value)+(tbl['pet: physical damage taken'] or 0)
+            tbl['pet: magic damage taken'] = tonumber(value)+(tbl['pet: magic damage taken'] or 0)
         elseif key == "damage taken" then
             tbl['physical damage taken'] = tonumber(value)+(tbl['physical damage taken'] or 0)
             tbl['magic damage taken'] = tonumber(value)+(tbl['magic damage taken'] or 0)
+            tbl['breath damage taken'] = tonumber(value)+(tbl['breath damage taken'] or 0)
         else
             tbl[key] = tonumber(value)+(tbl[key] or 0)
         end
@@ -218,7 +222,7 @@ integrate = {
     ['enhancing magic duration'] = 'enhancing magic effect duration',
     ['eva'] = 'evasion',
     ['indicolure spell duration'] = 'indicolure effect duration',
-	['indi eff dur'] = 'indicolure effect duration',
+    ['indi eff dur'] = 'indicolure effect duration',
     ['mag eva'] = 'magic evasion',
     ['magic atk bonus'] = 'magic attack bonus',
     ['magatkbns'] = 'magic attack bonus',
@@ -233,6 +237,8 @@ integrate = {
     ['occ. quickens spellcasting']="quick cast",
     ['occassionally quickens spellcasting']="quick cast",
     ['song duration']="song effect duration",
+	['spell interruption rate down']="spell interruption rate",
+	['phalanx received']="phalanx",
 }
 enhanced = {
     [10392] = 'cursna+10', --Malison Medallion
@@ -306,6 +312,8 @@ enhanced = {
     [28637] = 'fast cast+7', --Lifestream Cape
     [11618] = 'song effect duration+10', -- Aoidos' Matinee
     [20629] = 'song effect duration+5', -- Legato Dagger
+	[22279] = 'spell interruption rate+11', --Staunch Tathlum +1
+	[22278] = 'spell interruption rate+10', --Staunch Tathlum
 }
 combination={
     ['af']={item=S{
@@ -353,13 +361,17 @@ caps={
     ['cure potency']=50,
     ['potency of cure effects received']=30,
     ['quick cast']=10,
-    ['physical damage taken']=-25,
-    ['magic damage taken']=-25,
+    ['physical damage taken']=-50,
+    ['magic damage taken']=-50,
+    ['breath damage taken']=-50,
+    ['pet: physical damage taken']=-87.5,
+    ['pet: magic damage taken']=-87.5,
     ['pet: haste']=25,
     ['magic burst damage']=40,
     ['blood pact delay']=-15,
     ['blood pact delay ii']=-15,
     ['save tp']=500,
     ['fast cast']=80,
-    ['reward']=50
+    ['reward']=50,
+	['spell interruption rate']=102,
 }

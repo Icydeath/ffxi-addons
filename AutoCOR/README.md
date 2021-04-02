@@ -2,7 +2,9 @@
         Accepts auto-translate terms, not case-sensitive.
          "//cor [on/off]"
          "//cor roll [n] [job/roll_name]" -- set roll
+		 "//cor rolls [job/roll_name] [job/roll_name]" -- set both rolls at the same time
          "//cor cc [n/off]"         -- Use crooked cards on roll [n] (default is 1st roll, 0 is off)
+		 "//cor engaged|e"			-- Toggles rolling while engaged (on/off)
          "//cor save"               -- save settings on per character basis
             
         when setting rolls with commands it will check [job/roll_name] against the rolls job,
@@ -14,3 +16,5 @@
             "//cor roll 1 war" or "//cor roll 1 fight" or "//cor roll 1 fighter's roll"
             
             "//cor roll 2 thf" or "//cor roll 1 rog" or "//cor roll 1 rogue's roll"
+			
+			"//cor rolls war thf" or "//cor rolls fight rog"

@@ -7,7 +7,7 @@ of their target. No `/assist` necessary!
 
 For a more specific example, let's say you have an alt named Maruru and you wanted to make a macro to have them heal based on your <st> choice. `/con sta Maruru /ma "Cure III" <stpc>`
 
-If you need to put additional commands after an <st> line in a macro, you can use the `!capture` command like so (this example uses the Send addon):
+If you need to put additional commands after an `<st>` line in a macro, you can use the `!capture` command like so (this example uses the Send addon):
 
     /con sta !capture Maruru
     /ma "Cure III" <stpc>
@@ -15,10 +15,16 @@ If you need to put additional commands after an <st> line in a macro, you can us
     /wait 4
     /con send Maruru equip main "Earth Staff"
 
+Note that `<stpt>` and `<stal>` do not work with subtarget capturing. To use those, make an FFXI macro that looks like:
+
+    /target <stal>
+    /con sta /ma 'Cure III' <lastst>
+
 ## Installation
 After downloading, extract to your Windower addons folder. Make sure the folder is called SendTarget, rather than SendTarget-master or SendTarget-v1.whatever. Your file structure should look like this:
 
     addons/SendTarget/SendTarget.lua
+    addons/SendTarget/statics.lua
 
 Once the addon is in your Windower addons folder, it won't show up in the Windower launcher. You need to add a line to your scripts/init.txt:
 
@@ -31,7 +37,7 @@ jobs that don't will be a pain, but it can be automated by putting `windower.sen
 ## Commands
 You can use `//sendtarget` or `//sta`.
 
-    //sta <character_name>|@all|@others
-    //sta !capture <character_name>|@all|@others
-    //sta !mirror
-    //sta !packets
+    //sta <character_name>|@all|@others <input_to_send>  
+    //sta !capture <character_name>|@all|@others  
+    //sta !mirror [on|off] -- Toggle/enable/disable mirroring, which makes alts copy all spells and abilities.  
+    //sta !packets [on|off] -- Toggle/enable/disable packet inject. Used for compatibility with GearSwap.  

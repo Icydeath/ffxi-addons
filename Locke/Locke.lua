@@ -45,9 +45,9 @@ defaults.bg.green = 30
 defaults.bg.blue = 30
 
 settings = config.load(defaults)
-active = false
+active = true
 debug_mode = false
-thf_status = texts.new('TH: 0', settings)
+thf_status = texts.new('Locke: -', settings)
 thf_status:show()
 
 th_sets = T{
@@ -66,20 +66,26 @@ windower.register_event('addon command', function(...)
 	if #commands ~= 0 then
 		if commands[1]:lower() == "on" then
 			active = true
+			thf_status:text('Locke: -')
 			log("ON")
 		elseif commands[1]:lower() == "off" then
 			active = false
+			thf_status:text('Locke: OFF')
 			log("OFF")
 		elseif commands[1]:lower() == "debug" then
 			debug_mode = not debug_mode
 			log("Debug Mode "..(debug_mode and "ON" or "OFF"))
+		else
+			active = not active
+			log(active and "ON" or "OFF")
+			thf_status:text('Locke: ' .. (active and '-' or 'OFF'))
 		end
 		
 	end
 end)
 
 
-function incoming_chunk(id, data)
+function handle_incoming_chunk(id, data)
 	if active and id == 0x028 then
 		local packet = packets.parse('incoming', data)
         local target = windower.ffxi.get_mob_by_id(packet['Target 1 ID'])
@@ -89,14 +95,12 @@ function incoming_chunk(id, data)
 					local proc_num = packet['Target 1 Action 1 Added Effect Param']
 					if th_sets[proc_num] then
 						equip_th_set = th_sets[proc_num]
-						--tagged_mobs[target.id] = proc_num
 					else
 						equip_th_set = th_sets[8]
-						--tagged_mobs[target.id] = 8
 					end
 					tagged_mobs[target.id] = proc_num
 					equip(equip_th_set)
-					thf_status:text('TH: '..target.name..' → '..proc_num..'\n'..'Locked set → '..equip_th_set)
+					thf_status:text('Locke: '..target.name..' → '..proc_num..' → '..equip_th_set)
                 end
             end
 		end
@@ -141,42 +145,46 @@ function equip(set)
 end
 
 function reset()
-	thf_status:hide()
+	thf_status:text('Locke: -')
 	tagged_mobs:clear()
 	windower.send_command('gs enable all;gs c forceequip')
-	active = false
-end
-
-function unloaded()
-    reset()	
 end
 
 function loaded()
-	thf_status:show()
+	windower.send_command('lua u Thfknife;lua u thtracker')
+	check_job()
 end
 
 function check_job()
-    local p = windower.ffxi.get_player()
+    player = windower.ffxi.get_player()
     if p and p.main_job == 'THF' then
-        loaded()
+		thf_status:text('Locke: -')
+		active = true
+		log("ON")
     else
         reset()
+		thf_status:text('Locke: OFF')
+		active = false
     end
 end
 
-function target_change(new, old)
+function target_changed(idx)
 	player = windower.ffxi.get_player()
+	local target_id = windower.ffxi.get_mob_by_index(idx)
+	target_id = target_id and target_id.id or nil
+	if not target_id then return end
+	
 	if player.status == 1 then
-		if tagged_mobs[new] then
-			equip_th_set = th_sets[tagged_mobs[new]]
+		if tagged_mobs[target_id] then
+			equip_th_set = th_sets[tagged_mobs[target_id]]
 		else
 			equip_th_set = th_sets[8]
-			tagged_mobs[new] = 8
+			tagged_mobs[target_id] = 8
 		end
 	end
 end
 
-function status_change(new, old)
+function status_changed(new, old)
 	player = windower.ffxi.get_player()
 	if new == 1 then
 		local target = windower.ffxi.get_mob_by_target('t')
@@ -184,7 +192,7 @@ function status_change(new, old)
 			equip_th_set = th_sets[8]
 			tagged_mobs[target.id] = 8
 		elseif target and tagged_mobs[target.id] then
-			equip_th_set = th_sets[tagged_mobs[target.id]] and th_sets[tagged_mobs[target.id]] or th_sets[8]
+			equip_th_set = th_sets[tagged_mobs[target.id]] or th_sets[8]
 		end
 		equip(equip_th_set)
 	elseif new == 0 then
@@ -193,12 +201,12 @@ function status_change(new, old)
 end
 
 function zone_change(new, old)
-	tagged_mobs:clear()
+	reset()
 end
 
-windower.register_event('zone change', zone_change)
-windower.register_event('incoming chunk', incoming_chunk)
-windower.register_event('status change', status_change)
-windower.register_event('target change', target_change)
-windower.register_event('job change', 'login', 'load', check_job)
-windower.register_event('logout', unloaded)
+windower.register_event('incoming chunk', handle_incoming_chunk)
+windower.register_event('status change', status_changed)
+--windower.register_event('target change', target_changed)
+windower.register_event('job change', 'login', check_job)
+windower.register_event('load', loaded)
+windower.register_event('logout', 'zone change', reset)

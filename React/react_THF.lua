@@ -1,4 +1,10 @@
 return {
+	["Pakecet"]={
+		["Aetheric Pull"]={
+			["complete_reaction"]="", 
+            ["ready_reaction"]="turnaround"
+		}
+	},
 	["Kei"]={
         ["Dancing Fullers"]={
             ["complete_reaction"]="", 
@@ -41,6 +47,16 @@ return {
     }, 
     ["Glassy Thinker"]={
         ["Pain Sync"]={
+            ["complete_reaction"]="", 
+            ["ready_reaction"]="turnaround"
+        }
+    },
+	["Lady Lilith"]={
+        ["Fatal Allure"]={
+            ["complete_reaction"]="", 
+            ["ready_reaction"]="turnaround"
+        },
+		["Dark Thorn"]={
             ["complete_reaction"]="", 
             ["ready_reaction"]="turnaround"
         }

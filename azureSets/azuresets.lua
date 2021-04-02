@@ -71,7 +71,7 @@ windower.register_event('login', initialize)
 windower.register_event('job change', initialize:cond(function(job) return job == 16 end))
 
 function set_spells(spellset, setmode)
-    if windower.ffxi.get_player()['main_job_id'] ~= 16 --[[and windower.ffxi.get_player()['sub_job_id'] ~= 16]] then
+    if windower.ffxi.get_player()['main_job_id'] ~= 16 and windower.ffxi.get_player()['sub_job_id'] ~= 16 then
         error('Main job not set to Blue Mage.')
         return
     end
@@ -136,7 +136,7 @@ function set_spells_from_spellset(spellset, setPhase)
                     local spellID = find_spell_id_by_name(v)
                     if spellID ~= nil then
                         windower.ffxi.set_blue_magic_spell(spellID, tonumber(slotToSetTo))
-                        --log('Set spell: '..v..' ('..spellID..') at: '..slotToSetTo)
+                        log('Set spell: '..v..' ('..spellID..') at: '..slotToSetTo)
                         set_spells_from_spellset:schedule(settings.setspeed, spellset, 'add')
                         return
                     end
@@ -160,7 +160,7 @@ function find_spell_id_by_name(spellname)
 end
 
 function set_single_spell(setspell,slot)
-    if windower.ffxi.get_player()['main_job_id'] ~= 16 --[[and windower.ffxi.get_player()['sub_job_id'] ~= 16]] then return nil end
+    if windower.ffxi.get_player()['main_job_id'] ~= 16 and windower.ffxi.get_player()['sub_job_id'] ~= 16 then return nil end
 
     local tmpTable = T(get_current_spellset())
     for key,val in pairs(tmpTable) do
@@ -184,8 +184,12 @@ function set_single_spell(setspell,slot)
 end
 
 function get_current_spellset()
-    if windower.ffxi.get_player().main_job_id ~= 16 then return nil end
-    return T(windower.ffxi.get_mjob_data().spells)
+    if windower.ffxi.get_player()['main_job_id'] ~= 16 and windower.ffxi.get_player()['sub_job_id'] ~= 16 then return nil end
+	
+	local jspells = windower.ffxi.get_mjob_data().spells
+	if windower.ffxi.get_player()['sub_job_id'] == 16 then jspells = windower.ffxi.get_sjob_data().spells end
+	
+    return T(jspells)
     -- Returns all values but 512
     :filter(function(id) return id ~= 512 end)
     -- Transforms them from IDs to lowercase English names
@@ -239,10 +243,14 @@ function get_spellset_content(spellset)
 end
 
 windower.register_event('addon command', function(...)
-    if windower.ffxi.get_player()['main_job_id'] ~= 16 --[[and windower.ffxi.get_player()['sub_job_id'] ~= 16]] then
+    if windower.ffxi.get_player()['main_job_id'] ~= 16 and windower.ffxi.get_player()['sub_job_id'] ~= 16 then
         error('You are not on (main) Blue Mage.')
         return nil
     end
+	if windower.ffxi.get_player()['sub_job_id'] == 16 then
+		settings.setmode = 'ClearFirst'
+	end
+	
     local args = T{...}
     if args ~= nil then
         local comm = table.remove(args,1):lower()

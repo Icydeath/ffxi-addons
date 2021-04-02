@@ -51,6 +51,12 @@
             <y>777</y>
         </pos>
     </clubfoot>
+    <combat>
+        <pos>
+            <x>800</x>
+            <y>757</y>
+        </pos>
+    </combat>
     <eldiablo>
         <pos>
             <x>895</x>
@@ -63,4 +69,10 @@
             <y>750</y>
         </pos>
     </icydeath>
+    <rythor>
+        <pos>
+            <x>930</x>
+            <y>768</y>
+        </pos>
+    </rythor>
 </settings>

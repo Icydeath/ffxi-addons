@@ -27,9 +27,10 @@
 ]]
 
 _addon.name = 'giltracker'
-_addon.author = 'sylandro'
+_addon.author = 'sylandro, modded by icy'
 _addon.version = '1.0.0'
 _addon.language = 'English'
+_addon.commands = {'giltracker'}
 
 config = require('config')
 images = require('images')
@@ -237,3 +238,10 @@ function toggle_display_if_hide_key_is_pressed(key_pressed, key_down)
         hide()
     end
 end
+
+windower.register_event('addon command', function(...)
+	commands = {...}
+	if commands[1] == 'show' then
+		show()
+	end
+end)

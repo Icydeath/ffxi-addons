@@ -3,6 +3,14 @@
     <global>
         <actions>false</actions>
         <active>true</active>
+        <aftermath>false</aftermath>
+        <aoe>
+            <p1>true</p1>
+            <p2>true</p2>
+            <p3>true</p3>
+            <p4>true</p4>
+            <p5>true</p5>
+        </aoe>
         <box>
             <bg>
                 <alpha>255</alpha>
@@ -20,8 +28,8 @@
             </flags>
             <padding>0</padding>
             <pos>
-                <x>1001</x>
-                <y>850</y>
+                <x>610</x>
+                <y>590</y>
             </pos>
             <text>
                 <alpha>255</alpha>
@@ -47,14 +55,20 @@
             <refresh />
         </buffs>
         <clarion>
-            <aoe />
+            <aoe>madrigal</aoe>
         </clarion>
-        <delay>5</delay>
-        <dummy>Valor Minuet V,</dummy>
+        <delay>4</delay>
+        <dummy>Shining Fantasia,Fowl Aubade</dummy>
+        <gearswap_dummy_cmd>set ExtraSongsMode Dummy</gearswap_dummy_cmd>
         <ignore />
-        <marcato>Valor Minuet V</marcato>
+        <lullaby>false</lullaby>
+        <lullaby_partyclaimed>false</lullaby_partyclaimed>
+        <lullaby_song>Horde Lullaby II</lullaby_song>
+        <marcato>Sentinel&apos;s Scherzo</marcato>
         <max_ws>99</max_ws>
+        <members_required>false</members_required>
         <min_ws>20</min_ws>
+        <nightingale>true</nightingale>
         <pianissimo>false</pianissimo>
         <recast>
             <buff>
@@ -70,16 +84,20 @@
 
         </song>
         <songs>
+            <madrigal>1</madrigal>
             <march>2</march>
+            <minuet>1</minuet>
         </songs>
-        <timers>false</timers>
+        <timers>true</timers>
+        <troubadour>true</troubadour>
         <use_ws>false</use_ws>
+        <ws_name>Evisceration</ws_name>
     </global>
     <rythor>
         <box>
             <pos>
-                <x>1426</x>
-                <y>818</y>
+                <x>1013</x>
+                <y>795</y>
             </pos>
         </box>
     </rythor>

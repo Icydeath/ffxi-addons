@@ -1,5 +1,7 @@
 --[[	
 VERSIONS
+	1.1.0.5: Added Force targeting. //pup ft "Name of Mob"
+	
 	1.1.0.4: Added Maintenance automation. Toggle maintenance via //pup maint
 			  Added the ability to monitor specific debuffs via the settings.xml
 			  Good amount of code cleanup. (hope nothing is broken ^^)
@@ -17,7 +19,7 @@ VERSIONS
 _addon.author = 'Icy'
 _addon.name = 'AutoPUP'
 _addon.commands = {'autopup','pup'}
-_addon.version = '1.1.0.4'
+_addon.version = '1.1.0.5'
 
 require('pack')
 require('lists')
@@ -141,6 +143,7 @@ multiman = ""
 multimanCnt = 0
 
 buffs = {}
+force_target = nil
 
 nexttime = os.clock()
 del = 0
@@ -186,7 +189,7 @@ local display_box = function()
 			debuffs = debuffs..' '..debuff
 		end
 	end
-    return 'AutoPUP [%s] ~ Set [%s]\nMan 1 [%s]\nMan 2 [%s]\nMan 3 [%s]\nRepair [%s] [%s] <= [%s]\nActivate [%s]\nDeploy [%s]\nMaint. [%s]\n%s':format(actions and 'ON' or 'OFF', settings.set, settings.man[1], settings.man[2], settings.man[3], settings.repair and 'ON' or 'OFF', oil, settings.repairhpp..'%', settings.activate and 'ON' or 'OFF', settings.deploy and 'ON' or 'OFF', settings.maintenance and 'ON' or 'OFF', debuffs)
+    return 'AutoPUP [%s] ~ Set [%s]\nMan 1 [%s]\nMan 2 [%s]\nMan 3 [%s]\nRepair [%s] [%s] <= [%s]\nActivate [%s]\nDeploy [%s]\nMaint. [%s]\n%s':format(actions and 'ON' or 'OFF', settings.set, settings.man[1], settings.man[2], settings.man[3], settings.repair and 'ON' or 'OFF', oil, settings.repairhpp..'%', settings.activate and 'ON' or 'OFF', settings.deploy and 'ON' or 'OFF', settings.maintenance and 'ON' or 'OFF', force_target and 'Target: '..force_target or '')
 end
 
 pup_status = texts.new(display_box(),settings.text,setting)
@@ -230,10 +233,17 @@ windower.register_event('prerender',function ()
 		puppet.index = pet.index
 		puppet.id = pet.id
 		
+		-- Targeting
 		if settings.deploy and pet.status == 0 then
 			local targ_type = '<bt>'
 			local target = windower.ffxi.get_mob_by_target('bt')
-			if not target or not valid_target(target) then
+			if force_target then
+				target = get_target(force_target)
+				if target then
+					set_target(target)
+					targ_type = '<t>'
+				end
+			elseif not target or not valid_target(target) then
 				target = get_party_target()
 				if target then
 					set_target(target)
@@ -335,6 +345,17 @@ function countNumOfManeuvers(manBuffId)
 	return count
 end
 
+function get_target(name)
+	for i,v in pairs(windower.ffxi.get_mob_array()) do
+		if v.valid_target and name:contains(v['name']) and v.hpp > 0 and math.sqrt(v.distance) < 25 then --math.sqrt(v.distance) < 49
+			--log(v['name'], v['id'])
+			return v
+		end
+	end
+	
+	return nil
+end
+
 function set_target(t)
 	if t then
 		local player = windower.ffxi.get_player()
@@ -345,7 +366,7 @@ function set_target(t)
 			['Player Index'] = player.index,
 		}))
 		
-		windower.add_to_chat(205, 'Set target to: '..t.name)
+		--windower.add_to_chat(205, 'Set target to: '..t.name)
 	end
 end
 
@@ -424,6 +445,9 @@ windower.register_event('addon command', function(...)
 			settings.maintenance = true
 		end
 		windower.add_to_chat(8, 'AutoPUP: Maintenance = '..tostring(settings.maintenance))
+	elseif commands[1] == 'target' or commands[1] == 'ft' then
+		force_target = commands[2] and commands[2] or nil
+		
 	elseif commands[1] == 'repairhpp' then
 		commands[2] = commands[2] and tonumber(commands[2])
         if commands[2] then
@@ -545,7 +569,8 @@ function showhelp()
 	windower.add_to_chat(207, ' //pup maint - turns auto maintenance on/off')
 	windower.add_to_chat(205, 'COMMAND: ACTIVATE & DEPLOY')
 	windower.add_to_chat(207, ' //pup activate - turns auto activate on/off')
-	windower.add_to_chat(207, ' //pup deploy - turns auto deploy on/off -- uses <bt>')
+	windower.add_to_chat(207, ' //pup deploy - turns auto deploy on/off -- uses <bt> if not using \'ft\' (force target)')
+	windower.add_to_chat(207, ' //pup ft "Name Of Mob" - Force Target: Sets a specific target to attack')
 	windower.add_to_chat(205, 'COMMAND: SAVE')
 	windower.add_to_chat(207, ' //pup save')
 end

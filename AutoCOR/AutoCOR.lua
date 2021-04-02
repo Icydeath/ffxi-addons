@@ -1,8 +1,9 @@
 _addon.author = 'Ivaar, modified by icy'
 _addon.name = 'AutoCOR'
 _addon.commands = {'cor'}
-_addon.version = '2020.10.24'
+_addon.version = '2021.1.11'
 
+-- 1/11/21: Added toggle settings for fold and snake eye
 -- 10/24/20: Will now automatically turn off when you leave a battle field
 
 require('pack')
@@ -15,6 +16,8 @@ config = require('config')
 default = {
     roll = L{'Ninja Roll','Corsair\'s Roll'},
     active = true,
+	snake_eye = true,
+	fold = true,
     crooked_cards = 1,
 	roll_while_engaged = true, -- when false, it will not roll while engaged.
     text = {text = {size=10}},
@@ -65,7 +68,7 @@ rolls = T{
     }
 
 local display_box = function()
-    return 'AutoCOR [%s]\nRoll 1 [%s]\nRoll 2 [%s]\nWhile engaged [%s]':format(actions and 'On' or 'Off', settings.roll[1], settings.roll[2], settings.roll_while_engaged and 'On' or 'Off')
+    return 'AutoCOR [%s]\nRoll 1 [%s]\nRoll 2 [%s]\nSnake Eye: [%s]\nWhile engaged [%s]':format(actions and 'On' or 'Off', settings.roll[1], settings.roll[2], settings.snake_eye and 'On' or 'Off', settings.roll_while_engaged and 'On' or 'Off')
 end
 
 cor_status = texts.new(display_box(),settings.text,setting)
@@ -92,7 +95,7 @@ windower.register_event('prerender',function ()
 		
         local abil_recasts = windower.ffxi.get_ability_recasts()
         if buffs[16] or is_moving then return end
-        if buffs[309] then
+        if settings.fold and buffs[309] then
             if abil_recasts[198] and abil_recasts[198] == 0 then
                 use_JA('/ja "Fold" <me>')
             end
@@ -110,7 +113,7 @@ windower.register_event('prerender',function ()
                 end
                 return
             elseif buffs[308] and buffs[308] == roll.id and buffs[roll.buff] ~= roll.lucky and buffs[roll.buff] ~= 11 then
-                if abil_recasts[197] and abil_recasts[197] == 0 and not buffs[357] and L{roll.unlucky,roll.lucky-1,10}:contains(buffs[roll.buff]) then
+                if settings.snake_eye and abil_recasts[197] and abil_recasts[197] == 0 and not buffs[357] and L{roll.unlucky,roll.lucky-1,10}:contains(buffs[roll.buff]) then
                     use_JA('/ja "Snake Eye" <me>')
                 elseif abil_recasts[194] and abil_recasts[194] == 0 and (buffs[357] or buffs[roll.buff] < 7) then
                     use_JA('/ja "Double-Up" <me>')
@@ -130,6 +133,10 @@ windower.register_event('addon command', function(...)
         actions = true
     elseif commands[1] == 'off' then
         actions = false
+	elseif commands[1] == 'fold' then
+        settings.fold = not settings.fold
+	elseif commands[1] == 'se' then
+        settings.snake_eye = not settings.snake_eye
     elseif commands[1] == 'cc' then
         if settings.crooked_cards == 1 then
             settings.crooked_cards = 0
@@ -158,8 +165,6 @@ windower.register_event('addon command', function(...)
         settings:save()
     elseif commands[1] == 'eval' then
         assert(loadstring(table.concat(commands, ' ',2)))()
-    else
-        -- create help text
     end
     cor_status:text(display_box())
     --windower.add_to_chat(207, str)

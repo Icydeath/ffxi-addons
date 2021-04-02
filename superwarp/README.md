@@ -192,3 +192,6 @@ Thanks to Lili for researching a better fuzzy matching logic.
 
 #### v0.97.2
 - **Feature**: Added setting to direct log messages to console instead, or turn off entirely.
+
+#### v0.97.3
+- **Resolved**: Homepoint indices for Ru'lude and Qufim have been updated (changed after update).

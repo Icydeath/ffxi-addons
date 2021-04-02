@@ -733,7 +733,7 @@ fields.outgoing[0x063] = L{
 --"New" Key Item examination packet
 fields.outgoing[0x064] = L{
     {ctype='unsigned int',      label='Player',             fn=id},             -- 04
-    {ctype='byte[0x40]',        label='flags'},                                 -- 08  These correspond to a particular section of the 0x55 incoming packet
+    {ctype='data[0x40]',        label='flags'},                                 -- 08  These correspond to a particular section of the 0x55 incoming packet
     {ctype='unsigned int',      label='_unknown1'},                             -- 48  This field somehow denotes which half-0x55-packet the flags corresponds to
 }
 
@@ -1243,7 +1243,8 @@ fields.incoming[0x00A] = L{
     {ctype='unsigned short',    label='Night Music'},                           -- 58
     {ctype='unsigned short',    label='Solo Combat Music'},                     -- 5A
     {ctype='unsigned short',    label='Party Combat Music'},                    -- 5C
-    {ctype='data[4]',           label='_unknown4'},                             -- 5E
+    {ctype='unsigned short',    label='Mount Music'},                           -- 5E
+    {ctype='data[2]',           label='_unknown4'},                             -- 60
     {ctype='unsigned short',    label='Menu Zone'},                             -- 62   Only set if the menu ID is sent, used as the zone for menu responses (0x5b, 0x5c)
     {ctype='unsigned short',    label='Menu ID'},                               -- 64
     {ctype='unsigned short',    label='_unknown5'},                             -- 66
@@ -1433,25 +1434,57 @@ fields.incoming[0x00E] = L{
     {ctype='char*',             label='Name'},                                  -- 34 -   *
 }
 
--- Incoming Chat
-fields.incoming[0x017] = L{
-    {ctype='unsigned char',     label='Mode',               fn=chat},           -- 04
+enums['mentor icon'] = {
+    [0] = 'None',
+    [1] = 'Bronze',
+    [2] = 'Silver',
+    [3] = 'Gold'
+}
+
+func.incoming[0x017] = {}
+func.incoming[0x017].base = L{
+    {ctype='unsigned char',     label='Mode',             fn=chat},             -- 04
+}
+func.incoming[0x017].default = L{
     {ctype='bool',              label='GM'},                                    -- 05
-    {ctype='unsigned short',    label='Zone',               fn=zone},           -- 06   Set only for Yell
+    {ctype='unsigned short',    label='_padding1',},                            -- 06   Reserved for Yell and Assist Modes
     {ctype='char[0xF]',         label='Sender Name'},                           -- 08
     {ctype='char*',             label='Message'},                               -- 17   Max of 150 characters
 }
+func.incoming[0x017][0x1A] = L{ -- Yell
+    {ctype='bool',              label='GM'},                                    -- 05
+    {ctype='unsigned short',    label='Zone',             fn=zone},             -- 06   Zone ID of sender
+    {ctype='char[0xF]',         label='Sender Name'},                           -- 08
+    {ctype='char*',             label='Message'},                               -- 17   Max of 150 characters
+}
+func.incoming[0x017][0x22] = L{ -- AssistJ
+    {ctype='bool',              label='GM'},                                    -- 05
+    {ctype='unsigned char',     label='Mastery Rank'},                          -- 06   Sender Mastery Rank
+    {ctype='unsigned char',     label='Mentor Icon',      fn=e+{'mentor icon'}},-- 07   Color of Mentor Flag
+    {ctype='char[0xF]',         label='Sender Name'},                           -- 08
+    {ctype='char*',             label='Message'},                               -- 17   Max of 150 characters
+}
+func.incoming[0x017][0x23] = func.incoming[0x017][0x22] -- AssistE
+
+-- Incoming Chat
+fields.incoming[0x017] = function()
+    local fields = func.incoming[0x017]
+
+    return function(data, type)
+        return fields.base + (fields[type or data:byte(5)] or fields.default)
+    end
+end()
 
 -- Job Info
 fields.incoming[0x01B] = L{
     {ctype='unsigned int',      label='_unknown1'},                             -- 04   Observed value of 05
-    {ctype='unsigned char',     label='Main Job',           fn=job},            -- 08
+    {ctype='unsigned char',     label='Main Job',         fn=job},              -- 08
     {ctype='unsigned char',     label='Flag or Main Job Level?'},               -- 09
     {ctype='unsigned char',     label='Flag or Sub Job Level?'},                -- 0A
-    {ctype='unsigned char',     label='Sub Job',            fn=job},            -- 0B
+    {ctype='unsigned char',     label='Sub Job',          fn=job},              -- 0B
     {ctype='bit[32]',           label='Sub/Job Unlock Flags'},                  -- 0C   Indicate whether subjob is unlocked and which jobs are unlocked. lsb of 0x0C indicates subjob unlock.
     {ctype='unsigned char',     label='_unknown3'},                             -- 10   Flag or List Start
-    {ref=types.job_level,       lookup={res.jobs, 0x01},    count=0x0F},        -- 11
+    {ref=types.job_level,       lookup={res.jobs, 0x01},  count=0x0F},          -- 11
     {ctype='unsigned short',    label='Base STR'},                              -- 20  -- Altering these stat values has no impact on your equipment menu.
     {ctype='unsigned short',    label='Base DEX'},                              -- 22
     {ctype='unsigned short',    label='Base VIT'},                              -- 24
@@ -1464,9 +1497,13 @@ fields.incoming[0x01B] = L{
     {ctype='unsigned int',      label='Maximum MP'},                            -- 40
     {ctype='unsigned int',      label='Flags'},                                 -- 44   Looks like a bunch of flags. Observed value if 01 00 00 00
     {ctype='unsigned char',     label='_unknown5'},                             -- 48   Potential flag to signal the list start. Observed value of 01
-    {ref=types.job_level,       lookup={res.jobs, 0x01},    count=0x16},        -- 49
+    {ref=types.job_level,       lookup={res.jobs, 0x01},  count=0x16},          -- 49
     {ctype='unsigned char',     label='Current Monster Level'},                 -- 5F
     {ctype='unsigned int',      label='Encumbrance Flags'},                     -- 60   [legs, hands, body, head, ammo, range, sub, main,] [back, right_ring, left_ring, right_ear, left_ear, waist, neck, feet] [HP, CHR, MND, INT, AGI, VIT, DEX, STR,] [X X X X X X X MP]
+    {ctype='unsigned char',     label='_unknown7'},                             -- 64
+    {ctype='unsigned char',     label='Mentor Icon',      fn=e+{'mentor icon'}},-- 65
+    {ctype='unsigned char',     label='Mastery Rank'},                          -- 66
+    {ctype='unsigned char',     label='_unknown8'},                             -- 67
 }
 
 -- Inventory Count
@@ -2920,7 +2957,8 @@ fields.incoming[0x061] = L{
     {ctype='bit[5]',            label='Unity Rank'},                            -- 58   Danger, 00ing caused my client to crash
     {ctype='bit[16]',           label='Unity Points'},                          -- 59   
     {ctype='bit[6]',            label='_unknown6'},                             -- 5A   No obvious function
-    {ctype='unsigned int',      label='_junk1'},                                -- 5B   
+    {ctype='unsigned int',      label='_junk1'},                                -- 5B
+    {ctype='unsigned int',      label='_junk2'},                                -- 5F
 }
 
 types.combat_skill = L{
@@ -3096,7 +3134,7 @@ fields.incoming[0x075] = L{
     {ctype='unsigned int',      label='Fight Designation'},                     -- 04   Anything other than 0 makes a timer. 0 deletes the timer.
     {ctype='unsigned int',      label='Timestamp Offset',   fn=time},           -- 08   Number of seconds since 15:00:00 GMT 31/12/2002 (0x3C307D70)
     {ctype='unsigned int',      label='Fight Duration',     fn=time},           -- 0C
-    {ctype='byte[12]',          label='_unknown1'},                             -- 10   This packet clearly needs position information, but it's unclear how these bytes carry it
+    {ctype='data[12]',          label='_unknown1'},                             -- 10   This packet clearly needs position information, but it's unclear how these bytes carry it
     {ctype='unsigned int',      label='Battlefield Radius'},                    -- 1C   Yalms*1000, so a 50 yalm battlefield would have 50,000 for this field
     {ctype='unsigned int',      label='Render Radius'},                         -- 20   Yalms*1000, so a fence that renders when you're 25 yalms away would have 25,000 for this field
 }
@@ -3857,3 +3895,4 @@ Redistribution and use in source and binary forms, with or without modification,
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL Windower BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ]]
+

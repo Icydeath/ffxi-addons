@@ -32,63 +32,15 @@ require 'chat'
 require 'logger'
 require 'sets'
 require 'strings'
-
+res = require 'resources'
 slips = require 'slips'
 
-
-_addon.name     = 'porter'
-_addon.version  = '1.20130529'
+_addon.name = 'porter'
+_addon.version = '1.20210302'
 _addon.command = 'porter'
 _addon.author = 'Zohno'
 
-item_names = T{}
-resources  = {
-    ['armor']   = '../../plugins/resources/items_armor.xml',
-    ['weapons'] = '../../plugins/resources/items_weapons.xml',
-    ['general'] = '../../plugins/resources/items_general.xml'
-}
-
-function load_resources()
-    local slips_items_ids = T()
-    for _, slip in  pairs(slips.items) do
-        slips_items_ids:extend(slip)
-    end
-
-    slips_items_ids = S(slips_items_ids)
-
-    for kind, resource_path in pairs(resources) do
-        resource = io.open(windower.addon_path..resource_path, 'r')
-
-        if resource ~= nil then
-            while true do
-                local line = resource:read()
-
-                if line == nil then
-                    break
-                end
-
-                local id, name = line:match('id="(%d+)".+>([^<]+)<')
-
-                if id ~= nil then
-                    id = tonumber(id, 10)
-
-                    if slips_items_ids:contains(id) then
-                        item_names[id] = name:lower()
-                    end
-                end
-            end
-        else
-            error(kind..' resource file not found')
-        end
-
-        resource:close()
-    end
-end
-
 function show_slip(slip_number, slip_page, owned_only)
-    if item_names:length() == 0 then
-        load_resources()
-    end
 
     owned_only = owned_only or false
 
@@ -131,70 +83,50 @@ function show_slip(slip_number, slip_page, owned_only)
             end
 
             for item_position, item_id in ipairs(slip_items) do
-                local is_contained = player_slip_items:contains(item_id)
+				if item_id ~= 0 then
+					local is_contained = player_slip_items:contains(item_id)
 
-                if owned_only == false or owned_only == true and is_contained == true then
-                    windower.add_to_chat(
-                        55,
-                        ('slip '..printable_slip_number..'/page '..tostring(slip_page and slip_page or math.ceil(item_position / 16)):lpad('0', 2)..':'):color(259)..' '..
-                        item_names[item_id]:color(is_contained and 258 or 261)
-                    )
-                end
+					if owned_only == false or owned_only == true and is_contained == true then
+						windower.add_to_chat(
+							55,
+							('slip '..printable_slip_number..'/page '..tostring(slip_page and slip_page or math.ceil(item_position / 16)):lpad('0', 2)..':'):color(259)..' '..
+							res.items[item_id].name:color(is_contained and 258 or 261)
+						)
+					end
+				end
             end
         end
     end
 end
 
-local bags = {'inventory', 'safe', 'storage', 'locker', 'satchel', 'sack', 'case', 'wardrobe', 'safe2', 'wardrobe2', 'wardrobe3', 'wardrobe4'}
+function show_bags()
 
-function is_storable(item_id)
-    for slip_id, slip_item in pairs(slips.items) do
-        if slip_item:contains(item_id) then
-            return slip_id-29311
+    local n = 0
+
+    for _, bag in ipairs(slips.default_storages) do
+        for _, item in ipairs(windower.ffxi.get_items(bag)) do
+            local slip_id = slips.get_slip_id_by_item_id(item.id)
+
+            if slip_id and item.id ~= 0 then
+                n = n + 1
+                windower.add_to_chat(207, 'slip %02d: %s %s':format(slips.get_slip_number_by_id(slip_id), bag, res.items[item.id].name:color(258)))
+            end
         end
     end
+
+    windower.add_to_chat(207, 'Found %s storable items in all bags':format(n))
 end
 
 windower.register_event('addon command',function (slip_number, slip_page, owned_only)
-    if slip_number == 'store' and tonumber(slip_page) then
-        
-    elseif slip_number == 'find' then
-        if item_names:length() == 0 then
-            load_resources()
-        end
-
-        local n = 0
-        local slip_tables = {}
-        for x = 1, #bags do bag = bags[x]
-            for index = 1, 80 do local item = windower.ffxi.get_items(bag, index)
-                local slip_number = item and is_storable(item.id)
-                if slip_number then
-
-                    if not slip_tables[slip_number] then slip_tables[slip_number] = {} end
-
-                    slip_tables[slip_number][#slip_tables[slip_number]+1] = {bag=bag, id=item.id}
-
-                    n = n + 1
-                end
-            end
-        end
-        
-        for slip = 1, 30 do local items = slip_tables[slip]
-            if items then
-                for x = 1, #items do local item = items[x]
-                    windower.add_to_chat(207, 'Slip %2d: %-10s %s':format(slip, item.bag, item_names[item.id] or 'Unknown item: %d':format(item.id)))
-                end
-            end
-        end
-        
-        windower.add_to_chat(207, 'Found %s storable items in all bags':format(n))
-        return
-    elseif tonumber(slip_number) == nil then
+    if tonumber(slip_number) == nil then
         slip_page = nil
 
         if slip_number == 'owned' then
             slip_number = nil
             owned_only  = true
+        elseif slip_number == 'find' then
+            show_bags()
+            return
         elseif slip_number ~= nil then
             error('That\'s not a valid slip number, kupo!')
 

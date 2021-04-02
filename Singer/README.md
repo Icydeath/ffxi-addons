@@ -1,5 +1,6 @@
 # Sing
 ### Automates casting of bard buff songs.
+#### If you are updating from a version prior to 1.15.06.24 make sure you delete your existing settings.xml file located within the addons data folder.
 Configure songs with commands, calculates song duration based on active job abilities and gear equipped 
 at the endcast, supports two dummy songs, checks active song buffs casted by player (as recorded by the addon) and detects song+ 
 instruments, (if found in inventory/wardrobe.) and applies it to your song limit.
@@ -42,7 +43,9 @@ To turn a song off:
 	e.g. //sing madrigal 0 - sets number of madrigals to 0 madrigals will not be used.*
 	
 	
-*[buff] name of buff, currently supports all bard buffs excluding etudes and carols
+*[buff] name of buff, currently supports all bard buffs 
     e.g march, minuet, madrigal, scherzo, prelude, ballad, mazurka are all valid buff names
+    Note: Etudes and Carols are a bit different. If you want STR Etude you would do setude, DEX deteude, VIT vetude, etc etc
+          For Carols if you wanted Fire Carol you would do fcarol, Ice icarol, etc etc. With two exceptions Lightning Carol is tcarol as in Thunder Resistance because there is also Light Carol which is lcarol and Water Carol is acarol as in Aqua because of Wind Carol being wcarol.
 	
 **[song] name of song as it appears in game, not case sensitive.

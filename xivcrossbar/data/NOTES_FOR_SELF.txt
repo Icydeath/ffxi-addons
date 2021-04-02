@@ -1,0 +1,3 @@
+action_binder:assign_action
+  ^ self.save_binding(...) used is actually calling xivcrossbar->set_hotkey(hotbar, slot, action_type, action, target, icon)
+  	-> I had to add the icon parameter to set_hotkey and then pass the icon name through the self.save_binding ... wtf
