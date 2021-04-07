@@ -3,7 +3,7 @@ _addon.name = 'AutoCOR'
 _addon.commands = {'cor'}
 _addon.version = '2021.4.7'
 
--- 4/7/21: fixed issue where it would use fold when busting even if you evade the bust.
+-- 4/7/21: fixed fold and snake eye issues being used when it shouldn't be.
 -- 1/11/21: Added toggle settings for fold and snake eye
 -- 10/24/20: Will now automatically turn off when you leave a battle field
 
@@ -114,9 +114,9 @@ windower.register_event('prerender',function ()
                 end
                 return
             elseif buffs[308] and buffs[308] == roll.id and buffs[roll.buff] ~= roll.lucky and buffs[roll.buff] ~= 11 then
-                if settings.snake_eye and abil_recasts[197] and abil_recasts[197] == 0 and not buffs[357] and L{roll.unlucky,roll.lucky-1,10}:contains(buffs[roll.buff]) then
+                if settings.snake_eye and abil_recasts[197] and abil_recasts[197] == 0 and not player_has_buff(357) and L{roll.unlucky,roll.lucky-1,10}:contains(buffs[roll.buff]) then
                     use_JA('/ja "Snake Eye" <me>')
-                elseif abil_recasts[194] and abil_recasts[194] == 0 and (buffs[357] or buffs[roll.buff] < 7) then
+                elseif abil_recasts[194] and abil_recasts[194] == 0 and (player_has_buff(357) or buffs[roll.buff] < 7) then
                     use_JA('/ja "Double-Up" <me>')
                 end
                 return
