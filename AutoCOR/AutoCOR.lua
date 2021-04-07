@@ -1,8 +1,9 @@
 _addon.author = 'Ivaar, modified by icy'
 _addon.name = 'AutoCOR'
 _addon.commands = {'cor'}
-_addon.version = '2021.1.11'
+_addon.version = '2021.4.7'
 
+-- 4/7/21: fixed issue where it would use fold when busting even if you evade the bust.
 -- 1/11/21: Added toggle settings for fold and snake eye
 -- 10/24/20: Will now automatically turn off when you leave a battle field
 
@@ -68,7 +69,7 @@ rolls = T{
     }
 
 local display_box = function()
-    return 'AutoCOR [%s]\nRoll 1 [%s]\nRoll 2 [%s]\nSnake Eye: [%s]\nWhile engaged [%s]':format(actions and 'On' or 'Off', settings.roll[1], settings.roll[2], settings.snake_eye and 'On' or 'Off', settings.roll_while_engaged and 'On' or 'Off')
+    return 'AutoCOR [%s]\nRoll 1: [%s]\nRoll 2: [%s]\nSnake Eye: [%s]\nFold: [%s]\nRoll while engaged: [%s]':format(actions and 'On' or 'Off', settings.roll[1], settings.roll[2], settings.snake_eye and 'On' or 'Off', settings.fold and 'On' or 'Off', settings.roll_while_engaged and 'On' or 'Off')
 end
 
 cor_status = texts.new(display_box(),settings.text,setting)
@@ -89,13 +90,13 @@ windower.register_event('prerender',function ()
     local curtime = os.clock()
     if nexttime + del <= curtime then
         nexttime = curtime
-        del = 0.1
+        del = 0.5
         local play = windower.ffxi.get_player()
         if not play or play.main_job ~= 'COR' or play.status > 1 or (play.status == 1 and not settings.roll_while_engaged) then return end
 		
         local abil_recasts = windower.ffxi.get_ability_recasts()
         if buffs[16] or is_moving then return end
-        if settings.fold and buffs[309] then
+        if settings.fold and player_has_buff(309) then --buffs[309]
             if abil_recasts[198] and abil_recasts[198] == 0 then
                 use_JA('/ja "Fold" <me>')
             end
@@ -205,7 +206,7 @@ windower.register_event('incoming chunk', function(id,data,modified,is_injected,
                 buffs[rolls[param].buff] = effect
             elseif message == 426 then              -- Bust
                 buffs[rolls[param].buff] = nil
-                buffs[309] = param
+				--buffs[309] = param
             end
         elseif category == 4 then                   -- Finish Casting
             del = 4.2
@@ -234,6 +235,14 @@ windower.register_event('incoming chunk', function(id,data,modified,is_injected,
         buffs = set_buff
     end
 end)
+
+function player_has_buff(buff)
+	local player = windower.ffxi.get_player()
+	if player and table.contains(player.buffs, buff) then
+		return true
+	end
+	return false
+end
 
 function reset()
 	zone = windower.ffxi.get_info().zone
