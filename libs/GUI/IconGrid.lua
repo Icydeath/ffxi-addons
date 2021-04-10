@@ -20,7 +20,6 @@ function IconGrid(args)
 	
 	ig._track._cols = #args.icons
 	ig._track._rows = T(ig._track._icons):map(function(x) return #x end):max()
-	
 	return setmetatable(ig, _meta.IconGrid)	
 end
 

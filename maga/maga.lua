@@ -40,7 +40,7 @@ texts = require('texts')
 config = require('config')
 extdata = require('extdata')
 require('logger')
-
+require('magagui')
 
 defaults = {
 	delay = .75,
@@ -73,25 +73,31 @@ defaults.display.bg.red = 0
 defaults.display.bg.green = 0
 defaults.display.bg.blue = 0
 defaults.display.padding = 3
+defaults.gui = {}
+defaults.gui.active = true
+defaults.gui.hide_combobox_bg = false
 
 text_base_string = L{
     'Augment #: ${_index|-} | Delay: ${_delay|-}',
     '${_augment|-}',
-	'',
-	'Style: ${_style|-}',
-	'Pellucid: ${_pellucid|-} | Taupe: ${_taupe|-} | Fern: ${_fern|-}',
+	--'',
+	--'Style: ${_style|-} ',
+	--'Pellucid: ${_pell|-} | Taupe: ${_taupe|-} | Fern: ${_fern|-}',
 	'Sets:',
 	'${_augmentsets|-}'
 }:concat('\n')
 	
 settings = config.load(defaults)
+if settings.gui.active then
+	initialize_GUI()
+end
 
 maga_tb = texts.new(text_base_string,settings.display)
 maga_tb._index = history:length()
 maga_tb._augment = nil
 maga_tb._augmentsets = nil
 maga_tb._style = settings.style
-maga_tb._pellucid = settings.pellucid
+maga_tb._pell = settings.pellucid
 maga_tb._taupe = settings.taupe
 maga_tb._fern = settings.fern
 maga_tb._delay = settings.delay
@@ -192,6 +198,8 @@ windower.register_event('incoming chunk', function(id,data)
             for k,v in pairs(results) do
                 log(k .. ' ' .. v)
             end
+			show_option_buttons()
+			
             notice("Type //maga accept, //maga continue, or //maga cancel.")
         elseif settings.debug then
             notice("Didn't match the following: ")
@@ -211,11 +219,9 @@ function update_display(index)
     
     maga_tb._index = index
     maga_tb._augment = history[tonumber(index)]
-
 end
 
 function compare_augments(comparison)
-
     local result = false
 
     for augment_set in augments:it() do 
@@ -223,11 +229,9 @@ function compare_augments(comparison)
     end
     
     return result
-
 end
 
 function compare_augment_set(augment_set,comparison)
-        
     for k,v in pairs(augment_set) do
     
         if not comparison:containskey(k) then
@@ -250,7 +254,6 @@ function compare_augment_set(augment_set,comparison)
     end
 
     return true
-
 end
 
 
@@ -260,8 +263,11 @@ function start(style)
         return
     end
 
-        
-    if not status.gear then return end
+    if not status.gear then
+		error('Did you forget to trade your gear?')
+		start_button:unpress()
+		return 
+	end
     
     status.started = true
 
@@ -306,18 +312,17 @@ function start(style)
             coroutine.sleep(.5)
         end
     end
-    
+	
     status.started = false
-
 end
 
 function stop()
+	show_option_buttons()
     notice("Stopping augmentation process! Type //maga cancel to receive your original item or //maga accept to receive the most recent augment.")
     status.finished = true
 end
 
 function internal_augment(style,stone)
-    
     if not style or not stone then error("Function augment(style,stone) was missing one or more arguments.") return false end
     
     local a = constants.style[style]
@@ -347,7 +352,6 @@ function internal_augment(style,stone)
             
     packets.inject(inject)
     return true
-
 end
 
 function continue()
@@ -373,7 +377,6 @@ function cancel()
 
         notice("Your item has been returned to you unchanged.")
     end
-
 end
 
 function accept()
@@ -396,11 +399,9 @@ function accept()
         packets.inject(inject)
     
     end
-    
 end
 
 function pellucid(bool)
-
     if bool then
         if L{"true","t","yes","y"}:contains(bool) then
             settings.pellucid = true
@@ -417,7 +418,6 @@ function pellucid(bool)
 end
 
 function fern(bool)
-
     if bool then
         if L{"true","t","yes","y"}:contains(bool) then
             settings.fern = true
@@ -434,7 +434,6 @@ function fern(bool)
 end
 
 function taupe(bool)
-
     if bool then
         if L{"true","t","yes","y"}:contains(bool) then
             settings.taupe = true
@@ -451,32 +450,23 @@ function taupe(bool)
 end
 
 function style(str)
-    
     str = str and str:lower() or ""
-    
     if L{"melee","magic","familiar","ranged","healing"}:contains(str) then
         settings.style = str
         notice("Using augmentation style : %s":format(str))
     else
         error("Please specify one of the valid augmenting styles: [magic,melee,familiar,ranged,healing]")
     end
-    
     settings:save('all')
-
 end
 
 function search(str)
-
     str = str or ""
-
     local augs = extdata.search_aug(str:lower())
-    
     notice("Matched the following augments: " .. augs:concat(", "))
-    
 end
 
 function add_aug(aug,val,set)
-    
     if not augments[set] then error('Augment set #%d does not currently exist.':format(set)) return end
 	
     if augments:length() >= 6 and not augments:containskey(aug) then
@@ -488,21 +478,16 @@ function add_aug(aug,val,set)
 end
 
 function display()
-    
     local count = 1
-    
     for augment_set in augments:it() do
-    
-    log("Augment set #%d: ":format(count))
+		log("Augment set #%d: ":format(count))
     
         for k,v in pairs(augment_set) do
             log(' * ' .. k , v)
         end
         
-    count = count + 1
-    
+		count = count + 1
     end
-
 end
 
 function add(aug,minval,set)
@@ -515,12 +500,9 @@ function add(aug,minval,set)
     else
         error("The specified augment was not found.")
     end    
-
-	
 end
 
 function remove(aug, set)
-
     set = set and tonumber(set) or 1
     aug = aug and aug:lower() or ""
     
@@ -530,18 +512,27 @@ function remove(aug, set)
             notice("%s removed from the augment list.":format(aug))
         end
     end
-
 end
 
 function newset()
-
     augments:append({})
     notice("Added augment set #%d":format(augments:length()))
+end
 
+function clearset(num)
+    num = num and tonumber(num) or nil
+    
+    if num and augments[num] then
+		for k,v in pairs(augments[num]) do
+			augments[num][k] = nil
+		end
+		notice('All entries removed from set #%d':format(num))
+    else
+        error('Invalid set #%d.':format(num))
+    end
 end
 
 function delset(num)
-    
     num = num and tonumber(num) or nil
     
     if not num then
@@ -559,13 +550,11 @@ function delset(num)
         augments[num] = nil
         notice('Deleted augments set #%d.':format(num))
     end
-	
 end
 
 local helpers = {}
 
 function helpers.to_xml_table(tab)
-
     local rettab = {}
     
     for t in tab:it() do
@@ -580,7 +569,6 @@ function helpers.to_xml_table(tab)
 end
 
 function helpers.from_xml_table(tab)
-
     local rettab = L{}
 
     for k,v in pairs(tab) do
@@ -592,26 +580,24 @@ function helpers.from_xml_table(tab)
     end
     
     return rettab
-
 end
 
 function save(name)
-
     name = name and name:lower() or nil
     
-    if not name then
-        error("Specify a profile name to save to.")
-    else
+    if name then
         settings.profiles[name] = helpers.to_xml_table(augments)
         notice("Saved current augments to the profile '%s'":format(name))
     end
     
     settings:save('all')
-
+	
+	if settings.gui.active then
+		notice("To realign your GUI to the textbox use '//lua reload maga'.")
+	end
 end
 
 function load(name)
-
     name = name and name:lower() or nil
     
     if not name then
@@ -625,7 +611,6 @@ function load(name)
             notice("Loaded profile: %s":format(name))
         end
     end
-
 end
 
 function debug()
@@ -645,19 +630,19 @@ function delay(del)
 
 end
 
-function table_print (tt, indent, done)
+function table_print(tt, indent, done)
   done = done or {}
   indent = indent or 0
   if type(tt) == "table" then
     local sb = {}
     for key, value in pairs (tt) do
 	  if key ~= 'n' then -- Added this check to not show the total number of entries.
-		  table.insert(sb, string.rep (" ", indent)) -- indent it
-		  if type (value) == "table" and not done [value] then
-			done [value] = true
+		  table.insert(sb, string.rep(" ", indent)) -- indent it
+		  if type(value) == "table" and not done[value] then
+			done[value] = true
 			table.insert(sb, key .. " = {\n");
-			table.insert(sb, table_print (value, indent + 2, done))
-			table.insert(sb, string.rep (" ", indent)) -- indent it
+			table.insert(sb, table_print(value, indent + 2, done))
+			table.insert(sb, string.rep(" ", indent)) -- indent it
 			table.insert(sb, "}\n");
 		  elseif "number" == type(key) then
 			table.insert(sb, string.format("\"%s\"\n", tostring(value)))
@@ -674,11 +659,11 @@ function table_print (tt, indent, done)
 end
 
 function to_string( tbl )
-    if  "nil"       == type( tbl ) then
+    if "nil" == type(tbl) then
         return tostring(nil)
-    elseif  "table" == type( tbl ) then
-        return table_print(tbl)
-    elseif  "string" == type( tbl ) then
+    elseif "table" == type(tbl) then
+        return table_print(tbl, 1)
+    elseif "string" == type(tbl) then
         return tbl
     else
         return tostring(tbl)
@@ -688,19 +673,29 @@ end
 
 function help()
 
-    print('MAGA will automatically augment items for you after you trade them to Oseem.')
-    print('No menu will appear, don\'t panic!')
-    print('Command listing: ')
-    print(' - help   : displays this help text')
-    print(' - start  : begins augmenting an item after traded')
-    print(' - stop   : stops the augmentation loop')
-    print(' - cancel : returns your item to you unchanged')
-    print(' - accept : accepts the most recent augment')
-    print(' - display : lists augments to match')
-    print(' - style <augment style> : the type of augment to choose (magic, melee, ranged, familiar, healing)')
-    print(' - add <augment name> <minimum value>')
-    print(' - remove <augment name>')
+    windower.add_to_chat(207, 'MAGA will automatically augment items for you after you trade them to Oseem.')
+    windower.add_to_chat(207, 'No menu will appear, don\'t panic!')
+    windower.add_to_chat(207, 'Command listing: ')
+    windower.add_to_chat(207, ' - help   : displays this help text')
+	windower.add_to_chat(207, ' - gui    : show/hides the GUI')
+    windower.add_to_chat(207, ' - start  : begins augmenting an item after traded')
+    windower.add_to_chat(207, ' - stop   : stops the augmentation loop')
+    windower.add_to_chat(207, ' - cancel : returns your item to you unchanged')
+    windower.add_to_chat(207, ' - accept : accepts the most recent augment')
+    windower.add_to_chat(207, ' - display : lists augments to match')
+    windower.add_to_chat(207, ' - style <augment style> : augment styles: magic, melee, ranged, familiar, healing')
+    windower.add_to_chat(207, ' - add <augment name> <minimum value>')
+    windower.add_to_chat(207, ' - remove <augment name>')
+	windower.add_to_chat(207, ' - newset')
+	windower.add_to_chat(207, ' - clear <set number>')
+	windower.add_to_chat(207, ' - delset <set number>')
     
+end
+
+function gui_display()
+	settings.gui.active = not settings.gui.active
+	if settings.gui.active then show_GUI() else hide_GUI() end
+	settings:save('all')
 end
 
 handlers = {
@@ -722,9 +717,12 @@ handlers = {
     history = update_display,
     newset = newset,
     delset = delset,
+	clearset = clearset,
+	clear = clearset,
     delay = delay,
     load = load,
-    debug = debug
+    debug = debug,
+	gui = gui_display
 }
 
 
@@ -741,7 +739,7 @@ windower.register_event('addon command', function (...)
         error("unknown command %s":format(cmd or ""))
     end
 	maga_tb._style = to_string(settings.style)
-	maga_tb._pellucid = to_string(settings.style)
+	maga_tb._pell = to_string(settings.pellucid)
 	maga_tb._taupe = to_string(settings.taupe)
 	maga_tb._fern = to_string(settings.fern)
 	maga_tb._delay = to_string(settings.delay)

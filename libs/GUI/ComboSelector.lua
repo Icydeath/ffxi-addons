@@ -64,6 +64,17 @@ _meta.ComboSelector.__methods['draw'] = function(cs)
 	--GUI.register_mouse_listener(cs)
 end
 
+_meta.ComboSelector.__methods['undraw'] = function(cs)
+	local self = tostring(cs)
+	for i = 1, cs._track._size do
+		local name = '%s %s text':format(self, i)
+		windower.text.delete(name)
+		local name = '%s background %s':format(self, i)
+		windower.prim.delete(name)
+	end
+	cs._track._scrollbar:undraw()
+end
+
 -- Called by the scrollbar
 _meta.ComboSelector.__methods['scroll'] = function(cs, scroll)
 	-- linnear transformation from scrollbar to the index of the top element to display

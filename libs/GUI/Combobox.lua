@@ -14,6 +14,7 @@ function Combobox(args)
 	cb._track._var = args.var
 	cb._track._width = args.width
 	cb._track._size = args.size -- could calculate it using GUI.bounds if not provided
+	cb._track._bold = args.bold or false
 	cb._track._callback = args.callback
 	cb._track._state = cb._track._var.value
 	cb._track._lock = T{}
@@ -41,8 +42,9 @@ _meta.Combobox.__methods['draw'] = function(cb)
 	windower.text.set_location(name, cb._track._x + 5, cb._track._y + 3)
 	windower.text.set_text(name, cb._track._var.value)
 	windower.text.set_font(name, 'Helvetica')
-	windower.text.set_color(name, 255,253, 252, 250)
+	windower.text.set_color(name, 255, 253, 252, 250)
 	windower.text.set_font_size(name, 10)
+	windower.text.set_bold(name, cb._track._bold)
 	windower.text.set_visibility(name, true)
 	
 	cb._track._dropdown = ComboSelector{
@@ -58,6 +60,19 @@ _meta.Combobox.__methods['draw'] = function(cb)
 	GUI.register_mouse_listener(cb)
 	GUI.subscribe_signals(cb, cb.receive_signal:apply(cb))
 	--GUI.register_update_event(cb) -- Possibly manually enable this in constructor.  Shouldn't be on by default.
+end
+
+_meta.Combobox.__methods['undraw'] = function(cb)
+	local self = tostring(cb)
+	for i, v in ipairs({'left', 'mid', 'right'}) do
+		local name = '%s %s':format(self, v)
+		windower.prim.delete(name)
+	end
+	local name = '%s text':format(self)
+	windower.text.delete(name)
+	
+	GUI.subscribe_signals(cb, nil)
+	GUI.unregister_mouse_listener(cb)
 end
 
 _meta.Combobox.__methods['show'] = function(cb)
@@ -90,7 +105,7 @@ _meta.Combobox.__methods['resize'] = function(cb, newsize)
 end
 
 _meta.Combobox.__methods['update'] = function(cb)
-	print( cb._track._var.value, cb._track._state)
+	--print( cb._track._var.value, cb._track._state)
 	if cb._track._var.value ~= cb._track._state then
 		cb._track._state = cb._track._var.value
 		windower.text.set_text('%s text':format(tostring(cb)), cb._track._var.value)

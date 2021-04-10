@@ -49,6 +49,20 @@ _meta.Divider.__methods['undraw'] = function(d)
 	windower.prim.delete('%s right':format(self))
 end
 
+_meta.Divider.__methods['show'] = function(d)
+	local self = tostring(d)
+	windower.prim.set_visibility('%s left':format(self), true)
+	windower.prim.set_visibility('%s mid':format(self), true)
+	windower.prim.set_visibility('%s right':format(self), true)
+end
+
+_meta.Divider.__methods['hide'] = function(d)
+	local self = tostring(d)
+	windower.prim.set_visibility('%s left':format(self), false)
+	windower.prim.set_visibility('%s mid':format(self), false)
+	windower.prim.set_visibility('%s right':format(self), false)
+end
+
 _meta.Divider.__index = function(d, k)
 	if type(k) == 'string' then
 		local lk = k:lower()

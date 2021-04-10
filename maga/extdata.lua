@@ -441,6 +441,19 @@ function extdata.decode(str)
 	return res
 end
 
-
+function extdata.distinct_aug_names(list, sort)
+	local results = list or L{}
+	for hex,data in pairs(augment_values) do
+		local first = data[1]
+		if first and not results:contains(first.stat) then
+			if first.stat ~= 'none' and first.stat ~= 'unknown' then
+				--log(first.stat)
+				results:append(first.stat)
+			end
+		end
+	end
+	if sort then results = results:sort() end
+	return results
+end
 
 return extdata

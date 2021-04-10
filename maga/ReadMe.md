@@ -1,11 +1,18 @@
 **Author:**  Cairthenn - modified by Icy<br>
-**Version:**  1.0.0.5<br>
-**Date:** 11/9/2019<br>
+**Version:**  1.0.0.7<br>
+**Date:** 4/7/2021<br>
+
+#### NOTES ####
+* This version of MAGA uses a GUI and you must install the require libraries.
+	* Unzip libs folder into your ..\windower4\addons folder, overwrite when/if it asks.
 
 #### UPDATED BY ICY ####
+* Added a GUI for setting up augments and changing settings. //maga gui
+* Added clearset/clear //maga clear #
 * Added .wav alarms for when you run out of stones and when your required augments are met and its waiting for you to respond.
 * Added to the display window to show the augment added by sets.
 * Adjusted delset cmd, it now removes the set # passed in and empties set #1 if passed in to be deleted.
+
 ----
 
 # MAGA (Make Augments Great Again) #

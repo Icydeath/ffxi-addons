@@ -30,7 +30,7 @@ _meta.ScrollBar.__methods['draw'] = function(sb)
 	local self = tostring(sb)
 	-- iterates alphabetically.  Works entirely by coincidence
 	for k, v in orderedPairs(_meta.ScrollBar._elements) do
-		name = '%s %s':format(self, k)
+		local name = '%s %s':format(self, k)
 		windower.prim.create(name)
 		windower.prim.set_visibility(name, v.visible or false) -- set true for testing
 		windower.prim.set_texture(name, GUI.complete_filepath(v.img))
@@ -53,6 +53,16 @@ _meta.ScrollBar.__methods['draw'] = function(sb)
 		sb._track._y + 12 + math.floor((sb._track._height - 22) * sb._track._displaypercent - 2) + sb._track._value)
 
 	GUI.register_mouse_listener(sb)
+end
+
+_meta.ScrollBar.__methods['undraw'] = function(sb)
+	local self = tostring(sb)
+	for k, v in orderedPairs(_meta.ScrollBar._elements) do
+		local name = '%s %s':format(self, k)
+		windower.prim.delete(name)
+	end
+	
+	GUI.unregister_mouse_listener(sb)
 end
 
 _meta.ScrollBar.__methods['get'] = function(sb)

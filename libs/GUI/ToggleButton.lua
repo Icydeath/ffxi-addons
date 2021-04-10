@@ -158,6 +158,19 @@ _meta.ToggleButton.__methods['undraw'] = function(tb)
 	GUI.unregister_update_object(tb)
 end
 
+_meta.ToggleButton.__methods['show'] = function(tb)
+	windower.prim.set_visibility('%s press':format(tostring(tb)), false)
+	windower.prim.set_visibility('%s Down':format(tostring(tb)), false)
+	windower.prim.set_visibility('%s Up':format(tostring(tb)), true)
+	tb._track._pressed = false -- unpress the button
+end
+
+_meta.ToggleButton.__methods['hide'] = function(tb)
+	windower.prim.set_visibility('%s press':format(tostring(tb)), false)
+	windower.prim.set_visibility('%s Down':format(tostring(tb)), false)
+	windower.prim.set_visibility('%s Up':format(tostring(tb)), false)
+end
+
 _meta.ToggleButton.__index = function(tb, k)
     if type(k) == 'string' then
         local lk = k:lower()

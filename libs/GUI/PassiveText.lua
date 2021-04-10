@@ -74,6 +74,14 @@ _meta.PassiveText.__methods['undraw'] = function(pt)
 	GUI.unregister_update_object(pt)
 end
 
+_meta.PassiveText.__methods['show'] = function(pt)
+	windower.text.set_visibility(tostring(pt), true)
+end
+
+_meta.PassiveText.__methods['hide'] = function(pt)
+	windower.text.set_visibility(tostring(pt), false)
+end
+
 _meta.PassiveText.__index = function(pt, k)
     if type(k) == 'string' then
 		

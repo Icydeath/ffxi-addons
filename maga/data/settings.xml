@@ -20,8 +20,8 @@
             </flags>
             <padding>3</padding>
             <pos>
-                <x>473</x>
-                <y>662</y>
+                <x>505</x>
+                <y>647</y>
             </pos>
             <text>
                 <alpha>255</alpha>
@@ -43,7 +43,11 @@
             </text>
         </display>
         <fern>true</fern>
-        <pellucid>false</pellucid>
+        <gui>
+            <active>true</active>
+            <hide_combobox_bg>false</hide_combobox_bg>
+        </gui>
+        <pellucid>true</pellucid>
         <profiles>
             <default>
 
