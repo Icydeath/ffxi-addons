@@ -3,8 +3,10 @@
 **Date:** 4/7/2021<br>
 
 #### NOTES ####
-* This version of MAGA uses a GUI and you must install the require libraries.
+* Version 1.0.0.7 uses a GUI and you must install the require libraries.
 	* Unzip libs folder into your ..\windower4\addons folder, overwrite when/if it asks.
+
+![example](example.png)
 
 #### UPDATED BY ICY ####
 * Added a GUI for setting up augments and changing settings. //maga gui
