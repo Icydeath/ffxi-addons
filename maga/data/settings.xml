@@ -20,8 +20,8 @@
             </flags>
             <padding>3</padding>
             <pos>
-                <x>505</x>
-                <y>647</y>
+                <x>338</x>
+                <y>481</y>
             </pos>
             <text>
                 <alpha>255</alpha>
@@ -46,6 +46,7 @@
         <gui>
             <active>true</active>
             <hide_combobox_bg>false</hide_combobox_bg>
+            <use_tradenpc>true</use_tradenpc>
         </gui>
         <pellucid>true</pellucid>
         <profiles>

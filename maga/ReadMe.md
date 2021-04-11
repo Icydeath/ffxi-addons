@@ -1,19 +1,24 @@
 **Author:**  Cairthenn - modified by Icy<br>
-**Version:**  1.0.0.7<br>
-**Date:** 4/7/2021<br>
+**Version:**  1.0.0.8<br>
+**Date:** 4/11/2021<br>
 
 #### NOTES ####
-* Version 1.0.0.7 uses a GUI and you must install the require libraries.
-	* Unzip libs folder into your ..\windower4\addons folder, overwrite when/if it asks.
+* v1.0.0.7+ uses a GUI and you must install the required libraries to use it.
+	* Unzip libs folder into your ..\windower4\addons folder, overwrite if prompt.
 
 ![example](example.png)
 
 #### UPDATED BY ICY ####
-* Added a GUI for setting up augments and changing settings. //maga gui
-* Added clearset/clear //maga clear #
-* Added .wav alarms for when you run out of stones and when your required augments are met and its waiting for you to respond.
-* Added to the display window to show the augment added by sets.
-* Adjusted delset cmd, it now removes the set # passed in and empties set #1 if passed in to be deleted.
+* v1.0.0.8 
+	* Added trade stone buttons.
+		* [TradeNPC](https://github.com/Ivaar/Windower-addons/tree/master/TradeNPC) is required for the trade buttons to work (for now at least).
+* v1.0.0.7 
+	* Added a GUI (//maga gui) for adding augment sets, changing style, toggling stones, and buttons to start/stop/accept/continue/cancel.
+	* Added //maga clear|clearset #  for clearing a sets augments.
+* v1.0.0.6 
+	* Added .wav alarms for when you run out of stones and when your required augments are met and its waiting for you to respond.
+	* Added to the display window to show the augment added by sets.
+	* Adjusted delset cmd, it now removes the set # passed in and empties set #1 if passed in to be deleted.
 
 ----
 

@@ -27,13 +27,7 @@
 _addon.name = 'MAGA'
 _addon.author = 'Cair, modded by Icy'
 _addon.commands = {'MAGA'}
-_addon.version = '1.0.0.6'
-
---[[ Mods by Icy
- - Added audio alerts for when you run out of stones and when your augment condition has been met.
- - Added to the display to show the augments you've added by set.
- - Adjusted delset cmd, it now removes the set # passed in and empties set #1 if passed in to be deleted.
-]]
+_addon.version = '1.0.0.8'
 
 packets = require('packets')
 texts = require('texts')
@@ -76,6 +70,7 @@ defaults.display.padding = 3
 defaults.gui = {}
 defaults.gui.active = true
 defaults.gui.hide_combobox_bg = false
+defaults.gui.use_tradenpc = true
 
 text_base_string = L{
     'Augment #: ${_index|-} | Delay: ${_delay|-}',
@@ -88,9 +83,6 @@ text_base_string = L{
 }:concat('\n')
 	
 settings = config.load(defaults)
-if settings.gui.active then
-	initialize_GUI()
-end
 
 maga_tb = texts.new(text_base_string,settings.display)
 maga_tb._index = history:length()
@@ -111,6 +103,12 @@ status = {
 	paused = false,
 	finished = false,
 	waiting_for_augment = false
+}
+
+check = {}
+requests = {
+    [0x113] = packets.new('outgoing', 0x10F),
+    [0x118] = packets.new('outgoing', 0x115),
 }
 
 constants = {
@@ -160,7 +158,22 @@ constants = {
 }
 
 windower.register_event('incoming chunk', function(id,data)
-    if id == 0x34 then
+	if check[id] then
+        local packet = packets.parse('incoming', data)
+        for field in check[id]:it() do
+			if field:startswith('Pellucid') then
+				status.pellucid = tonumber(packet[field])
+			elseif field:startswith('Taupe') then
+				status.taupe = tonumber(packet[field])
+			elseif field:startswith('Fern') then
+				status.fern = tonumber(packet[field])
+			end
+        end
+        check[id] = nil
+		if settings.gui.active then
+			initialize_GUI()
+		end
+    elseif id == 0x34 then
         local p = packets.parse('incoming',data)
         
         local mob = windower.ffxi.get_mob_by_index(p['NPC Index'])
@@ -178,7 +191,7 @@ windower.register_event('incoming chunk', function(id,data)
                 notice('Type //maga start to begin augmenting.')
                 notice('Type //maga stop to stop at any time.')
                 return true
-            
+				
             end
         end
     elseif id == 0x5c and status.gear and status.waiting_for_augment then
@@ -317,7 +330,7 @@ function start(style)
 end
 
 function stop()
-	show_option_buttons()
+	show_option_buttons(true)
     notice("Stopping augmentation process! Type //maga cancel to receive your original item or //maga accept to receive the most recent augment.")
     status.finished = true
 end
@@ -678,12 +691,13 @@ function help()
     windower.add_to_chat(207, 'Command listing: ')
     windower.add_to_chat(207, ' - help   : displays this help text')
 	windower.add_to_chat(207, ' - gui    : show/hides the GUI')
-    windower.add_to_chat(207, ' - start  : begins augmenting an item after traded')
+	windower.add_to_chat(207, ' - trade  : show/hides the buttons for trading stones; must have the tradenpc addon')
+    windower.add_to_chat(207, ' - start  : begins augmenting the traded item')
     windower.add_to_chat(207, ' - stop   : stops the augmentation loop')
     windower.add_to_chat(207, ' - cancel : returns your item to you unchanged')
     windower.add_to_chat(207, ' - accept : accepts the most recent augment')
     windower.add_to_chat(207, ' - display : lists augments to match')
-    windower.add_to_chat(207, ' - style <augment style> : augment styles: magic, melee, ranged, familiar, healing')
+    windower.add_to_chat(207, ' - style <augment style> : magic, melee, ranged, familiar, healing')
     windower.add_to_chat(207, ' - add <augment name> <minimum value>')
     windower.add_to_chat(207, ' - remove <augment name>')
 	windower.add_to_chat(207, ' - newset')
@@ -696,6 +710,53 @@ function gui_display()
 	settings.gui.active = not settings.gui.active
 	if settings.gui.active then show_GUI() else hide_GUI() end
 	settings:save('all')
+end
+
+function gui_trade()
+	settings.gui.use_tradenpc = not settings.gui.use_tradenpc
+	if settings.gui.use_tradenpc then 
+		show_trade_buttons() 
+		--notice('Trade buttons require the TradeNPC addon to work.')
+	else 
+		hide_trade_buttons() 
+	end
+	settings:save('all')
+end
+
+function onload()
+	search_fields('pellucid|taupe|fern')
+end
+
+function search_fields(terms)
+    terms = terms:split('|'):map(string.gsub-{'[%s%p]', '.*'} .. string.lower)
+
+    if windower.ffxi.get_info().logged_in then
+        check = {}
+        local results
+
+        for id, packet in pairs(requests) do
+            local fields = packets.fields('incoming', id)
+
+            for field in fields:it() do
+                if field.type ~= 'data' then
+                    local str = field.label:gsub('[%s%p]', ''):lower()
+
+                    for term in terms:it() do
+                        if str:find(term) then
+                            check[id] = check[id] or L{}
+                            check[id]:append(field.label)
+                        end
+                    end
+                end
+            end
+
+            if check[id] then
+                packets.inject(packet)
+                results = true
+            end
+        end
+        return results
+    end
 end
 
 handlers = {
@@ -722,10 +783,11 @@ handlers = {
     delay = delay,
     load = load,
     debug = debug,
-	gui = gui_display
+	gui = gui_display,
+	trade = gui_trade
 }
 
-
+windower.register_event('load', onload)
 windower.register_event('unload', cancel)
 windower.register_event('addon command', function (...)
     local cmd  = (...) and (...):lower()
