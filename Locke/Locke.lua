@@ -3,31 +3,55 @@ _addon.author = 'Icy'
 _addon.commands = {'locke','thf','th'}
 _addon.version = '2020.10.27'
 
+-- This addon was built to test Rufuso's TH Theory: https://www.youtube.com/watch?v=r1pLv_aF7-s
+-- The addon leverages Gearswap and you'll need to add sets to your gearswap lua file. 
+--[[ IE:
+	sets.TreasureHunter8 = set_combine(sets.engaged, { -- set should be at +5 TH. (combined with traits its a total of +8 TH)
+		sub="Gandring", 				-- TH +3
+		head="Wh. Rarab Cap +1", 		-- TH +1
+		waist="Chaac Belt", 			-- TH +1
+	}) 
+
+	sets.TreasureHunter9 = set_combine(sets.engaged, { -- +6 TH (total of 9)
+		sub="Gandring", 				-- TH +3
+		hands="Plunderer's Armlets +1", -- TH +3
+	}) 
+
+	sets.TreasureHunter10 = set_combine(sets.engaged, { -- +7 TH (total of 10)
+		sub="Gandring", -- TH +3
+		hands="Plunderer's Armlets +1", -- TH +3
+		waist="Chaac Belt", -- TH +1
+	}) 
+
+	sets.TreasureHunter11 = set_combine(sets.engaged, { -- +8 TH (total of 11)
+		sub="Gandring", 				-- TH +3
+		head="Wh. Rarab Cap +1", 		-- TH +1
+		hands="Plunderer's Armlets +1", -- TH +3
+		waist="Chaac Belt", 			-- TH +1
+	}) 
+
+	sets.TreasureHunter12 = set_combine(sets.engaged, { -- +9 TH (total of 12)
+		sub="Gandring", 				-- TH +3
+		hands="Plunderer's Armlets +1", -- TH +3
+		feet="Skulk. Poulaines +1" 		-- TH +3
+	}) 
+
+	sets.TreasureHunter13 = set_combine(sets.engaged, { -- +10 TH (total of 13)
+		sub="Gandring", 				-- TH +3
+		hands="Plunderer's Armlets +1", -- TH +3
+		waist="Chaac Belt",				-- TH +1
+		feet="Skulk. Poulaines +1" 		-- TH +3
+	})
+]]
+
+
 require('logger')
 require('strings')
 require('tables')
---require('lists')
 require('sets')
---require('functions')
 texts = require('texts')
 config = require('config')
 packets = require('packets')
---[[
-	track status
-	track poked targets
-	track TH procs
-	
-	Base equipment set should have +5 TH. (+3 TH from job traits for a total of +8 TH)
-	
-	when engaged/hit the mob. (base th applied)
-		> Equip 1 more +TH
-		
-	when th procs.
-		> Equip 1 more +TH
-	
-	
-	
-]]
 
 defaults = {}
 defaults.pos = {}
@@ -47,8 +71,7 @@ defaults.bg.blue = 30
 settings = config.load(defaults)
 active = true
 debug_mode = false
-thf_status = texts.new('Locke: -', settings)
-thf_status:show()
+thf_status = texts.new('Locke: OFF', settings)
 
 th_sets = T{
 	[8]="sets.TreasureHunter8", 
@@ -66,19 +89,16 @@ windower.register_event('addon command', function(...)
 	if #commands ~= 0 then
 		if commands[1]:lower() == "on" then
 			active = true
-			thf_status:text('Locke: -')
-			log("ON")
+			thf_status:text('Locke: awaiting for proc...')
 		elseif commands[1]:lower() == "off" then
 			active = false
 			thf_status:text('Locke: OFF')
-			log("OFF")
 		elseif commands[1]:lower() == "debug" then
 			debug_mode = not debug_mode
-			log("Debug Mode "..(debug_mode and "ON" or "OFF"))
+			log("Debug Mode: "..(debug_mode and "ON" or "OFF"))
 		else
 			active = not active
-			log(active and "ON" or "OFF")
-			thf_status:text('Locke: ' .. (active and '-' or 'OFF'))
+			thf_status:text('Locke: %s':format(active and 'awaiting for proc...' or 'OFF'))
 		end
 		
 	end
@@ -136,7 +156,7 @@ end
 function equip(set)
 	if set then
 		if debug_mode then log("Equipping set:", set) end
-		windower.send_command('gs enable all;gs equip '..set..';gs disable all')
+		windower.send_command('gs enable all;gs c forceequip;gs equip '..set..';wait .2;gs disable all')
 	else
 		if debug_mode then log("Enabling gear slots") end
 		equip_th_set = nil
@@ -145,9 +165,11 @@ function equip(set)
 end
 
 function reset()
-	thf_status:text('Locke: -')
+	active = false
 	tagged_mobs:clear()
+	equip_th_set = nil
 	windower.send_command('gs enable all;gs c forceequip')
+	thf_status:text('Locke: OFF')
 end
 
 function loaded()
@@ -155,16 +177,21 @@ function loaded()
 	check_job()
 end
 
+function unload()
+	player = windower.ffxi.get_player()
+	if player and player.main_job:lower() == 'thf' then
+		windower.send_command('lua l Thfknife;') --lua u thtracker
+	end
+end
+
 function check_job()
     player = windower.ffxi.get_player()
-    if p and p.main_job == 'THF' then
-		thf_status:text('Locke: -')
-		active = true
-		log("ON")
+    if player and player.main_job:lower() == 'thf' then
+		reset()
+		thf_status:show()
     else
         reset()
-		thf_status:text('Locke: OFF')
-		active = false
+		thf_status:hide()
     end
 end
 
@@ -186,7 +213,7 @@ end
 
 function status_changed(new, old)
 	player = windower.ffxi.get_player()
-	if new == 1 then
+	if active and new == 1 then
 		local target = windower.ffxi.get_mob_by_target('t')
 		if target and not tagged_mobs[target.id] then
 			equip_th_set = th_sets[8]
@@ -208,5 +235,6 @@ windower.register_event('incoming chunk', handle_incoming_chunk)
 windower.register_event('status change', status_changed)
 --windower.register_event('target change', target_changed)
 windower.register_event('job change', 'login', check_job)
+windower.register_event('unload', unload)
 windower.register_event('load', loaded)
 windower.register_event('logout', 'zone change', reset)
