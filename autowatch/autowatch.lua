@@ -23,6 +23,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ]]
 
+-- 		Langly's notes/changes
 -- Future: Find a successful event to trigger unbusy() for casting and abilities. (Action Complete packet most likely)
 -- Added trading if set to slave (for cells)
 -- Correct the issue where trading multiple times for displacers if more than 1 stack exists.
@@ -31,10 +32,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -- Fixed: Pyxis delay for large parties/alliances 									- 7.30.2018
 -- Fixed: Build pet ID's into party list for detection of mob death - 7.28.2018
 
+--		Icy's notes/changes 6.5.2021
+-- some code cleanup/refactoring
+-- added support for cobalt cells: aw cobalt <#>
+-- changed default success msg for heavy metal pouch and msg can be changed in the char_job.lua or via the 'success' cmd
+-- updated help messege
+
 _addon.name = 'AutoWatch'
-_addon.author = 'Langly'
-_addon.version = '1.10'
-_addon.date = '10.11.2018'
+_addon.author = 'Langly - modded by Icy'
+_addon.version = '1.10i'
+_addon.date = '6.5.2021'
 _addon.commands = {'autowatch', 'aw'}
 
 packets = require('packets')
@@ -104,7 +111,18 @@ info.settings.trusts = T{}
 info.settings.should_engage = true
 info.settings.displacer = 0
 info.settings.rubicund = 0
+info.settings.cobalt = 0
 info.settings.cells = false
+info.settings.hvy_success_msg = '/echo Woohoo~!'
+
+trade_items = {
+	['Phase Displacer'] = {id = 3853}, -- Weakens NM
+	['Rubicund Cell'] = {id = 3435}, -- Reward Quality (Red)
+	['Cobalt Cell'] = {id = 3434}, -- Reward Quality (Blue)
+}
+-- the useless cells
+-- 	[3437] = 'Jade Cell' -- Cruor Yield
+-- 	[3436] = 'Xanthous Cell' -- EXP Yield
 
 ----------------------------------------------------------------
 -- Automation Params
@@ -138,6 +156,8 @@ function initialize(text, settings)
 	infobox:append(' Busy:  ${busy|false}     Target:  ${player_target|None}')
 	infobox:append(' -------------------------------------------------------------        ')
 	infobox:append(' AutoWatch:  ${switch|Off}           Use Displacers:  ${displacers|0}')
+	infobox:append('                                     Use Rubicund:    ${rubicund|0}')
+	infobox:append('                                     Use Cobalt:    ${cobalt|0}')
 
   text_box:clear()
   text_box:append(infobox:concat('\n'))
@@ -156,6 +176,9 @@ windower.register_event('addon command', function (command, ...)
 		notice('Provided you have stones available to pop the NM.')
 		notice('Commands: ')
 		notice('	//aw target <name> will set your target.')
+		notice('	//aw rubicund <#> 0 to disable, 1 to enable.')
+		notice('	//aw cobalt <#> 0 to disable, 1 to enable.')
+		notice('	//aw success <chatcommand> ie: aw success "/echo Woohoo~"')
 		notice('	//aw start will engage the bot and begin work.')
 		notice('	//aw stop will disengage the bot and let you resume control.')
 		notice('	//aw slave will toggle the bot between active and passive behavior.')
@@ -259,7 +282,19 @@ windower.register_event('addon command', function (command, ...)
 			update_configuration()
 			return
 		else
-           		notice('Rubicund can only be 0 or 1.')
+			notice('Rubicund can only be 0 or 1.')
+		end
+	end
+	
+	if command == "cobalt" then
+		local n = tonumber(args[1])
+		if n and n <= 1 then
+			notice('Using Cobalt Cells: '..n..' per fight.')
+			info.settings.cobalt = n
+			update_configuration()
+			return
+		else
+			notice('Cobalt can only be 0 or 1.')
 		end
 	end
 	
@@ -298,6 +333,17 @@ windower.register_event('addon command', function (command, ...)
 	
 	if command == 'test' then
 		update_configuration()
+	end
+	
+	if command == 'success' then
+		if args[1] then
+			info.settings.hvy_success_msg = args[1]
+			notice('Hvy. Metal Pouch chat command set to: '..args[1])
+			update_configuration()
+		else
+			notice('Hvy. Metal Pouch chat command set to: '..info.settings.hvy_success_msg)
+		end
+		return
 	end
 	
 	if command == 'yiss' or command == 'snap' or command == 'shucks' then
@@ -339,13 +385,13 @@ windower.register_event('prerender', function()
 			return
 		end
 		
-		if info.settings.master or info.settings.rubicund > 0 then
+		if info.settings.master or info.settings.rubicund > 0 or info.settings.cobalt > 0 then
 			if info.status == 'Build Party' and busy == false and info.settings.master then
 				gather_trusts()
 			end
 			
 			if info.status == 'Trade Cells' and busy == false then
-                if info.settings.displacer > 0 or info.settings.rubicund > 0 then
+                if info.settings.displacer > 0 or info.settings.rubicund > 0 or info.settings.cobalt > 0 then
 					local rift = pick_nearest(get_marray('Planar Rift'))
 					if rift[1].valid_target then
 						face_target(rift[1].id)
@@ -353,6 +399,7 @@ windower.register_event('prerender', function()
 							notice('Trading displacers to Rift.')
 							
                             local rubicund_left = info.settings.rubicund
+							local cobalt_left = info.settings.cobalt
                             local displacer_left = info.settings.displacer
                             local trade_packet = packets.new('outgoing', 0x36, {
                                 ['Target'] = rift[1].id,
@@ -360,21 +407,26 @@ windower.register_event('prerender', function()
                             local inventory = windower.ffxi.get_items(0)
                             local idx = 1
                             for index=1,inventory.max do
-                                if inventory[index].id == 3853 and phase_displacers_available() > 0 and displacer_left > 0 then
+                                if inventory[index].id == trade_items['Phase Displacer'].id and item_available(trade_items['Phase Displacer'].id) > 0 and displacer_left > 0 then
                                     trade_packet['Item Index %d':format(idx)] = index
-                                    if phase_displacers_available() > info.settings.displacer then
+                                    if item_available(trade_items['Phase Displacer'].id) > info.settings.displacer then
                                         trade_packet['Item Count %d':format(idx)] = info.settings.displacer
                                         displacer_left = displacer_left - info.settings.displacer
                                     else
-                                        trade_packet['Item Count %d':format(idx)] = phase_displacers_available()
-                                        displacer_left = displacer_left - phase_displacers_available()
+                                        trade_packet['Item Count %d':format(idx)] = item_available(trade_items['Phase Displacer'].id)
+                                        displacer_left = displacer_left - item_available(trade_items['Phase Displacer'].id)
                                     end
                                     idx = idx + 1
-                                elseif inventory[index].id == 3435 and rubicund_available() > 0 and rubicund_left > 0 then
+                                elseif inventory[index].id == trade_items['Rubicund Cell'].id and item_available(trade_items['Rubicund Cell'].id) > 0 and rubicund_left > 0 then
                                     trade_packet['Item Index %d':format(idx)] = index
                                     trade_packet['Item Count %d':format(idx)] = 1
                                     idx = idx + 1
                                     rubicund_left = rubicund_left - 1
+								elseif inventory[index].id == trade_items['Cobalt Cell'].id and item_available(trade_items['Cobalt Cell'].id) > 0 and cobalt_left > 0 then
+                                    trade_packet['Item Index %d':format(idx)] = index
+                                    trade_packet['Item Count %d':format(idx)] = 1
+                                    idx = idx + 1
+                                    cobalt_left = cobalt_left - 1
                                 end
                             end
                             trade_packet['Number of Items'] = idx
@@ -532,6 +584,7 @@ if switch then
 				local rare_items = 0
 				local pickup = T{}
 				local pulsable = T{[18457] = 'Murasamemaru',[18542] = 'Aytanri',[18904] = 'Ephemeron',[19144] = 'Coruscanti',[19145] = 'Asteria',[19174] = 'Borealis',[19794] = 'Delphinius',}
+				local heavy_metal_pouch = 5910
 				local option_index = nil
 				local pulse = nil
 				
@@ -551,8 +604,8 @@ if switch then
 						end
 						total_items = total_items + 1
 					end
-					if itm == 5910 then
-						send_cmd('input /p Woohoo~!')
+					if itm == heavy_metal_pouch then
+						send_cmd('input '..info.settings.hvy_success_msg)
 					end
 				end
 				
@@ -619,6 +672,8 @@ function update_info_panel()
 		info.busy = busy
 		info.switch = switch
 		info.displacers = info.settings.displacer
+		info.rubicund = info.settings.rubicund
+		info.cobalt = info.settings.cobalt
 		
 		text_box:update(info)
 		text_box:show()
@@ -868,27 +923,49 @@ function convert_buff_list(bufflist)
     return buffarr
 end
 
-function phase_displacers_available()
+function item_available(id)
 	local count = 0
 	local inventory = windower.ffxi.get_items().inventory
 	for index=1,inventory.max do
-		if inventory[index].id == 3853 then
+		if inventory[index].id == id then
 			count = inventory[index].count
 		end
 	end
 	return count
 end
 
-function rubicund_available()
-	local count = 0
-	local inventory = windower.ffxi.get_items().inventory
-	for index=1,inventory.max do
-		if inventory[index].id == 3435 then
-			count = inventory[index].count
-		end
-	end
-	return count
-end
+-- function phase_displacers_available()
+	-- local count = 0
+	-- local inventory = windower.ffxi.get_items().inventory
+	-- for index=1,inventory.max do
+		-- if inventory[index].id == 3853 then
+			-- count = inventory[index].count
+		-- end
+	-- end
+	-- return count
+-- end
+
+-- function rubicund_available()
+	-- local count = 0
+	-- local inventory = windower.ffxi.get_items().inventory
+	-- for index=1,inventory.max do
+		-- if inventory[index].id == 3435 then
+			-- count = inventory[index].count
+		-- end
+	-- end
+	-- return count
+-- end
+
+-- function cobalt_available()
+	-- local count = 0
+	-- local inventory = windower.ffxi.get_items().inventory
+	-- for index=1,inventory.max do
+		-- if inventory[index].id == 3434 then
+			-- count = inventory[index].count
+		-- end
+	-- end
+	-- return count
+-- end
 
 function locate_target()
 	local marray = get_marray(info.settings.target)
@@ -1029,10 +1106,6 @@ function vwpop(id, index, zone, menuid, displacer)
 	packets.inject(packet)
 end
 
-function trade_displacers()
-
-end
-
 function unbusy()
 	busy = false
 end
@@ -1171,15 +1244,15 @@ function determine_pyxis_delay()
 	local self = windower.ffxi.get_player().name
 	local members = {}
 	for k, v in pairs(windower.ffxi.get_party()) do
-			if type(v) == 'table' then
-					members[#members + 1] = v.name
-			end
+		if type(v) == 'table' then
+			members[#members + 1] = v.name
+		end
 	end
 	table.sort(members)
 	for k, v in pairs(members) do
-			if v == self then
-					return (k - 1) * .4 + 1
-			end
+		if v == self then
+			return (k - 1) * .4 + 1
+		end
 	end
 end
 
