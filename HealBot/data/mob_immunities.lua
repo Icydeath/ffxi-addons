@@ -136,6 +136,9 @@ return {
     ["Cloud of Darkness"] = S{
         7
     },
+    ["Count Vine"] = S{
+        2
+    },
     ["Dark Circle"] = S{
         2
     },
@@ -159,6 +162,12 @@ return {
     ["Dragua"] = S{
         2,
         6
+    },
+    ["Duke Berith"] = S{
+        2
+    },
+    ["Duke Scox"] = S{
+        2
     },
     ["Dvali Jonah"] = S{
         2
@@ -239,6 +248,9 @@ return {
     ["Isgebind"] = S{
         2
     },
+    ["Jaculus"] = S{
+        2
+    },
     ["Kei"] = S{
         2,
         10,
@@ -270,8 +282,17 @@ return {
     ["Lithicthrower Image"] = S{
         12
     },
+    ["Lord Varney"] = S{
+        5
+    },
     ["Lord Vryko"] = S{
         5
+    },
+    ["Marquis Gamygyn"] = S{
+        2
+    },
+    ["Mboze"] = S{
+        7
     },
     ["Mildaunegeux"] = S{
         2
@@ -325,6 +346,9 @@ return {
     },
     ["Thunder Circle"] = S{
         194
+    },
+    ["Tinnin"] = S{
+        12
     },
     ["Tumult Curator"] = S{
         2

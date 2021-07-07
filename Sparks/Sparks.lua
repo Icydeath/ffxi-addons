@@ -42,7 +42,7 @@ db = require('map')
 
 valid_spark_zones = T{
 	[311] = {npc="Eternal Flame", menu=5081}, -- Western Adoulin
-	[342] = {npc="Rolandienne", menu=995}, -- Southern San d'Oria
+	[230] = {npc="Rolandienne", menu=995}, -- Southern San d'Oria -- 342
 	[177] = {npc="Isakoth", menu=26}, -- Bastok Markets
 	[251] = {npc="Fhelm Jobeizat", menu=850}, -- Windurst Woods
 }

@@ -42,7 +42,7 @@ _addon.name = 'superwarp'
 
 _addon.author = 'Akaden'
 
-_addon.version = '0.97.3'
+_addon.version = '0.97.4'
 
 _addon.commands = {'sw','superwarp'}
 
@@ -62,6 +62,8 @@ warp_list = T{}
 for k, map in pairs(maps) do
     warp_list:append(map.short_name)
 end
+
+require('superwarpgui')
 
 sub_zone_aliases = {
     ['e'] = 'Entrance',

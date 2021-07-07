@@ -74,7 +74,7 @@ windower.register_event('addon command', function(...)
 	end
 	
 	
-    if target and target.is_npc and bit.band(target.spawn_type, 2) == 2 and target.valid_target and target.distance <= 35.9 then
+    if target and target.is_npc and bit.band(target.spawn_type, 2) == 2 and target.valid_target and math.sqrt(target.distance) <= 6 then --target.distance <= 35.9
         local ind = {}
         local qty = {}
         local start = 1

@@ -62,6 +62,12 @@ This is an addon for Windower4 for FFXI. It allows text commands to teleport usi
 | //[sw] po [all/party] return  | Leave the assault staging area and return to Whitegate. "sw" is optional, and does nothing different. It's for those that require it because they've been trained to already. "all" and "party" will send an ipc message to all local instances (or specific local party members) with a delay (otherwise it will get stuck).  |
 | //[sw] po [all/party] missing [max]  | List out which destinations are still locked. The optional max parameter is a maximum number of lines to display. Default: all. |
 
+#### Voidwatch Commands
+| Command | Action |
+| --- | --- |
+| //[sw] vw [warp] [all/party] zone_name  | Warp to a specified zone through the Voidwatcher NPC. Note that you cannot warp to the past from the present (or vice versa). "sw" and "warp" are optional, and do nothing different. It's for those that require it because they've been trained to already. "all" and "party" will send an ipc message to all local instances (or specific local party members) with a delay (otherwise it will get stuck).  |
+| //[sw] vw [all/party] missing [max]  | List out which destinations are still locked. The optional max parameter is a maximum number of lines to display. Default: all. |
+
 #### Misc. Commands
 | Command | Action |
 | --- | --- |
@@ -195,3 +201,7 @@ Thanks to Lili for researching a better fuzzy matching logic.
 
 #### v0.97.3
 - **Resolved**: Homepoint indices for Ru'lude and Qufim have been updated (changed after update).
+
+### v0.97.4
+- **Resolved**: Fixed issue warping with voidwatch
+- **Improvement**: Documented voidwatch commands (oops!)

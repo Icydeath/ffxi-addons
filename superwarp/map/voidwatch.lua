@@ -13,7 +13,7 @@ return T{ --  index: 1
         if not menu_ids:contains(menu_id) then 
             return "Incorrect menu detected! Menu ID: "..menu_id
         end
-        if past_warp_zones:contains(zone) ~= destination.shadowreign then
+        if past_warp_zones:contains(zone) ~= (destination.shadowreign or false) then
             return "Cannot teleport from here."
         end
         return nil

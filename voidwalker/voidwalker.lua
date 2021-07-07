@@ -81,7 +81,6 @@ text:text("[vw]")
 
 function stopTracking()
 	targetPos = nil
-	text:text("[vw]")
 end
 
 function newPosition(x,y,directionID, distance)
@@ -152,8 +151,10 @@ end)
 
 windower.register_event('zone change', function(new, old)
     stopTracking()
+	text:text("[vw]")
 end)
-
+-- inspect = require('inspect')
+-- require('logger')
 windower.register_event('incoming chunk', function(id,original,modified,injected,blocked)
 	if not on then return end
     if id == 0x2a then -- Heal message. NOTE: Packet also triggered by other events such as zoning into abyssea, must check for proper ID below
@@ -161,9 +162,12 @@ windower.register_event('incoming chunk', function(id,original,modified,injected
         local packet = packets.parse('incoming', original)
 		local directionID
 		local distance
+		-- Message ID: 40803 -- possibly "no light"
         if packet['Param 1'] and res.key_items[packet['Param 1']] and res.key_items[packet['Param 1']].en:endswith('abyssite') then
 			-- none in the vicinity
 			stopTracking()
+			text:text(". . .")
+			--log(inspect(packet))
 		elseif packet['Param 4'] and res.key_items[packet['Param 4']] and res.key_items[packet['Param 4']].en:endswith('abyssite') then			
 			local me = windower.ffxi.get_mob_by_target('me')
 			local x,y = me.x, me.y
@@ -171,7 +175,7 @@ windower.register_event('incoming chunk', function(id,original,modified,injected
             directionID = packet['Param 2'] --[[
                 0 = 'East'
                 1 = 'Southeast'
-         x       2 = 'South'
+         x      2 = 'South'
                 3 = 'Southwest'
                 4 = 'West'
                 5 = 'Northwest'

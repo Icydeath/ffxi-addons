@@ -175,14 +175,15 @@ windower.register_event('addon command', function (command, ...)
 		notice('AutoWatch will smite a VW target ad infinitum.')
 		notice('Provided you have stones available to pop the NM.')
 		notice('Commands: ')
-		notice('	//aw target <name> will set your target.')
-		notice('	//aw rubicund <#> 0 to disable, 1 to enable.')
-		notice('	//aw cobalt <#> 0 to disable, 1 to enable.')
-		notice('	//aw success <chatcommand> ie: aw success "/echo Woohoo~"')
-		notice('	//aw start will engage the bot and begin work.')
-		notice('	//aw stop will disengage the bot and let you resume control.')
-		notice('	//aw slave will toggle the bot between active and passive behavior.')
-		notice('	//aw action will add actions to your master/slave lists.')
+		notice('	//aw target <name> - will set your target (case sensitive)')
+		notice('	//aw rubicund <#> - 0 to disable, 1 to enable.')
+		notice('	//aw cobalt <#> - 0 to disable, 1 to enable.')
+		notice('	//aw success <chatcommand> - ie: aw success "/echo Woohoo~"')
+		notice('	//aw start - will engage the bot and begin work.')
+		notice('	//aw stop - will disengage the bot and let you resume control.')
+		notice('	//aw master - turn this on if the player is the popper')
+		notice('	//aw slave - turn this on if this player is not popping the nm')
+		notice('	//aw action - will add actions to your master/slave lists.')
 		notice('		//Example: //aw action "Tachi: Fudo" tp 1000')
 		notice('		//Example: //aw action "Erratic Flutter" absent Haste')
 		notice('		//Example: //aw action "Ramuh" absent pet')
@@ -385,13 +386,13 @@ windower.register_event('prerender', function()
 			return
 		end
 		
-		if info.settings.master or info.settings.rubicund > 0 or info.settings.cobalt > 0 then
+		if info.settings.master or (info.settings.rubicund and info.settings.rubicund > 0) or (info.settings.cobalt and info.settings.cobalt > 0) then
 			if info.status == 'Build Party' and busy == false and info.settings.master then
 				gather_trusts()
 			end
 			
 			if info.status == 'Trade Cells' and busy == false then
-                if info.settings.displacer > 0 or info.settings.rubicund > 0 or info.settings.cobalt > 0 then
+                if (info.settings.displacer and info.settings.displacer > 0) or (info.settings.rubicund and info.settings.rubicund > 0) or (info.settings.cobalt and info.settings.cobalt > 0) then
 					local rift = pick_nearest(get_marray('Planar Rift'))
 					if rift[1].valid_target then
 						face_target(rift[1].id)
