@@ -1,6 +1,6 @@
 local song_timers = {}
 
-local song_buffs = {
+song_buffs = {
     [195] = 'paeon',
     [196] = 'ballad',
     [197] = 'minne',
@@ -23,6 +23,13 @@ local song_buffs = {
     [220] = 'sirvente',
     [221] = 'dirge',
     [222] = 'scherzo',
+    }
+
+song_debuffs = {
+    [2] = 'lullaby',
+    [194] = 'elegy',
+    [217] = 'threnody',
+    [223] = 'nocturne',
     }
 
 local equip_mods = {
@@ -51,6 +58,7 @@ local equip_mods = {
     [21400] = {0.1},            -- 'Blurred Harp',
     [21401] = {0.2,Ballad=0.2}, -- 'Blurred Harp +1',
     [21405] = {0.2} ,           -- 'Eminent Flute',
+    [21404] = {0.3},			-- 'Linos'			-- assumes +2 songs augment
     [20629] = {0.05},           -- 'Legato Dagger',
     [20599] = {0.05},           -- 'Kali',
     [27672] = {Paeon=0.1},      -- 'Brioso Roundlet',
@@ -97,51 +105,76 @@ local equip_mods = {
 
 local slots = {'main','sub','range','head','neck','body','hands','legs','feet','back'}
 
-function song_timers.duration(name,buffs)
-    local mult = 1
-    local item = windower.ffxi.get_items('equipment')
-    for _,slot in ipairs(slots) do
-        local mod = equip_mods[windower.ffxi.get_items(item[slot..'_bag'],item[slot]).id]
-        if mod then
-            for k,v in pairs(mod) do
-                if k == 1 or string.find(name, k) then
-                    mult = mult + v
-                end
-            end
-        end
-    end
-    local dur = 0
-    if get.jp_mods.mult then mult = mult + 0.05 end
-    if buffs['clarion call'] then dur = dur + get.jp_mods.clarion end
-    if buffs.marcato then dur = dur + get.jp_mods.marcato end
-    if buffs.tenuto then dur = dur + get.jp_mods.tenuto end
+function song_timers.calc_dur(song_name, buffs, mult)
+    local dur = 120
     if buffs.troubadour then mult = mult*2 end
-    if string.find(name,'Scherzo') then 
+    if song_name == 'Sentinel\'s Scherzo' then 
         if buffs['soul voice'] then
             mult = mult*2 
         elseif buffs.marcato then
             mult = mult*1.5
         end
     end
-    return math.floor(mult*120+dur)
+    dur = math.floor(mult * dur)
+    if buffs.marcato then dur = dur + get.jp_mods.marcato end
+    if buffs.tenuto then dur = dur + get.jp_mods.tenuto end
+    if buffs['clarion call'] then dur = dur + get.jp_mods.clarion end
+    return dur
+end
+
+function song_timers.duration(song_name, buffs)
+    local mult = get.jp_mods.mult and 1.05 or 1
+    local item = windower.ffxi.get_items('equipment')
+    local buff_name
+    for _,slot in ipairs(slots) do
+        local mod = equip_mods[windower.ffxi.get_items(item[slot..'_bag'],item[slot]).id]
+        if mod then
+            for k,v in pairs(mod) do
+                if k == 1 then
+                    mult = mult + v
+                elseif string.find(song_name, k) then
+                    mult = mult + v
+                    buff_name = k
+                end
+            end
+        end
+    end
+    --[[
+    if buff_name then
+        song_multipliers[buff_name] = mult
+    end
+    ]]
+    return song_timers.calc_dur(song_name, buffs, mult)
 end
 
 function song_timers.buff_lost(targ_id,buff_id)
     local buff = get.songs[song_buffs[buff_id]]
-    if not buff or not timers[targ] then return end
-    local targ = windower.ffxi.get_mob_by_id(targ_id).name
-    if settings.ignore:contains(targ:lower()) then return end
-    local minimum,song
-    for k,song_name in pairs(buff) do
-        local song_timer = timers[targ][song_name]
-        if song_timer and (not minimum or song_timer.ts < minimum) then
-            minimum = song_timer.ts
-            song = song_name
+
+    if buff then
+        local targ = windower.ffxi.get_mob_by_id(targ_id)
+        if not targ then return end
+        if not timers[targ] then return end
+
+        local minimum,song
+        for k,song_name in pairs(buff) do
+            local song_timer = timers[targ][song_name]
+            if song_timer and (not minimum or song_timer.ts < minimum) then
+                minimum = song_timer.ts
+                song = song_name
+            end
         end
+
+        if not song then return end
+        if not settings.song[targ] then song_timers.delete(song,'AoE') end
+        song_timers.delete(song,targ)
+        return
     end
-    if not song then return end
-    if not settings.song[targ] then song_timers.delete(song,'AoE') end
-    song_timers.delete(song,targ)
+
+    local debuff = song_debuffs[buff_id]
+
+    if debuff and debuffed[targ_id] then
+        debuffed[targ_id][debuff] = nil
+    end
 end
 
 function song_timers.update(targ)
@@ -154,7 +187,7 @@ function song_timers.update(targ)
             temp_timer_list[song_name] = true
         end
     end
-    for song_name,expires in pairs(temp_timer_list) do
+    for song_name in pairs(temp_timer_list) do
         timers[targ][song_name] = nil
     end
 end
@@ -169,7 +202,7 @@ function song_timers.create(song,targ,dur,current_time,buffs)
     if timers.AoE[song] and targ ~= 'AoE' or not settings.timers then return end
     windower.send_command('timers create "%s [%s]" %s down':format(song,targ,dur))
 end
-              
+
 function song_timers.adjust(spell_name,targ,buffs)
     local current_time = os.time()
     local dur = song_timers.duration(spell_name,buffs)
@@ -183,7 +216,7 @@ function song_timers.adjust(spell_name,targ,buffs)
     else
         local rep,repsong
         for song_name,expires in pairs(timers[targ]) do
-            if current_time + dur > expires.ts and (not rep or rep > expires.ts) then
+            if not rep or rep > expires.ts then
                 rep = expires.ts
                 repsong = song_name
             end
