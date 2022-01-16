@@ -489,7 +489,7 @@ windower.register_event('addon command', function(...)
             for x = 3,#commands do commands[x] = commands[x]:ucfirst() end
             commands[3] = table.concat(commands, ' ', 3)
             
-			local m = res_buffs:with('en', commands[3])
+			local m = pup_abilities:with('en', commands[3])
             if m then
                 settings.man[commands[2]] = m.en
 				windower.add_to_chat(8, 'AutoPUP: ('..tostring(commands[2])..') '..m.en)
@@ -511,7 +511,7 @@ windower.register_event('addon command', function(...)
 end)
 
 function setManeuver(num, str)
-	for jaid,val in pairs(res_buffs) do
+	for jaid,val in pairs(pup_abilities) do
 		if val and val.en:startswith(str:ucfirst()) then
 			settings.man[num] = val.en
 		end
