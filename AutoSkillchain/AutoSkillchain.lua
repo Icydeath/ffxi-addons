@@ -11,7 +11,7 @@ _libs.lor.req('all')
 _libs.lor.debug = false
 
 local rarr = string.char(129,168)
-local bags = {[0]='inventory',[8]='wardrobe',[10]='wardrobe2',[11]='wardrobe3',[12]='wardrobe4'}
+local bags = {[0]='inventory',[8]='wardrobe',[10]='wardrobe2',[11]='wardrobe3',[12]='wardrobe4',[13]='wardrobe5',[14]='wardrobe6',[15]='wardrobe7',[16]='wardrobe8'}
 local enabled = false
 local wsDelay = 4
 local useAutoRA = false
