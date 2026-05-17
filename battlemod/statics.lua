@@ -658,4 +658,4 @@ default_colors = [[
 </settings>
 ]]
 
-local item_lag_preventer = table.length(res.items)
+-- Removed: materialized entire res.items table (~20MB) into memory but was never used
